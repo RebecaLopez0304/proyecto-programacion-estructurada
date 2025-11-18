@@ -7,118 +7,274 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
         // Activos
         public static readonly List<Cuenta> ActivoCirculante = new()
         {
-            new Cuenta("Caja General"),
-            new Cuenta("Fondo fijo de caja chica"),
-            new Cuenta("Fondo de oportunidades"),
-            new Cuenta("Bancos"),
-            new Cuenta("Estimacion por cuentas incobrables"),
-            new Cuenta("Inversiones temporales"),
-            new Cuenta("Inversiones de mercancia"),
-            new Cuenta("Clientes"),
-            new Cuenta("Documentos por Cobrar"),
-            new Cuenta("Deudores"),
-            new Cuenta("Funcionarios y empleados"),
-            new Cuenta("IVA acreditable"),
-            new Cuenta("Anticipo de impuestos"),
-            new Cuenta("Mercancía en tránsito"),
-            new Cuenta("Anticipo a proveedores"),
-            new Cuenta("Credito mercantil"),
-            new Cuenta("Papelería y útiles"),
-            new Cuenta("Propaganda y publicidad"),
-            new Cuenta("Muestras médicas y literaturas"),
-            new Cuenta("Primas a seguros y fianzas"),
-            new Cuenta("Rentas pagadas por anticipado"),
-            new Cuenta("Intereses pagados por anticipado"),
-            new Cuenta("Otros")
+            // (+) Dinero en efectivo disponible en caja
+            new Cuenta("Caja General", true),
+
+            // (+) Efectivo destinado a gastos menores
+            new Cuenta("Fondo fijo de caja chica", true),
+
+            // (+) Efectivo reservado para oportunidades de inversión
+            new Cuenta("Fondo de oportunidades", true),
+
+            // (+) Dinero disponible en cuentas bancarias
+            new Cuenta("Bancos", true),
+
+            // (-) Provisión para cuentas que no se podrán cobrar, disminuye el valor de clientes
+            new Cuenta("Estimacion por cuentas incobrables", false),
+
+            // (+) Inversiones financieras a corto plazo (menos de 1 año)
+            new Cuenta("Inversiones temporales", true),
+
+            // (+) Productos disponibles para la venta
+            new Cuenta("Inversiones de mercancia", true),
+
+            // (+) Dinero que los clientes deben por ventas a crédito
+            new Cuenta("Clientes", true),
+
+            // (+) Pagarés o letras a favor de la empresa
+            new Cuenta("Documentos por Cobrar", true),
+
+            // (+) Personas o empresas que deben dinero por conceptos diferentes a ventas
+            new Cuenta("Deudores", true),
+
+            // (+) Préstamos o anticipos otorgados a empleados
+            new Cuenta("Funcionarios y empleados", true),
+
+            // (+) IVA pagado en compras que se puede recuperar
+            new Cuenta("IVA acreditable", true),
+
+            // (+) Impuestos pagados por anticipado
+            new Cuenta("Anticipo de impuestos", true),
+
+            // (+) Mercancía comprada pero aún no recibida
+            new Cuenta("Mercancía en tránsito", true),
+
+            // (+) Pagos adelantados a proveedores
+            new Cuenta("Anticipo a proveedores", true),
+
+            // (+) Valor de la reputación y clientela de la empresa
+            new Cuenta("Credito mercantil", true),
+
+            // (+) Material de oficina disponible
+            new Cuenta("Papelería y útiles", true),
+
+            // (+) Gastos de publicidad pagados por anticipado
+            new Cuenta("Propaganda y publicidad", true),
+
+            // (+) Material promocional disponible
+            new Cuenta("Muestras médicas y literaturas", true),
+
+            // (+) Seguros pagados por anticipado
+            new Cuenta("Primas a seguros y fianzas", true),
+
+            // (+) Alquileres pagados por adelantado
+            new Cuenta("Rentas pagadas por anticipado", true),
+
+            // (+) Intereses pagados antes del vencimiento
+            new Cuenta("Intereses pagados por anticipado", true),
+
+            // (+) Otros activos circulantes no clasificados
+            new Cuenta("Otros", true),
         };
 
         public static readonly List<Cuenta> ActivoFijo = new()
         {
-            new Cuenta("Terrenos"),
-            new Cuenta("Edificios"),
-            new Cuenta("depreciacion acumulada de edificio"),
-            new Cuenta("Construcciones en proceso"),
-            new Cuenta("Maquinaria"),
-            new Cuenta("Mobiliario y equipos de oficina"),
-            new Cuenta("Muebles y enseres"),
-            new Cuenta("Equipo de transporte"),
-            new Cuenta("Equipo de entrega y reparto")
+            // (+) Propiedades de tierra de la empresa
+            new Cuenta("Terrenos", true),
+
+            // (+) Construcciones propiedad de la empresa
+            new Cuenta("Edificios", true),
+
+            // (-) Pérdida de valor acumulada del edificio por uso y tiempo, disminuye el valor del activo
+            new Cuenta("depreciacion acumulada de edificio", false),
+
+            // (+) Obras en construcción aún no terminadas
+            new Cuenta("Construcciones en proceso", true),
+
+            // (+) Equipos de producción de la empresa
+            new Cuenta("Maquinaria", true),
+
+            // (+) Muebles y equipos para oficinas
+            new Cuenta("Mobiliario y equipos de oficina", true),
+
+            // (+) Mobiliario en general del negocio
+            new Cuenta("Muebles y enseres", true),
+
+            // (+) Vehículos propiedad de la empresa
+            new Cuenta("Equipo de transporte", true),
+
+            // (+) Vehículos destinados a distribución
+            new Cuenta("Equipo de entrega y reparto", true),
         };
 
         public static readonly List<Cuenta> ActivoIntangible = new()
         {
-            new Cuenta("Derechos de autor"),
-            new Cuenta("Patentes"),
-            new Cuenta("Marcas registradas"),
-            new Cuenta("Nombres comerciales"),
-            new Cuenta("Crédito comercial"),
-            new Cuenta("Gastos pre operativos"),
-            new Cuenta("Descuentos en emisiones de obligaciones"),
-            new Cuenta("Gastos en colocación de valores"),
-            new Cuenta("Gastos de constitución"),
-            new Cuenta("Gastos de organización e institución"),
-            new Cuenta("amortización de gastos de organización e institución"),
-            new Cuenta("Gastos de instalación"),
-            new Cuenta("Papelería y útiles"),
-            new Cuenta("Propaganda y publicidad"),
-            new Cuenta("Primas de seguros y fianzas"),
-            new Cuenta("Muestras médicas y literatura"),
-            new Cuenta("Rentas pagadas por anticipado"),
-            new Cuenta("Intereses pagados por anticipado")
+            // (+) Derechos legales sobre obras creativas
+            new Cuenta("Derechos de autor", true),
+
+            // (+) Derechos exclusivos sobre invenciones
+            new Cuenta("Patentes", true),
+
+            // (+) Derechos sobre signos distintivos
+            new Cuenta("Marcas registradas", true),
+
+            // (+) Derechos sobre el nombre de la empresa
+            new Cuenta("Nombres comerciales", true),
+
+            // (+) Plusvalía o goodwill de la empresa
+            new Cuenta("Crédito comercial", true),
+
+            // (+) Gastos realizados antes de iniciar operaciones
+            new Cuenta("Gastos pre operativos", true),
+
+            // (+) Diferencia entre valor nominal y precio de venta de bonos
+            new Cuenta("Descuentos en emisiones de obligaciones", true),
+
+            // (+) Costos de emisión de acciones o bonos
+            new Cuenta("Gastos en colocación de valores", true),
+
+            // (+) Costos legales de formar la empresa
+            new Cuenta("Gastos de constitución", true),
+
+            // (+) Gastos de establecer la estructura organizacional
+            new Cuenta("Gastos de organización e institución", true),
+
+            // (-) Disminución acumulada del valor de gastos diferidos por el paso del tiempo
+            new Cuenta("amortización de gastos de organización e institución", false),
+
+            // (+) Costos de adaptar instalaciones para operación
+            new Cuenta("Gastos de instalación", true),
+
+            // (+) Suministros de oficina
+            new Cuenta("Papelería y útiles", true),
+
+            // (+) Gastos publicitarios pagados por anticipado
+            new Cuenta("Propaganda y publicidad", true),
+
+            // (+) Seguros pagados por adelantado
+            new Cuenta("Primas de seguros y fianzas", true),
+
+            // (+) Material promocional y educativo
+            new Cuenta("Muestras médicas y literatura", true),
+
+            // (+) Alquileres pagados antes de su vencimiento
+            new Cuenta("Rentas pagadas por anticipado", true),
+
+            // (+) Intereses pagados antes de devengarse
+            new Cuenta("Intereses pagados por anticipado", true),
         };
 
         public static readonly List<Cuenta> OtrosActivos = new()
         {
-            new Cuenta("Fondo de amortizaciones de obligaciones"),
-            new Cuenta("Depósito en garantía"),
-            new Cuenta("Inversiones en proceso"),
-            new Cuenta("Terrenos no utilizados"),
-            new Cuenta("Maquinaria no utilizada")
+            // (+) Reserva para pago de bonos u obligaciones
+            new Cuenta("Fondo de amortizaciones de obligaciones", true),
+
+            // (+) Dinero dado como garantía de cumplimiento
+            new Cuenta("Depósito en garantía", true),
+
+            // (+) Inversiones a largo plazo en desarrollo
+            new Cuenta("Inversiones en proceso", true),
+
+            // (+) Propiedades sin uso operativo actual
+            new Cuenta("Terrenos no utilizados", true),
+
+            // (+) Equipo fuera de operación
+            new Cuenta("Maquinaria no utilizada", true),
         };
 
         // PASIVOS
         public static readonly List<Cuenta> PasivoLargoPlazo = new()
         {
-             new Cuenta("Acreedores hipotecarios"),
-             new Cuenta("Acreedores bancarios"),
-             new Cuenta("Documentos por pagar a largo plazo"),
-             new Cuenta("Obligaciones a circulación"),
-             new Cuenta("Bonos por pagar")
+            // (-) Deudas garantizadas con hipoteca, vencimiento mayor a 1 año
+            new Cuenta("Acreedores hipotecarios", false),
+
+            // (-) Préstamos bancarios a largo plazo
+            new Cuenta("Acreedores bancarios", false),
+
+            // (-) Pagarés con vencimiento mayor a 1 año
+            new Cuenta("Documentos por pagar a largo plazo", false),
+
+            // (-) Bonos emitidos por la empresa
+            new Cuenta("Obligaciones a circulación", false),
+
+            // (-) Títulos de deuda a largo plazo emitidos
+            new Cuenta("Bonos por pagar", false),
         };
 
         public static readonly List<Cuenta> PasivoCortoPlazo = new()
         {
-            new Cuenta("Proveedores"),
-            new Cuenta("cuentas por pagar"),
-            new Cuenta("Documentos por pagar"),
-            new Cuenta("Acreedores diversos"),
-            new Cuenta("Acreedores bancarios"),
-            new Cuenta("Anticipo de clientes"),
-            new Cuenta("Dividendos por pagar"),
-            new Cuenta("IVA por pagar"),
-            new Cuenta("Impuestos sobre la renta por pagar"),
-            new Cuenta("Impuestos y derechos retenidos por enterar"),
-            new Cuenta("Intereses por pagar"),
-            new Cuenta("Gastos acumulados por pagar"),
-            new Cuenta("Ingresos cobrados por anticipado"),
-            new Cuenta("Rentas cobradas por anticipado"),
-            new Cuenta("Intereses cobrados por anticipado")
+            // (-) Deudas con proveedores por compras a crédito
+            new Cuenta("Proveedores", false),
+
+            // (-) Obligaciones de pago a corto plazo
+            new Cuenta("cuentas por pagar", false),
+
+            // (-) Pagarés con vencimiento menor a 1 año
+            new Cuenta("Documentos por pagar", false),
+
+            // (-) Deudas con terceros por conceptos distintos a compras
+            new Cuenta("Acreedores diversos", false),
+
+            // (-) Préstamos bancarios a corto plazo
+            new Cuenta("Acreedores bancarios", false),
+
+            // (-) Pagos recibidos antes de entregar productos/servicios
+            new Cuenta("Anticipo de clientes", false),
+
+            // (-) Utilidades declaradas pendientes de pago a accionistas
+            new Cuenta("Dividendos por pagar", false),
+
+            // (-) IVA cobrado en ventas pendiente de enterar al fisco
+            new Cuenta("IVA por pagar", false),
+
+            // (-) ISR pendiente de pago
+            new Cuenta("Impuestos sobre la renta por pagar", false),
+
+            // (-) Retenciones fiscales pendientes de enterar
+            new Cuenta("Impuestos y derechos retenidos por enterar", false),
+
+            // (-) Intereses devengados pendientes de pago
+            new Cuenta("Intereses por pagar", false),
+
+            // (-) Gastos devengados aún no pagados
+            new Cuenta("Gastos acumulados por pagar", false),
+
+            // (-) Ingresos recibidos antes de prestar el servicio
+            new Cuenta("Ingresos cobrados por anticipado", false),
+
+            // (-) Alquileres cobrados antes de su vencimiento
+            new Cuenta("Rentas cobradas por anticipado", false),
+
+            // (-) Intereses cobrados antes de devengarse
+            new Cuenta("Intereses cobrados por anticipado", false),
         };
 
         // CAPITAL
         public static readonly List<Cuenta> CapitalContribuido = new()
         {
-            new Cuenta("Capital social"),
-            new Cuenta("Aportaciones para futuros aumentos de capital"),
-            new Cuenta("Prima en ventas de acciones"),
-            new Cuenta("Donacione")
+            // (-) Aportaciones de los socios o accionistas
+            new Cuenta("Capital social", false),
+
+            // (-) Recursos aportados pendientes de formalizar como capital
+            new Cuenta("Aportaciones para futuros aumentos de capital", false),
+
+            // (-) Excedente sobre valor nominal en venta de acciones
+            new Cuenta("Prima en ventas de acciones", false),
+
+            // (-) Bienes recibidos gratuitamente
+            new Cuenta("Donacione", false),
         };
 
         public static readonly List<Cuenta> CapitalGanado = new()
         {
-            new Cuenta("Utilidades retenidas"),
-            new Cuenta("Reserva legal"),
-            new Cuenta("Pérdidas acumuladas")
+            // (-) Ganancias acumuladas no distribuidas
+            new Cuenta("Utilidades retenidas", false),
+
+            // (-) Utilidades apartadas por disposición legal
+            new Cuenta("Reserva legal", false),
+
+            // (+) Pérdidas no compensadas que disminuyen el capital contable
+            new Cuenta("Pérdidas acumuladas", true),
         };
     }
 }

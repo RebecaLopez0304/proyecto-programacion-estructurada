@@ -104,9 +104,66 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
-        public static void MostrarLineaDivisora()
+        public static void MostrarLineaDivisora(bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
         {
-            Console.WriteLine("==============================================================\n");
+            if (SaltoDeLineaInicio)
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("--------------------------------------------------------------");
+
+            if (SaltoDeLineaFinal)
+            {
+                Console.WriteLine();
+            }
+        }
+
+        public static void MostrarLineaDivisoraConTexto(string texto, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
+        {
+            if (SaltoDeLineaInicio)
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"==============================================================");
+            Console.WriteLine($"                       {texto}");
+            Console.WriteLine($"==============================================================");
+
+            if (SaltoDeLineaFinal)
+            {
+                Console.WriteLine();
+            }
+        }
+
+        public static void MostrarTituloSubrayado(string titulo, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
+        {
+            if (SaltoDeLineaInicio)
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"{titulo}");
+            Console.WriteLine(new string('-', titulo.Length + 1));
+
+            if (SaltoDeLineaFinal)
+            {
+                Console.WriteLine();
+            }
+        }
+
+        public static void EsperarTecla()
+        {
+            MostrarLineaDivisora(true, true);
+            Console.WriteLine("Presione cualquier tecla para continuar...");
+            Console.ReadKey();
+        }
+
+        public static void VolverAtras()
+        {
+            MostrarLineaDivisora(true, true);
+            Console.WriteLine("0. Volver al menu anterior");
+            EsperarTecla();
         }
     }
 }

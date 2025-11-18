@@ -60,7 +60,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 
             Utilidades.MostrarLineaDivisora();
 
-            Console.WriteLine("0. Volver al Menu Principal");
+            Utilidades.VolverAtras();
 
             int opcion = Utilidades.SolicitarEnteroConLimites(0, 4);
             return opcion;
@@ -75,7 +75,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                 Console.WriteLine("\n=== Ver Cuentas - Flujo de Efectivo ===");
                 Console.WriteLine("1. Ver todas las cuentas");
                 Console.WriteLine("2. Ver cuentas por actividad");
-                Console.WriteLine("0. Volver al menú anterior");
+                Utilidades.VolverAtras();
 
                 int opcion = Utilidades.SolicitarEnteroConLimites(0, 2);
 
@@ -150,7 +150,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                 Console.WriteLine("1. Actividades de Operación");
                 Console.WriteLine("2. Actividades de Inversión");
                 Console.WriteLine("3. Actividades de Financiamiento");
-                Console.WriteLine("0. Volver\n");
+                Utilidades.VolverAtras();
 
                 int opcion = Utilidades.SolicitarEnteroConLimites(0, 3);
 
@@ -182,7 +182,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 
             foreach (var cuenta in listaDeCuentas)
             {
-                Console.WriteLine($"\t{cuenta.Nombre}");
+                string naturaleza = cuenta.EsDeudora ? "[+]" : "[-]";
+                Console.WriteLine($"\t{cuenta.Nombre} {naturaleza}");
             }
         }
     }

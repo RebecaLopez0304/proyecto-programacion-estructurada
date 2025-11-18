@@ -57,10 +57,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             Utilidades.MostrarLineaDivisora();
 
             Console.WriteLine("4. Realizar calculo de Estado de Resultados");
-
-            Utilidades.MostrarLineaDivisora();
-
-            Console.WriteLine("0. Volver al Menu Principal");
+            Utilidades.VolverAtras();
 
             int opcion = Utilidades.SolicitarEnteroConLimites(0, 4);
             return opcion;
@@ -75,7 +72,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
                 Console.WriteLine("\n=== Ver Cuentas - Estado de Resultados ===");
                 Console.WriteLine("1. Ver todas las cuentas");
                 Console.WriteLine("2. Ver cuentas por categoría");
-                Console.WriteLine("0. Volver al menú anterior");
+                Utilidades.VolverAtras();
 
                 int opcion = Utilidades.SolicitarEnteroConLimites(0, 2);
 
@@ -168,7 +165,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
                 Console.WriteLine("7. Otros Gastos");
                 Console.WriteLine("8. Otros Productos");
                 Console.WriteLine("9. Impuestos");
-                Console.WriteLine("0. Volver\n");
+                Utilidades.VolverAtras();
 
                 int opcion = Utilidades.SolicitarEnteroConLimites(0, 9);
 
@@ -224,7 +221,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
 
             foreach (var cuenta in listaDeCuentas)
             {
-                Console.WriteLine($"\t{cuenta.Nombre}");
+                string naturaleza = cuenta.EsDeudora ? "[D]" : "[A]";
+                Console.WriteLine($"\t{cuenta.Nombre} {naturaleza}");
             }
         }
     }

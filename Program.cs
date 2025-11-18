@@ -1,5 +1,6 @@
 ﻿using System;
 using ProyectoProgramacion.Comunes;
+using static ProyectoProgramacion.Comunes.Utilidades;
 using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral;
 using ProyectoProgramacion.EstadosFinancieros.EstadoResultados;
 using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo;
@@ -46,20 +47,17 @@ namespace ProyectoProgramacion
 
         static int MostrarMenuPrincipal()
         {
-            Console.WriteLine("\n--- Menu principal ---");
-            Console.WriteLine("Seleccione una opcion (0-3):");
+            MostrarLineaDivisoraConTexto("Menu Principal", true, true);
+            MostrarTituloSubrayado("Seleccione una opcion (0-3):");
             
-            Utilidades.MostrarLineaDivisora();
-
             Console.WriteLine("1. Balance General");
             Console.WriteLine("2. Estado de Resultados");
             Console.WriteLine("3. Flujo de Efectivo");
 
-            Utilidades.MostrarLineaDivisora();
-
+            MostrarLineaDivisora(true);
             Console.WriteLine("0. Salir");
 
-            int opcion = Utilidades.SolicitarEnteroConLimites(0, 3);
+            int opcion = SolicitarEnteroConLimites(0, 3);
 
             return opcion;
         }
