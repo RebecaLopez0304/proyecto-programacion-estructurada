@@ -101,4 +101,9 @@ public static class Utilidades
             }
         }
     }
+
+    public static void MostrarLineaDivisora()
+    {
+        Console.WriteLine("==============================================================\n");
+    }
 }
