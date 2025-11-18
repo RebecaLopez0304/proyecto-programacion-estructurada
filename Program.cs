@@ -1,4 +1,8 @@
 ﻿using System;
+using ProyectoProgramacion.Comunes;
+using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral;
+using ProyectoProgramacion.EstadosFinancieros.EstadoResultados;
+using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo;
 
 /*
     Este programa se utilizara para realizar un balance general, un estado de resultados y un flujo de efectivo
@@ -6,56 +10,59 @@
     El usuario podra agregar, eliminar o modificar cuentas y sus clasificaciones
 */
 
-class Program
+namespace ProyectoProgramacion
 {
-    static void Main(string[] args)
+    class Program
     {
-        bool salir = false;
-
-        while (!salir)
+        static void Main(string[] args)
         {
-            int opcion = MostrarMenuPrincipal();
+            bool salir = false;
 
-            switch (opcion)
+            while (!salir)
             {
-                case 1:
-                    BalanceGeneral.Ejecutar();
-                    break;
-                case 2:
-                    EstadoResultados.Ejecutar();
-                    break;
-                case 3:
-                    FlujoEfectivo.Ejecutar();
-                    break;
-                case 0:
-                    salir = true;
-                    Console.WriteLine("Saliendo del programa...");
-                    break;
-                default:
-                    Console.WriteLine("Opcion no valida. Intente de nuevo.");
-                    break;
+                int opcion = MostrarMenuPrincipal();
+
+                switch (opcion)
+                {
+                    case 1:
+                        BalanceGeneral.Ejecutar();
+                        break;
+                    case 2:
+                        EstadoResultados.Ejecutar();
+                        break;
+                    case 3:
+                        FlujoEfectivo.Ejecutar();
+                        break;
+                    case 0:
+                        salir = true;
+                        Console.WriteLine("Saliendo del programa...");
+                        break;
+                    default:
+                        Console.WriteLine("Opcion no valida. Intente de nuevo.");
+                        break;
+                }
             }
         }
-    }
 
-    static int MostrarMenuPrincipal()
-    {
-        Console.WriteLine("\n--- Menu principal ---");
-        Console.WriteLine("Seleccione una opcion (0-3):");
-        
-        Utilidades.MostrarLineaDivisora();
+        static int MostrarMenuPrincipal()
+        {
+            Console.WriteLine("\n--- Menu principal ---");
+            Console.WriteLine("Seleccione una opcion (0-3):");
+            
+            Utilidades.MostrarLineaDivisora();
 
-        Console.WriteLine("1. Balance General");
-        Console.WriteLine("2. Estado de Resultados");
-        Console.WriteLine("3. Flujo de Efectivo");
+            Console.WriteLine("1. Balance General");
+            Console.WriteLine("2. Estado de Resultados");
+            Console.WriteLine("3. Flujo de Efectivo");
 
-        Utilidades.MostrarLineaDivisora();
+            Utilidades.MostrarLineaDivisora();
 
-        Console.WriteLine("0. Salir");
+            Console.WriteLine("0. Salir");
 
-        int opcion = Utilidades.SolicitarEnteroConLimites(0, 3);
+            int opcion = Utilidades.SolicitarEnteroConLimites(0, 3);
 
-        return opcion;
+            return opcion;
+        }
     }
 }
 
