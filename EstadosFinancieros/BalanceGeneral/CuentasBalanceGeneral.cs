@@ -5,7 +5,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
     public static class CuentasBalanceGeneral
     {
         // Activos
-        public static readonly List<Cuenta> ActivoCirculante = new()
+        public static List<Cuenta> ActivoCirculante = new()
         {
             // (+) Dinero en efectivo disponible en caja
             new Cuenta("Caja General", true),
@@ -77,7 +77,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Otros", true),
         };
 
-        public static readonly List<Cuenta> ActivoFijo = new()
+        public static List<Cuenta> ActivoFijo = new()
         {
             // (+) Propiedades de tierra de la empresa
             new Cuenta("Terrenos", true),
@@ -107,7 +107,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Equipo de entrega y reparto", true),
         };
 
-        public static readonly List<Cuenta> ActivoIntangible = new()
+        public static List<Cuenta> ActivoIntangible = new()
         {
             // (+) Derechos legales sobre obras creativas
             new Cuenta("Derechos de autor", true),
@@ -164,7 +164,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Intereses pagados por anticipado", true),
         };
 
-        public static readonly List<Cuenta> OtrosActivos = new()
+        public static List<Cuenta> OtrosActivos = new()
         {
             // (+) Reserva para pago de bonos u obligaciones
             new Cuenta("Fondo de amortizaciones de obligaciones", true),
@@ -183,7 +183,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
         };
 
         // PASIVOS
-        public static readonly List<Cuenta> PasivoLargoPlazo = new()
+        public static List<Cuenta> PasivoLargoPlazo = new()
         {
             // (-) Deudas garantizadas con hipoteca, vencimiento mayor a 1 año
             new Cuenta("Acreedores hipotecarios", false),
@@ -201,7 +201,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Bonos por pagar", false),
         };
 
-        public static readonly List<Cuenta> PasivoCortoPlazo = new()
+        public static List<Cuenta> PasivoCortoPlazo = new()
         {
             // (-) Deudas con proveedores por compras a crédito
             new Cuenta("Proveedores", false),
@@ -250,7 +250,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
         };
 
         // CAPITAL
-        public static readonly List<Cuenta> CapitalContribuido = new()
+        public static List<Cuenta> CapitalContribuido = new()
         {
             // (-) Aportaciones de los socios o accionistas
             new Cuenta("Capital social", false),
@@ -265,7 +265,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Donacione", false),
         };
 
-        public static readonly List<Cuenta> CapitalGanado = new()
+        public static List<Cuenta> CapitalGanado = new()
         {
             // (-) Ganancias acumuladas no distribuidas
             new Cuenta("Utilidades retenidas", false),

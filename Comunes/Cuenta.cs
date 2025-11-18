@@ -9,11 +9,14 @@ namespace ProyectoProgramacion.Comunes
         // false = Acreedora (se resta, negativo): Pasivos, Capital, Ingresos, Cuentas complementarias
         public bool EsDeudora { get; set; }
 
+        public bool EsCreadoPorUsuario { get; set; }
+
         public Cuenta(string nombre, bool esDeudora = true)
         {
             Nombre = nombre;
             Valor = 0;
             EsDeudora = esDeudora;
+            EsCreadoPorUsuario = true;
         }
 
         // Método para obtener el valor con signo según si es deudora o acreedora

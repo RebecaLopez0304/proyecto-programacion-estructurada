@@ -161,9 +161,9 @@ namespace ProyectoProgramacion.Comunes
 
         public static void VolverAtras()
         {
-            MostrarLineaDivisora(true, true);
+            MostrarLineaDivisora(true, false);
             Console.WriteLine("0. Volver al menu anterior");
-            EsperarTecla();
+            // EsperarTecla();
         }
     }
 }
