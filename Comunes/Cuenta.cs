@@ -16,7 +16,7 @@ namespace ProyectoProgramacion.Comunes
             Nombre = nombre;
             Valor = 0;
             EsDeudora = esDeudora;
-            EsCreadoPorUsuario = true;
+            EsCreadoPorUsuario = false; // Por defecto, las cuentas son del sistema
         }
 
         // Método para obtener el valor con signo según si es deudora o acreedora

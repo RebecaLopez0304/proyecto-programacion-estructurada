@@ -1,5 +1,5 @@
-using System;
 using ProyectoProgramacion.Comunes;
+using static ProyectoProgramacion.Comunes.Utilidades;
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 {
@@ -7,184 +7,54 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
     ===========================
         Clase Flujo de Efectivo
     ===========================
+    
+    TODO: Esta clase debe seguir el mismo patrón arquitectónico que BalanceGeneral.
+    
+    Estructura requerida:
+    1. Crear MenusFlujoEfectivo.cs con todas las funciones de menú
+    2. Crear AccionesVerCuentas.cs para visualizar cuentas del flujo de efectivo
+    3. Crear AccionAgregarCuenta.cs para agregar nuevas cuentas (marcar con EsCreadoPorUsuario = true)
+    4. Crear AccionEliminarCuenta.cs para eliminar solo cuentas creadas por el usuario
+    5. Crear AccionCalcularFlujoEfectivo.cs para realizar el cálculo interactivo
+    
+    El cálculo debe:
+    - Solicitar saldo inicial de efectivo
+    - Permitir seleccionar cuentas de cada actividad interactivamente
+    - Actividades de Operación: partir de utilidad neta, ajustar por partidas que no generan efectivo
+    - Actividades de Inversión: compras/ventas de activos fijos e inversiones
+    - Actividades de Financiamiento: préstamos, aportaciones, dividendos pagados
+    - Calcular flujo neto por cada actividad
+    - Sumar: Saldo inicial + Flujo Operación + Flujo Inversión + Flujo Financiamiento = Saldo final
+    - Mostrar resultado con formato claro mostrando cada actividad y sus totales
+    
+    Categorías de actividades (ver CuentasFlujoEfectivo.cs):
+    - Actividades de Operación (operaciones normales del negocio)
+    - Actividades de Inversión (compra/venta de activos a largo plazo)
+    - Actividades de Financiamiento (deuda y capital)
+    
+    Naturaleza de las cuentas en flujo de efectivo:
+    - EsDeudora = true significa ENTRADA de efectivo [+]
+    - EsDeudora = false significa SALIDA de efectivo [-]
     */
     public static class FlujoEfectivo
     {
         public static void Ejecutar()
         {
-            bool volver = false;
-
-            while (!volver)
-            {
-                int opcion = MostrarMenu();
-
-                switch (opcion)
-                {
-                    case 1:
-                        VerCuentas();
-                        break;
-                    case 2:
-                        AgregarCuenta();
-                        break;
-                    case 3:
-                        EliminarCuenta();
-                        break;
-                    case 4:
-                        CalcularFlujoEfectivo();
-                        break;
-                    case 0:
-                        volver = true;
-                        Console.WriteLine("\nVolviendo al Menu Principal...\n");
-                        break;
-                    default:
-                        Console.WriteLine("Opcion no valida. Intente de nuevo.");
-                        break;
-                }
-            }
+            // TODO: Implementar menú principal similar a BalanceGeneral
+            // Debe tener opciones:
+            // 1. Ver Cuentas (llamar a AccionesVerCuentas)
+            // 2. Agregar Cuenta (llamar a AccionAgregarCuenta.Ejecutar())
+            // 3. Eliminar Cuenta (llamar a AccionEliminarCuenta.Ejecutar())
+            // 4. Calcular Flujo de Efectivo (llamar a AccionCalcularFlujoEfectivo.Ejecutar())
+            // 0. Volver al menú principal
+            
+            MostrarMensajeAdvertencia("El modulo de Flujo de Efectivo aun no esta implementado.", true, true);
+            MostrarMensajeAdvertencia("Debe seguir la misma estructura que Balance General.", true, false);
+            EsperarTecla();
         }
 
-        private static int MostrarMenu()
-        {
-            Console.WriteLine("\n--- Menu Flujo de Efectivo ---");
-            Console.WriteLine("Seleccione una opcion (0-4):");
-
-            Utilidades.MostrarLineaDivisora();
-
-            Console.WriteLine("1. Ver Cuentas");
-            Console.WriteLine("2. Agregar Cuenta");
-            Console.WriteLine("3. Eliminar Cuenta");
-
-            Utilidades.MostrarLineaDivisora();
-
-            Console.WriteLine("4. Realizar calculo de Flujo de Efectivo");
-
-            Utilidades.MostrarLineaDivisora();
-
-            Utilidades.VolverAtras();
-
-            int opcion = Utilidades.SolicitarEnteroConLimites(0, 4);
-            return opcion;
-        }
-
-        private static void VerCuentas()
-        {
-            bool regresar = false;
-
-            while (!regresar)
-            {
-                Console.WriteLine("\n=== Ver Cuentas - Flujo de Efectivo ===");
-                Console.WriteLine("1. Ver todas las cuentas");
-                Console.WriteLine("2. Ver cuentas por actividad");
-                Utilidades.VolverAtras();
-
-                int opcion = Utilidades.SolicitarEnteroConLimites(0, 2);
-
-                switch (opcion)
-                {
-                    case 1:
-                        MostrarTodasCuentasFlujoEfectivo();
-                        break;
-                    case 2:
-                        MostrarCuentasPorActividad();
-                        break;
-                    case 0:
-                        regresar = true;
-                        break;
-                }
-            }
-        }
-
-        private static void AgregarCuenta()
-        {
-            Console.WriteLine("\n=== Agregar Cuenta - Flujo de Efectivo ===");
-            Console.WriteLine("Aqui se agregara una nueva cuenta al Flujo de Efectivo...");
-            // TODO: Implementar logica para agregar cuenta
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
-            Console.ReadKey();
-        }
-
-        private static void EliminarCuenta()
-        {
-            Console.WriteLine("\n=== Eliminar Cuenta - Flujo de Efectivo ===");
-            Console.WriteLine("Aqui se eliminara una cuenta del Flujo de Efectivo...");
-            // TODO: Implementar logica para eliminar cuenta
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
-            Console.ReadKey();
-        }
-
-        private static void CalcularFlujoEfectivo()
-        {
-            Console.WriteLine("\n=== Calcular Flujo de Efectivo ===");
-            Console.WriteLine("Aqui se realizara el calculo del Flujo de Efectivo...");
-            // TODO: Implementar logica para calcular
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
-            Console.ReadKey();
-        }
-
-        private static void MostrarTodasCuentasFlujoEfectivo()
-        {
-            Console.WriteLine("\n--- Todas las Cuentas del Flujo de Efectivo ---\n");
-
-            Console.WriteLine("========= ACTIVIDADES DE OPERACIÓN ==========");
-            MostrarSeccion("Actividades de Operación", CuentasFlujoEfectivo.ActividadesOperacion);
-
-            Console.WriteLine("\n========= ACTIVIDADES DE INVERSIÓN ==========");
-            MostrarSeccion("Actividades de Inversión", CuentasFlujoEfectivo.ActividadesInversion);
-
-            Console.WriteLine("\n========= ACTIVIDADES DE FINANCIAMIENTO ==========");
-            MostrarSeccion("Actividades de Financiamiento", CuentasFlujoEfectivo.ActividadesFinanciamiento);
-
-            Console.WriteLine("\nPresione una tecla para continuar...");
-            Console.ReadKey();
-        }
-
-        private static void MostrarCuentasPorActividad()
-        {
-            bool volver = false;
-
-            while (!volver)
-            {
-                Console.Clear();
-                Console.WriteLine("\n--- Actividades del Flujo de Efectivo ---\n");
-
-                Console.WriteLine("1. Actividades de Operación");
-                Console.WriteLine("2. Actividades de Inversión");
-                Console.WriteLine("3. Actividades de Financiamiento");
-                Utilidades.VolverAtras();
-
-                int opcion = Utilidades.SolicitarEnteroConLimites(0, 3);
-
-                switch (opcion)
-                {
-                    case 1:
-                        MostrarSeccion("Actividades de Operación", CuentasFlujoEfectivo.ActividadesOperacion);
-                        Console.ReadKey();
-                        break;
-                    case 2:
-                        MostrarSeccion("Actividades de Inversión", CuentasFlujoEfectivo.ActividadesInversion);
-                        Console.ReadKey();
-                        break;
-                    case 3:
-                        MostrarSeccion("Actividades de Financiamiento", CuentasFlujoEfectivo.ActividadesFinanciamiento);
-                        Console.ReadKey();
-                        break;
-                    case 0:
-                        volver = true;
-                        break;
-                }
-            }
-        }
-
-        private static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
-        {
-            Console.WriteLine($"\n{titulo}");
-            Console.WriteLine(new string('-', titulo.Length));
-
-            foreach (var cuenta in listaDeCuentas)
-            {
-                string naturaleza = cuenta.EsDeudora ? "[+]" : "[-]";
-                Console.WriteLine($"\t{cuenta.Nombre} {naturaleza}");
-            }
-        }
+        // TODO: Crear método MostrarSeccion para visualizar listas de cuentas
+        // Este método debe ser público y utilizado por AccionesVerCuentas
+        // Similar al método MostrarSeccion en BalanceGeneral.cs
     }
 }

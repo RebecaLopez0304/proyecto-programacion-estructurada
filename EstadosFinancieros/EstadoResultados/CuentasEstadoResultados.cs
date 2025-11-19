@@ -2,9 +2,26 @@ using ProyectoProgramacion.Comunes;
 
 namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
 {
+    /*
+    ===========================
+        Cuentas del Estado de Resultados
+    ===========================
+    
+    TODO: Cambiar las listas de 'readonly' a modificables para permitir agregar/eliminar cuentas.
+    Ejemplo: public static List<Cuenta> Ingresos = new()
+    
+    IMPORTANTE: Las cuentas del sistema deben inicializarse con EsCreadoPorUsuario = false
+    para que no puedan ser eliminadas por el usuario.
+    
+    Naturaleza de las cuentas:
+    - Ingresos y productos: Acreedoras (false) - se suman para calcular utilidad
+    - Costos y gastos: Deudoras (true) - se restan para calcular utilidad
+    - Cuentas complementarias pueden tener naturaleza contraria
+    */
     public static class CuentasEstadoResultados
     {
-        // INGRESOS (Naturaleza Acreedora - se restan en el cálculo porque aumentan la utilidad)
+        // TODO: Cambiar de 'readonly' a modificable
+        // TODO: Todas las cuentas deben tener EsCreadoPorUsuario = false en su inicialización
         public static readonly List<Cuenta> Ingresos = new()
         {
             new Cuenta("Ventas totales", false),

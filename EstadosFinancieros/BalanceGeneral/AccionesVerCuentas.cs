@@ -1,6 +1,7 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.CuentasBalanceGeneral;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.BalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 {
@@ -34,15 +35,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 
             while (!salir)
             {
-                MostrarTituloSubrayado("Cuentas Generales del Balance General", true, true);
-
-                Console.WriteLine("1. Activos");
-                Console.WriteLine("2. Pasivos");
-                Console.WriteLine("3. Capital");
-                MostrarLineaDivisora(true, true);
-                VolverAtras();
-
-                int opcion = SolicitarEnteroConLimites(0, 3);
+                int opcion = MostrarMenuCuentasGenerales();
 
                 switch (opcion)
                 {
@@ -84,26 +77,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 
             while (!volver)
             {
-                Console.Clear();
-                Console.WriteLine("\n--- Cuentas Subclasificadas ---\n");
-
-                Console.WriteLine("ACTIVOS");
-                Console.WriteLine("  1. Activo circulante");
-                Console.WriteLine("  2. Activo fijo");
-                Console.WriteLine("  3. Activo intangible");
-                Console.WriteLine("  4. Otros activos\n");
-
-                Console.WriteLine("PASIVOS");
-                Console.WriteLine("  5. Pasivo a largo plazo");
-                Console.WriteLine("  6. Pasivo a corto plazo\n");
-
-                Console.WriteLine("CAPITAL");
-                Console.WriteLine("  7. Capital ganado");
-                Console.WriteLine("  8. Capital contribuido\n");
-                VolverAtras();
-
-                Console.Write("Seleccione la subclasificación que desea ver (0-8): ");
-                int opcion = SolicitarEnteroConLimites(0, 8);
+                int opcion = MostrarMenuCuentasSubclasificadas();
 
                 switch (opcion)
                 {

@@ -165,5 +165,65 @@ namespace ProyectoProgramacion.Comunes
             Console.WriteLine("0. Volver al menu anterior");
             // EsperarTecla();
         }
+
+        public static void MostrarMensajeError(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
+        {
+            if (SaltoDeLineaInicio)
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"[ERROR] - {mensaje}");
+
+            if (SaltoDeLineaFinal)
+            {
+                Console.WriteLine();
+            }
+        }
+
+        public static void MostrarMensajeExito(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
+        {
+            if (SaltoDeLineaInicio)
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"[OPERACION EXITOSA] - {mensaje}");
+
+            if (SaltoDeLineaFinal)
+            {
+                Console.WriteLine();
+            }
+        }
+
+        public static void MostrarMensajeAdvertencia(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
+        {
+            if (SaltoDeLineaInicio)
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"[ADVERTENCIA] - {mensaje}");
+
+            if (SaltoDeLineaFinal)
+            {
+                Console.WriteLine();
+            }
+        }
+
+        public static void MostrarMensajeCancelacion(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
+        {
+            if (SaltoDeLineaInicio)
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"[OPERACION CANCELADA] - {mensaje}");
+
+            if (SaltoDeLineaFinal)
+            {
+                Console.WriteLine();
+            }
+        }
     }
 }

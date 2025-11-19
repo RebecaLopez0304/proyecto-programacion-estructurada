@@ -2,9 +2,30 @@ using ProyectoProgramacion.Comunes;
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 {
+    /*
+    ===========================
+        Cuentas del Flujo de Efectivo
+    ===========================
+    
+    TODO: Cambiar las listas de 'readonly' a modificables para permitir agregar/eliminar cuentas.
+    Ejemplo: public static List<Cuenta> ActividadesOperacion = new()
+    
+    IMPORTANTE: Las cuentas del sistema deben inicializarse con EsCreadoPorUsuario = false
+    para que no puedan ser eliminadas por el usuario.
+    
+    Naturaleza en Flujo de Efectivo:
+    - EsDeudora = true [+]: ENTRADA de efectivo (aumenta el efectivo)
+    - EsDeudora = false [-]: SALIDA de efectivo (disminuye el efectivo)
+    
+    Actividades:
+    1. Operación: Actividades principales del negocio (ventas, compras, pagos)
+    2. Inversión: Compra/venta de activos fijos e inversiones
+    3. Financiamiento: Préstamos, aportaciones de capital, dividendos
+    */
     public static class CuentasFlujoEfectivo
     {
-        // ACTIVIDADES DE OPERACIÓN
+        // TODO: Cambiar de 'readonly' a modificable
+        // TODO: Todas las cuentas deben tener EsCreadoPorUsuario = false en su inicialización
         public static readonly List<Cuenta> ActividadesOperacion = new()
         {
             new Cuenta("Utilidad o pérdida neta del ejercicio", true),
