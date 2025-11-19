@@ -1,6 +1,7 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.MenusEstadoResultados;
+using System.Text;
 
 namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
 {
@@ -54,6 +55,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
     - Mostrar totales parciales de cada sección
     - Formato: usar MostrarTituloSubrayado() para secciones
     - Al final mostrar si hubo utilidad (positivo) o pérdida (negativo)
+    
+    GUARDADO DE RESULTADOS:
+    - Usar StringBuilder para construir el contenido del archivo
+    - Agregar fecha y hora al inicio del documento
+    - Incluir todos los cálculos y totales en el contenido
+    - Al final preguntar: if (PreguntarSiGuardarResultado())
+    - Guardar con: GuardarResultadoEnArchivo("estado-resultados", resultado.ToString())
+    - Mostrar mensaje de éxito con la ruta del archivo guardado
+    - El archivo se guardará como: estado-resultados-1.txt, estado-resultados-2.txt, etc.
     */
     public static class AccionCalcularEstadoResultados
     {

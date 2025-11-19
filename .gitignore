@@ -7,3 +7,8 @@ obj/
 *.zip
 *.rar
 integrantes.txt
+# Resultados generados por la aplicacion
+Resultados/
+
+# Resultados generados por la aplicacion
+Resultados/

@@ -1,6 +1,7 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
+using System.Text;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 {
@@ -93,14 +94,23 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 return;
             }
 
-            // Realizar el cálculo
+            // Realizar el cálculo y construir el contenido para guardar
             MostrarLineaDivisoraConTexto("Resultado del Balance General", true, true);
+
+            var resultado = new StringBuilder();
+            resultado.AppendLine("==============================================================");
+            resultado.AppendLine("                    BALANCE GENERAL");
+            resultado.AppendLine($"                    {DateTime.Now:dd/MM/yyyy HH:mm:ss}");
+            resultado.AppendLine("==============================================================");
+            resultado.AppendLine();
 
             decimal totalActivos = 0;
             decimal totalPasivos = 0;
             decimal totalCapital = 0;
 
-            // Agrupar por tipo
+            // Agrupar por tipo - ACTIVOS
+            resultado.AppendLine("ACTIVOS");
+            resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("ACTIVOS", true, true);
             foreach (var item in cuentasSeleccionadas.Where(x => x.cuenta.EsDeudora &&
                 (CuentasBalanceGeneral.ActivoCirculante.Contains(x.cuenta) ||
@@ -110,10 +120,18 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             {
                 decimal valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
                 totalActivos += valorConSigno;
-                Console.WriteLine($"  {item.cuenta.Nombre}: ${item.valor:N2}");
+                string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
+                Console.WriteLine(linea);
+                resultado.AppendLine(linea);
             }
-            Console.WriteLine($"TOTAL ACTIVOS: ${totalActivos:N2}");
+            string totalActivosLinea = $"TOTAL ACTIVOS: ${totalActivos:N2}";
+            Console.WriteLine(totalActivosLinea);
+            resultado.AppendLine(totalActivosLinea);
+            resultado.AppendLine();
 
+            // PASIVOS
+            resultado.AppendLine("PASIVOS");
+            resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("PASIVOS", true, true);
             foreach (var item in cuentasSeleccionadas.Where(x => !x.cuenta.EsDeudora &&
                 (CuentasBalanceGeneral.PasivoLargoPlazo.Contains(x.cuenta) ||
@@ -121,10 +139,18 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             {
                 decimal valorConSigno = item.cuenta.EsDeudora ? item.valor : item.valor;
                 totalPasivos += valorConSigno;
-                Console.WriteLine($"  {item.cuenta.Nombre}: ${item.valor:N2}");
+                string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
+                Console.WriteLine(linea);
+                resultado.AppendLine(linea);
             }
-            Console.WriteLine($"TOTAL PASIVOS: ${totalPasivos:N2}");
+            string totalPasivosLinea = $"TOTAL PASIVOS: ${totalPasivos:N2}";
+            Console.WriteLine(totalPasivosLinea);
+            resultado.AppendLine(totalPasivosLinea);
+            resultado.AppendLine();
 
+            // CAPITAL CONTABLE
+            resultado.AppendLine("CAPITAL CONTABLE");
+            resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("CAPITAL CONTABLE", true, true);
             foreach (var item in cuentasSeleccionadas.Where(x =>
                 CuentasBalanceGeneral.CapitalContribuido.Contains(x.cuenta) ||
@@ -132,17 +158,31 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             {
                 decimal valorConSigno = item.cuenta.EsDeudora ? item.valor : item.valor;
                 totalCapital += valorConSigno;
-                Console.WriteLine($"  {item.cuenta.Nombre}: ${item.valor:N2}");
+                string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
+                Console.WriteLine(linea);
+                resultado.AppendLine(linea);
             }
-            Console.WriteLine($"TOTAL CAPITAL CONTABLE: ${totalCapital:N2}");
+            string totalCapitalLinea = $"TOTAL CAPITAL CONTABLE: ${totalCapital:N2}";
+            Console.WriteLine(totalCapitalLinea);
+            resultado.AppendLine(totalCapitalLinea);
+            resultado.AppendLine();
 
             // ECUACION CONTABLE
             decimal totalPasivoMasCapital = totalPasivos + totalCapital;
 
+            resultado.AppendLine("==============================================================");
+            resultado.AppendLine("                    ECUACION CONTABLE");
+            resultado.AppendLine("==============================================================");
             MostrarLineaDivisoraConTexto("Ecuacion Contable", true, true);
-            Console.WriteLine($"Activos           : ${totalActivos:N2}");
-            Console.WriteLine($"Pasivos + Capital : ${totalPasivoMasCapital:N2}");
+            
+            string activosLinea = $"Activos           : ${totalActivos:N2}";
+            string pasivoCapitalLinea = $"Pasivos + Capital : ${totalPasivoMasCapital:N2}";
+            Console.WriteLine(activosLinea);
+            Console.WriteLine(pasivoCapitalLinea);
+            resultado.AppendLine(activosLinea);
+            resultado.AppendLine(pasivoCapitalLinea);
             MostrarLineaDivisora(true, false);
+            resultado.AppendLine(new string('-', 60));
 
             bool balanceado = Math.Abs(totalActivos - totalPasivoMasCapital) < 0.01m;
 
@@ -151,6 +191,10 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 MostrarMensajeExito("BALANCE GENERAL CUADRADO", true, false);
                 Console.WriteLine("  La ecuacion contable esta balanceada:");
                 Console.WriteLine("  Activos = Pasivos + Capital");
+                resultado.AppendLine();
+                resultado.AppendLine("[RESULTADO] BALANCE GENERAL CUADRADO");
+                resultado.AppendLine("La ecuacion contable esta balanceada:");
+                resultado.AppendLine("Activos = Pasivos + Capital");
             }
             else
             {
@@ -160,6 +204,27 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 Console.WriteLine(diferencia > 0
                     ? "  Hay mas activos que pasivos + capital"
                     : "  Hay mas pasivos + capital que activos");
+                resultado.AppendLine();
+                resultado.AppendLine("[ADVERTENCIA] BALANCE GENERAL DESCUADRADO");
+                resultado.AppendLine($"Diferencia: ${Math.Abs(diferencia):N2}");
+                resultado.AppendLine(diferencia > 0
+                    ? "Hay mas activos que pasivos + capital"
+                    : "Hay mas pasivos + capital que activos");
+            }
+
+            resultado.AppendLine();
+            resultado.AppendLine("==============================================================");
+
+            // Preguntar si desea guardar el resultado
+            if (PreguntarSiGuardarResultado())
+            {
+                string rutaArchivo = GuardarResultadoEnArchivo("balance-general", resultado.ToString());
+                
+                if (!string.IsNullOrEmpty(rutaArchivo))
+                {
+                    MostrarMensajeExito($"Resultado guardado exitosamente en:", true, false);
+                    Console.WriteLine($"  {rutaArchivo}");
+                }
             }
 
             EsperarTecla();

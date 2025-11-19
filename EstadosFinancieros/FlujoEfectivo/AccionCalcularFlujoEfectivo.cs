@@ -1,6 +1,7 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.MenusFlujoEfectivo;
+using System.Text;
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 {
@@ -62,6 +63,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
     - Mostrar claramente cada actividad con sus totales
     - Al final mostrar si hubo aumento o disminución neto de efectivo
     - Formato: usar MostrarTituloSubrayado() para cada actividad
+    
+    GUARDADO DE RESULTADOS:
+    - Usar StringBuilder para construir el contenido del archivo
+    - Agregar fecha y hora al inicio del documento
+    - Incluir saldo inicial, todas las actividades, flujos netos y saldo final
+    - Al final preguntar: if (PreguntarSiGuardarResultado())
+    - Guardar con: GuardarResultadoEnArchivo("flujo-efectivo", resultado.ToString())
+    - Mostrar mensaje de éxito con la ruta del archivo guardado
+    - El archivo se guardará como: flujo-efectivo-1.txt, flujo-efectivo-2.txt, etc.
     */
     public static class AccionCalcularFlujoEfectivo
     {
