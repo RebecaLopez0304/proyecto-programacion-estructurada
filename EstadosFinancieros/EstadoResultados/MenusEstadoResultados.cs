@@ -6,30 +6,6 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
     ===========================
         Menus del Estado de Resultados
     ===========================
-    
-    TODO: Crear todas las funciones de menú necesarias siguiendo el patrón de MenusBalanceGeneral.cs
-    
-    Funciones requeridas (como mínimo):
-    1. MostrarMenuPrincipal() - Menú principal del módulo
-    2. MostrarMenuVerCuentas() - Opciones para ver cuentas
-    3. MostrarMenuCategorias() - Seleccionar categoría de cuenta
-    4. MostrarMenuCategoriasConSalida() - Igual que anterior pero con opción "0. Terminar"
-    5. MostrarMenuNaturalezaCuenta() - Seleccionar si es deudora o acreedora
-    6. MostrarMenuConfirmacion(string mensaje) - Confirmar acción
-    7. MostrarMenuContinuar() - ¿Desea agregar otra cuenta?
-    
-    Categorías del Estado de Resultados:
-    1. Ingresos
-    2. Costo de Ventas
-    3. Gastos de Venta
-    4. Gastos de Administración
-    5. Gastos Financieros
-    6. Productos Financieros
-    7. Otros Gastos
-    8. Otros Productos
-    9. Impuestos
-    
-    IMPORTANTE: Todas las funciones deben ser públicas y estáticas
     */
     public static class MenusEstadoResultados
     {
@@ -70,7 +46,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             Console.WriteLine("3. Gastos de Operación");
             Console.WriteLine("4. Gastos de Administración");
             Console.WriteLine("5. Otros Resultados Financieros");
-            VolverAtras(); 
+            VolverAtras();
 
             int opcion = SolicitarEnteroConLimites(0, 5);
             return opcion;
@@ -108,14 +84,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
         public static int MostrarMenuNaturalezaCuenta()
         {
             Console.WriteLine();
-            Console.WriteLine("¿La cuenta es de naturaleza Deudora?");
-            Console.WriteLine("1. Si (Deudora - aumenta con cargos/debitos)");
-            Console.WriteLine("2. No (Acreedora - aumenta con abonos/creditos)");
+            Console.WriteLine("¿Qué tipo de cuenta es?");
+            Console.WriteLine("1. Egreso (disminuye la utilidad - costos/gastos)");
+            Console.WriteLine("2. Ingreso (aumenta la utilidad - ventas/productos)");
             int naturalezaOpcion = SolicitarEnteroConLimites(1, 2);
             return naturalezaOpcion;
         }
 
-         public static int MostrarMenuConfirmacion(string mensaje)
+        public static int MostrarMenuConfirmacion(string mensaje)
         {
             Console.WriteLine($"{mensaje}");
             Console.WriteLine("1. Si, eliminar");
@@ -147,7 +123,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return opcion;
         }
 
-            
+
 
     }
 }

@@ -9,30 +9,6 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
     ===========================
         Acciones para Ver Cuentas - Estado de Resultados
     ===========================
-    
-    
-
-
-    TODO: Implementar métodos para visualizar las cuentas del Estado de Resultados
-    Seguir el patrón de AccionesVerCuentas.cs del Balance General
-    
-    Métodos requeridos:
-    1. MostrarTodasCuentasEstadoResultados() - Mostrar todas las categorías con sus cuentas
-    2. MostrarCuentasGeneralesEstadoResultados() - Vista general (Ingresos, Costos, Gastos, Impuestos)
-    3. MostrarCuentasSubclasificadasEstadoResultados() - Vista detallada por cada categoría
-    
-    Categorías a mostrar:
-    - Ingresos
-    - Costo de Ventas
-    - Gastos de Venta
-    - Gastos de Administración
-    - Gastos Financieros
-    - Productos Financieros
-    - Otros Gastos
-    - Otros Productos
-    - Impuestos
-    
-    IMPORTANTE: Usar EstadoResultados.MostrarSeccion() para mostrar cada lista de cuentas
     */
     public static class AccionesVerCuentas
     {
