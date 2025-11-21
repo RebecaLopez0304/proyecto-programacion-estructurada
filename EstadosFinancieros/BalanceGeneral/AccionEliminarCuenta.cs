@@ -1,3 +1,4 @@
+// Utilidades y menús comunes del proyecto
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
@@ -6,14 +7,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 {
     public static class AccionEliminarCuenta
     {
+        // Permite eliminar una cuenta personalizada creada por el usuario
         public static void Ejecutar()
         {
             MostrarTituloSubrayado("Eliminar Cuenta - Balance General", true, true);
 
-            // Recopilar todas las cuentas creadas por el usuario de todas las categorías
+            // Recolectamos todas las cuentas que fueron creadas por el usuario
             var todasCuentasUsuario = new List<(Cuenta cuenta, string categoria, List<Cuenta> listaOriginal)>();
 
-            // Activos
+            // Recorremos cada lista y agregamos solo las cuentas marcadas como creadas por el usuario
             foreach (var cuenta in CuentasBalanceGeneral.ActivoCirculante)
             {
                 if (cuenta.EsCreadoPorUsuario)
@@ -64,8 +66,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                     todasCuentasUsuario.Add((cuenta, "Capital Ganado", CuentasBalanceGeneral.CapitalGanado));
             }
 
-
-            // Verificar si hay cuentas creadas por el usuario
+            // Si no hay cuentas personalizadas, avisamos y salimos
             if (todasCuentasUsuario.Count == 0)
             {
                 MostrarMensajeAdvertencia("No has creado ninguna cuenta personalizada aun.", true, false);
@@ -74,7 +75,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 return;
             }
 
-            // Mostrar todas las cuentas creadas por el usuario, agrupadas por categoría
+            // Mostramos las cuentas agrupadas por categoría para que el usuario elija cuál eliminar
             MostrarTituloSubrayado("Cuentas creadas por ti (eliminables)", true, true);
 
             var cuentasPorCategoria = todasCuentasUsuario.GroupBy(x => x.categoria);
@@ -94,13 +95,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 Console.WriteLine();
             }
 
+            // Pedimos al usuario que seleccione el número de la cuenta a eliminar
             MostrarLineaDivisora(true, true);
             Console.WriteLine($"Seleccione el numero de la cuenta a eliminar (1-{todasCuentasUsuario.Count}):");
             int seleccion = SolicitarEnteroConLimites(1, todasCuentasUsuario.Count);
 
             var cuentaSeleccionada = indiceCuentas[seleccion];
 
-            // Confirmación
+            // Confirmación antes de eliminar
             int confirmacion = MostrarMenuConfirmacion($"\n¿Esta seguro que desea eliminar la cuenta '{cuentaSeleccionada.cuenta.Nombre}'?");
 
             if (confirmacion == 1)
@@ -114,6 +116,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 MostrarMensajeCancelacion("Operacion cancelada.", true, false);
             }
 
+            // Pausa final
             EsperarTecla();
         }
     }

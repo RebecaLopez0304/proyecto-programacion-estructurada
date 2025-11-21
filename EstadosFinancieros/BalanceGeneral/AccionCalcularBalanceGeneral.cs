@@ -1,24 +1,30 @@
+// Importa utilidades generales del proyecto
 using ProyectoProgramacion.Comunes;
+// Permite usar métodos de Utilidades sin prefijo
 using static ProyectoProgramacion.Comunes.Utilidades;
+// Importa menús específicos para pedir categorías y opciones
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
+// Para construir texto de salida (StringBuilder)
 using System.Text;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 {
     public static class AccionCalcularBalanceGeneral
     {
+        // Método principal que guía al usuario para ingresar valores y calcular el balance
         public static void Ejecutar()
         {
             MostrarLineaDivisoraConTexto("Calculo de Balance General", true, true);
 
-            // Lista para almacenar las cuentas seleccionadas con sus valores
+            // Guardará las cuentas seleccionadas con su monto
             var cuentasSeleccionadas = new List<(Cuenta cuenta, decimal valor)>();
 
             bool continuar = true;
 
+            // Bucle para permitir agregar varias cuentas al cálculo
             while (continuar)
             {
-                // Mostrar menú de categorías
+                // El usuario elige una categoría; 0 indica terminar
                 int categoria = MostrarMenuCategoriasConSalida();
 
                 if (categoria == 0)
@@ -27,7 +33,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                     continue;
                 }
 
-                // Obtener la lista de cuentas según la categoría seleccionada
+                // Selecciona la lista de cuentas según la categoría elegida
                 List<Cuenta> listaCuentas = categoria switch
                 {
                     1 => CuentasBalanceGeneral.ActivoCirculante,
@@ -41,6 +47,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                     _ => new List<Cuenta>()
                 };
 
+                // Nombre amigable de la categoría para mostrar al usuario
                 string nombreCategoria = categoria switch
                 {
                     1 => "Activo Circulante",
@@ -54,7 +61,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                     _ => ""
                 };
 
-                // Mostrar cuentas disponibles
+                // Mostramos las cuentas de la categoría y pedimos al usuario que elija una
                 MostrarTituloSubrayado($"Cuentas de {nombreCategoria}", true, true);
                 for (int i = 0; i < listaCuentas.Count; i++)
                 {
@@ -68,16 +75,16 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 
                 Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
 
-                // Solicitar valor
+                // Solicitamos el valor numérico para la cuenta seleccionada
                 Console.WriteLine($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': $");
                 decimal valor = (decimal)SolicitarDouble(0);
 
-                // Agregar a la lista de cuentas seleccionadas
+                // Agregamos la pareja (cuenta, valor) a la lista de cálculo
                 cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
 
                 MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor ${valor:N2}", true, false);
 
-                // Preguntar si desea agregar más cuentas
+                // Preguntamos si desea continuar agregando cuentas
                 int opcion = MostrarMenuContinuar();
 
                 if (opcion == 2)
@@ -86,7 +93,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 }
             }
 
-            // Verificar que se hayan agregado cuentas
+            // Si no hay cuentas, avisamos y salimos
             if (cuentasSeleccionadas.Count == 0)
             {
                 MostrarMensajeAdvertencia("No se agregaron cuentas al calculo.", true, false);
@@ -94,7 +101,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 return;
             }
 
-            // Realizar el cálculo y construir el contenido para guardar
+            // Creamos el reporte en pantalla y en memoria
             MostrarLineaDivisoraConTexto("Resultado del Balance General", true, true);
 
             var resultado = new StringBuilder();
@@ -108,7 +115,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             decimal totalPasivos = 0;
             decimal totalCapital = 0;
 
-            // Agrupar por tipo - ACTIVOS
+            // Calculamos y mostramos los ACTIVOS
             resultado.AppendLine("ACTIVOS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("ACTIVOS", true, true);
@@ -129,7 +136,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             resultado.AppendLine(totalActivosLinea);
             resultado.AppendLine();
 
-            // PASIVOS
+            // Calculamos y mostramos los PASIVOS
             resultado.AppendLine("PASIVOS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("PASIVOS", true, true);
@@ -148,7 +155,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             resultado.AppendLine(totalPasivosLinea);
             resultado.AppendLine();
 
-            // CAPITAL CONTABLE
+            // Calculamos y mostramos el CAPITAL
             resultado.AppendLine("CAPITAL CONTABLE");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("CAPITAL CONTABLE", true, true);
@@ -167,7 +174,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             resultado.AppendLine(totalCapitalLinea);
             resultado.AppendLine();
 
-            // ECUACION CONTABLE
+            // Comprobamos la ecuación contable
             decimal totalPasivoMasCapital = totalPasivos + totalCapital;
 
             resultado.AppendLine("==============================================================");
@@ -188,6 +195,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 
             if (balanceado)
             {
+                // Mensaje amigable cuando el balance cuadra
                 MostrarMensajeExito("BALANCE GENERAL CUADRADO", true, false);
                 Console.WriteLine("  La ecuacion contable esta balanceada:");
                 Console.WriteLine("  Activos = Pasivos + Capital");
@@ -198,6 +206,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             }
             else
             {
+                // Mensaje claro cuando hay diferencia
                 decimal diferencia = totalActivos - totalPasivoMasCapital;
                 MostrarMensajeError("BALANCE GENERAL DESCUADRADO", true, false);
                 Console.WriteLine($"  Diferencia: ${Math.Abs(diferencia):N2}");
@@ -215,7 +224,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             resultado.AppendLine();
             resultado.AppendLine("==============================================================");
 
-            // Preguntar si desea guardar el resultado
+            // Ofrecemos guardar el resultado en un archivo
             if (PreguntarSiGuardarResultado())
             {
                 string rutaArchivo = GuardarResultadoEnArchivo("balance-general", resultado.ToString());
@@ -227,6 +236,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 }
             }
 
+            // Pausa final para que el usuario revise los datos
             EsperarTecla();
         }
     }

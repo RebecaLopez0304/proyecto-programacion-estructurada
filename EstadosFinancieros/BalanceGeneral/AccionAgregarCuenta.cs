@@ -1,31 +1,36 @@
+// Utilidades comunes del proyecto (como lectura/validación de consola)
 using ProyectoProgramacion.Comunes;
+// Importa métodos estáticos de Utilidades para usarlos sin prefijo
 using static ProyectoProgramacion.Comunes.Utilidades;
+// Importa los menús del Balance General (para pedir opciones al usuario)
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 {
     public static class AccionAgregarCuenta
     {
+        // Método que maneja la creación de una nueva cuenta por parte del usuario
         public static void Ejecutar()
         {
+            // Pedimos al usuario a qué categoría principal pertenece la nueva cuenta
             int categoria = MostrarMenuCategorias("Agregar Cuenta - Balance General");
 
-            // Solicitar nombre de la cuenta
+            // Pedimos el nombre de la cuenta
             Console.WriteLine();
             Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
             string nombreCuenta = SolicitarString("");
 
-            // Solicitar naturaleza de la cuenta
+            // Pedimos la naturaleza: si es deudora o acreedora
             int naturalezaOpcion = MostrarMenuNaturalezaCuenta();
-            bool esDeudora = naturalezaOpcion == 1;
+            bool esDeudora = naturalezaOpcion == 1; // true = Deudora, false = Acreedora
 
-            // Crear la nueva cuenta y marcarla como creada por el usuario
+            // Creamos la cuenta y marcamos que fue creada por el usuario
             Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora)
             {
                 EsCreadoPorUsuario = true
             };
 
-            // Agregar a la lista correspondiente
+            // Según la categoría elegida, agregamos la cuenta a la lista correspondiente
             switch (categoria)
             {
                 case 1:
@@ -62,10 +67,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                     break;
             }
 
+            // Mostramos un resumen sencillo de la cuenta creada
             string naturalezaTexto = esDeudora ? "Deudora (+)" : "Acreedora (-)";
             Console.WriteLine($"Cuenta: {nombreCuenta}");
             Console.WriteLine($"Naturaleza: {naturalezaTexto}");
 
+            // Pausa para que el usuario lea el mensaje
             EsperarTecla();
         }
     }

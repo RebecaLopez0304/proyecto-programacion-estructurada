@@ -2,9 +2,11 @@ using ProyectoProgramacion.Comunes;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 {
+    // Aquí definimos las listas de cuentas que usa el Balance General
+    // Cada lista representa una subclasificación y contiene objetos `Cuenta`
     public static class CuentasBalanceGeneral
     {
-        // Activos
+        // Activos: cosas que posee la empresa y que tienen valor
         public static List<Cuenta> ActivoCirculante = new()
         {
             // (+) Dinero en efectivo disponible en caja
@@ -77,6 +79,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Otros", true),
         };
 
+        // Activo fijo: bienes duraderos como terrenos y maquinaria
         public static List<Cuenta> ActivoFijo = new()
         {
             // (+) Propiedades de tierra de la empresa
@@ -107,6 +110,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Equipo de entrega y reparto", true),
         };
 
+        // Activos intangibles: valores no físicos como marcas o patentes
         public static List<Cuenta> ActivoIntangible = new()
         {
             // (+) Derechos legales sobre obras creativas
@@ -164,6 +168,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Intereses pagados por anticipado", true),
         };
 
+        // Otros activos: elementos que no encajan en las categorías anteriores
         public static List<Cuenta> OtrosActivos = new()
         {
             // (+) Reserva para pago de bonos u obligaciones
@@ -182,7 +187,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Maquinaria no utilizada", true),
         };
 
-        // PASIVOS
+        // PASIVOS: obligaciones y deudas de la empresa
         public static List<Cuenta> PasivoLargoPlazo = new()
         {
             // (-) Deudas garantizadas con hipoteca, vencimiento mayor a 1 año
@@ -249,7 +254,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             new Cuenta("Intereses cobrados por anticipado", false),
         };
 
-        // CAPITAL
+        // CAPITAL: aportaciones de dueños y utilidades acumuladas
         public static List<Cuenta> CapitalContribuido = new()
         {
             // (-) Aportaciones de los socios o accionistas

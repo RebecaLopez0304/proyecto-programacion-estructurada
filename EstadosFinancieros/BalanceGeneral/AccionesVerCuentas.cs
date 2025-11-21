@@ -9,22 +9,27 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
     {
         public static void MostrarTodasCuentasBalanceGeneral()
         {
+            // Título general
             Console.WriteLine("\n--- Todas las Cuentas del Balance General ---\n");
 
+            // ACTIVOS: mostramos cada sublista con su título
             MostrarLineaDivisoraConTexto("ACTIVOS", true);
             MostrarSeccion("Activo circulante", ActivoCirculante);
             MostrarSeccion("Activo fijo", ActivoFijo);
             MostrarSeccion("Activo intangible", ActivoIntangible);
             MostrarSeccion("Otros activos", OtrosActivos);
 
+            // PASIVOS
             MostrarLineaDivisoraConTexto("PASIVOS", true);
             MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo);
             MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo);
 
+            // CAPITAL
             MostrarLineaDivisoraConTexto("CAPITAL", true);
             MostrarSeccion("Capital ganado", CapitalGanado);
             MostrarSeccion("Capital contribuido", CapitalContribuido);
 
+            // Pausa para que el usuario pueda leer todo
             Console.WriteLine("\nPresione una tecla para continuar...");
             Console.ReadKey();
         }
@@ -57,6 +62,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                         break;
 
                     case 3:
+                        // Mostrar las cuentas de capital (aportaciones y utilidades)
                         MostrarTituloSubrayado("CAPITAL", true, true);
                         MostrarSeccion("Capital ganado", CapitalGanado);
                         MostrarSeccion("Capital contribuido", CapitalContribuido);
@@ -90,26 +96,32 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                         Console.ReadKey();
                         break;
                     case 3:
+                        // Mostrar activos intangibles
                         MostrarSeccion("Activo intangible", ActivoIntangible);
                         Console.ReadKey();
                         break;
                     case 4:
+                        // Mostrar otros activos
                         MostrarSeccion("Otros activos", OtrosActivos);
                         Console.ReadKey();
                         break;
                     case 5:
+                        // Pasivos a largo plazo
                         MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo);
                         Console.ReadKey();
                         break;
                     case 6:
+                        // Pasivos a corto plazo
                         MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo);
                         Console.ReadKey();
                         break;
                     case 7:
+                        // Capital ganado
                         MostrarSeccion("Capital ganado", CapitalGanado);
                         Console.ReadKey();
                         break;
                     case 8:
+                        // Capital contribuido
                         MostrarSeccion("Capital contribuido", CapitalContribuido);
                         Console.ReadKey();
                         break;
