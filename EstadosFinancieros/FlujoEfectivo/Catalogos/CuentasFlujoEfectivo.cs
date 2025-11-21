@@ -1,6 +1,6 @@
 using ProyectoProgramacion.Comunes;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos
 {
     /*
     ===========================

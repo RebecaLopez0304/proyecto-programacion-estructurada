@@ -1,7 +1,7 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.MenusFlujoEfectivo;
+using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 {
     /*
     ===========================

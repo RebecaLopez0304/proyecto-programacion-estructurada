@@ -1,6 +1,6 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
 {
     /*
     ===========================

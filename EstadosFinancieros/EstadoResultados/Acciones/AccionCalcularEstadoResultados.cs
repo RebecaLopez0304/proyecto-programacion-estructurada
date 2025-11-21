@@ -1,9 +1,10 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.MenusEstadoResultados;
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
+using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos;
 using System.Text;
 
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
 {
     /*
     ===========================
@@ -95,8 +96,6 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
                 return;
             }
 
-            // ===== AHORA SÍ CALCULAMOS TODO (FUERA DEL LOOP) =====
-
             // Creamos el reporte en pantalla y en memoria
             MostrarLineaDivisoraConTexto("Resultado del Estado de Resultados", true, true);
 
@@ -113,7 +112,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             int totalGastosAdministracion = 0;
             int totalOtrosResultados = 0;
 
-            // ===== SECCIÓN 1: VENTAS =====
+            // MARK: VENTAS
             resultado.AppendLine("VENTAS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("VENTAS", true, true);
@@ -137,7 +136,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             resultado.AppendLine(totalVentasLinea);
             resultado.AppendLine();
 
-            // ===== SECCIÓN 2: COSTO DE VENTAS =====
+            // MARK: COSTO DE VENTAS
             resultado.AppendLine("COSTO DE VENTAS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("COSTO DE VENTAS", true, true);
@@ -160,14 +159,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             resultado.AppendLine(totalCostoLinea);
             resultado.AppendLine();
 
-            // ===== UTILIDAD BRUTA =====
+            // MARK: UTILIDAD BRUTA
             int utilidadBruta = totalVentas - totalCostoVentas;
             string utilidadBrutaLinea = $"UTILIDAD BRUTA: ${utilidadBruta:N2}";
             Console.WriteLine(utilidadBrutaLinea);
             resultado.AppendLine(utilidadBrutaLinea);
             resultado.AppendLine();
 
-            // ===== SECCIÓN 3: GASTOS DE OPERACIÓN =====
+            // MARK: GASTOS DE OPERACIÓN
             resultado.AppendLine("GASTOS DE OPERACIÓN");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("GASTOS DE OPERACIÓN", true, true);
@@ -186,7 +185,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             resultado.AppendLine(totalGastosOpLinea);
             resultado.AppendLine();
 
-            // ===== SECCIÓN 4: GASTOS DE ADMINISTRACIÓN =====
+            // MARK: GASTOS DE ADMINISTRACIÓN
             resultado.AppendLine("GASTOS DE ADMINISTRACIÓN");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("GASTOS DE ADMINISTRACIÓN", true, true);
@@ -205,7 +204,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             resultado.AppendLine(totalGastosAdminLinea);
             resultado.AppendLine();
 
-            // ===== UTILIDAD DE OPERACIÓN =====
+            // MARK: UTILIDAD DE OPERACIÓN
             int totalGastosOperacionCompletos = totalGastosOperacion + totalGastosAdministracion;
             int utilidadOperacion = utilidadBruta - totalGastosOperacionCompletos;
             string utilidadOpLinea = $"UTILIDAD DE OPERACIÓN: ${utilidadOperacion:N2}";
@@ -213,7 +212,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             resultado.AppendLine(utilidadOpLinea);
             resultado.AppendLine();
 
-            // ===== SECCIÓN 5: OTROS RESULTADOS FINANCIEROS =====
+            // MARK: OTROS RESULTADOS FINANCIEROS
             resultado.AppendLine("OTROS RESULTADOS FINANCIEROS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("OTROS RESULTADOS FINANCIEROS", true, true);
@@ -236,7 +235,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             resultado.AppendLine(totalOtrosLinea);
             resultado.AppendLine();
 
-            // ===== RESULTADO FINAL (UTILIDAD O PÉRDIDA) =====
+            // MARK: RESULTADO FINAL (UTILIDAD O PÉRDIDA)
             int resultadoFinal = utilidadOperacion + totalOtrosResultados;
 
             resultado.AppendLine("==============================================================");
@@ -266,7 +265,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             resultado.AppendLine();
             resultado.AppendLine("==============================================================");
 
-            // Preguntar si desea guardar el resultado
+            // MARK: Preguntar si desea guardar el resultado
             if (PreguntarSiGuardarResultado())
             {
                 string rutaArchivo = GuardarResultadoEnArchivo("estado-resultados", resultado.ToString());

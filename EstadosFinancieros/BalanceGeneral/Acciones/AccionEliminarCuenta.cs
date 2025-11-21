@@ -1,9 +1,10 @@
 // Utilidades y menús comunes del proyecto
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
+using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {
     public static class AccionEliminarCuenta
     {

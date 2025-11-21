@@ -3,11 +3,12 @@ using ProyectoProgramacion.Comunes;
 // Permite usar métodos de Utilidades sin prefijo
 using static ProyectoProgramacion.Comunes.Utilidades;
 // Importa menús específicos para pedir categorías y opciones
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
+using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
 // Para construir texto de salida (StringBuilder)
 using System.Text;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {
     public static class AccionCalcularBalanceGeneral
     {

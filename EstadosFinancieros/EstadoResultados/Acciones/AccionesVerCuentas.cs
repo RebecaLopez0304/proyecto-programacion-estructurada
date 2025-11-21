@@ -1,9 +1,9 @@
 using System.Security.Cryptography.X509Certificates;
 using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.CuentasEstadoResultados;
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos.CuentasEstadoResultados;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.EstadoResultados;
-using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.MenusEstadoResultados;
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
 {
     /*
     ===========================

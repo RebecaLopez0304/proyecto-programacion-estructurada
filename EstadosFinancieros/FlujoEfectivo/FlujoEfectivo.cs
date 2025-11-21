@@ -1,5 +1,7 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
+using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones;
+using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 {

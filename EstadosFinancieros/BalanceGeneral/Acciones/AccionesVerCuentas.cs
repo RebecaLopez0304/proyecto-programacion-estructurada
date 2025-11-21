@@ -1,9 +1,9 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.CuentasBalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos.CuentasBalanceGeneral;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.BalanceGeneral;
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {
     public static class AccionesVerCuentas
     {

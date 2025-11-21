@@ -1,9 +1,9 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.MenusFlujoEfectivo;
+using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
 using System.Text;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 {
     /*
     ===========================

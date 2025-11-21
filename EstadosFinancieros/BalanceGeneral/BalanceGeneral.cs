@@ -3,9 +3,11 @@ using ProyectoProgramacion.Comunes;
 // Importa métodos estáticos de Utilidades para usarlos directamente
 using static ProyectoProgramacion.Comunes.Utilidades;
 // Importa las acciones para ver cuentas del Balance General
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.AccionesVerCuentas;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones.AccionesVerCuentas;
+// Importa las clases de acciones individuales
+using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
 // Importa los menús específicos del Balance General
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 {

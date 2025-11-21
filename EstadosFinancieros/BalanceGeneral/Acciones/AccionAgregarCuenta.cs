@@ -3,9 +3,10 @@ using ProyectoProgramacion.Comunes;
 // Importa métodos estáticos de Utilidades para usarlos sin prefijo
 using static ProyectoProgramacion.Comunes.Utilidades;
 // Importa los menús del Balance General (para pedir opciones al usuario)
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.MenusBalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
+using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {
     public static class AccionAgregarCuenta
     {

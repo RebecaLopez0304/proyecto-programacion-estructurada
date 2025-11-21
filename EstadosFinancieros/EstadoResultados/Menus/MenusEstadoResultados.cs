@@ -1,6 +1,6 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
 
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus
 {
     /*
     ===========================
@@ -11,7 +11,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
     {
         // TODO: Implementar todos los métodos de menú necesarios
 
-        // Ejemplo de firma de método:
+        // MARK: Menú Principal
         public static int MostrarMenuPrincipal()
         {
             MostrarLineaDivisoraConTexto("Estado de Resultados", true, true);
@@ -24,8 +24,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return SolicitarEnteroConLimites(0, 4);
         }
 
-
-        // MostrarCuentasGeneralesEstadoResultados 
+        // MARK: Menú Cuentas
         public static int MostrarMenuCuentas()
         {
             MostrarTituloSubrayado("Ver Cuentas - Estado de Resultados - Cuentas", true, true);
@@ -37,7 +36,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return opcion;
         }
 
-
+        // MARK: Menú Por Categoría Estado de Resultados
         public static int MenuPorCategoriaER()
         {
             MostrarTituloSubrayado("Ver Cuentas - Estado de Resultados - Cuentas", true, true);
@@ -52,6 +51,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return opcion;
         }
 
+        // MARK: Menú Categorías
         public static int MostrarMenuCategorias(string titulo)
         {
             MostrarTituloSubrayado(titulo, true, true);
@@ -66,6 +66,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return categoria;
         }
 
+        // MARK: Menú Categorías con Salida
         public static int MostrarMenuCategoriasConSalida()
         {
             MostrarTituloSubrayado("Seleccione la categoria de cuenta (0 para terminar)", true, true);
@@ -81,6 +82,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return categoria;
         }
 
+        // MARK: Menú Naturaleza de Cuenta
         public static int MostrarMenuNaturalezaCuenta()
         {
             Console.WriteLine();
@@ -91,6 +93,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return naturalezaOpcion;
         }
 
+        // MARK: Menú Confirmación
         public static int MostrarMenuConfirmacion(string mensaje)
         {
             Console.WriteLine($"{mensaje}");
@@ -100,6 +103,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return confirmacion;
         }
 
+        // MARK: Menú Continuar
         public static int MostrarMenuContinuar()
         {
             Console.WriteLine();
@@ -110,6 +114,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             return opcion;
         }
 
+        // MARK: Menú Cuentas Generales
         public static int MostrarMenuCuentasGenerales()
         {
             MostrarTituloSubrayado("Cuentas Generales del Balance General", true, true);

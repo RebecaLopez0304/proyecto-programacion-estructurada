@@ -1,9 +1,10 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus
 {
     public static class MenusBalanceGeneral
     {
+        // MARK: Menú Principal
         public static int MostrarMenuPrincipal()
         {
             MostrarLineaDivisoraConTexto("Menu Balance General", true, true);
@@ -20,6 +21,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return opcion;
         }
 
+        // MARK: Menú Ver Cuentas
         public static int MostrarMenuVerCuentas()
         {
             MostrarTituloSubrayado("Ver Cuentas - Balance General", true, true);
@@ -33,6 +35,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return opcion;
         }
 
+        // MARK: Menú Categorías
         public static int MostrarMenuCategorias(string titulo)
         {
             MostrarTituloSubrayado(titulo, true, true);
@@ -58,6 +61,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return categoria;
         }
 
+        // MARK: Menú Categorías con Salida
         public static int MostrarMenuCategoriasConSalida()
         {
             MostrarTituloSubrayado("Seleccione la categoria de cuenta", true, true);
@@ -86,6 +90,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return categoria;
         }
 
+        // MARK: Menú Naturaleza de Cuenta
         public static int MostrarMenuNaturalezaCuenta()
         {
             Console.WriteLine();
@@ -96,6 +101,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return naturalezaOpcion;
         }
 
+        // MARK: Menú Confirmación
         public static int MostrarMenuConfirmacion(string mensaje)
         {
             Console.WriteLine($"{mensaje}");
@@ -105,6 +111,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return confirmacion;
         }
 
+
+        // MARK: Menú Continuar
         public static int MostrarMenuContinuar()
         {
             Console.WriteLine();
@@ -115,6 +123,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return opcion;
         }
 
+        // MARK: Menú Cuentas Generales
         public static int MostrarMenuCuentasGenerales()
         {
             MostrarTituloSubrayado("Cuentas Generales del Balance General", true, true);
@@ -128,6 +137,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             return opcion;
         }
 
+        // MARK: Menú Cuentas Subclasificadas
         public static int MostrarMenuCuentasSubclasificadas()
         {
             Console.Clear();

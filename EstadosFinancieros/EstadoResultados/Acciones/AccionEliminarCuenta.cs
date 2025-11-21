@@ -1,8 +1,9 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.MenusEstadoResultados;
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
+using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos;
 
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
 {
     /*
     ===========================
