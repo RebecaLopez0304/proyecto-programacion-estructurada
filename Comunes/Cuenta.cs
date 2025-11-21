@@ -3,7 +3,7 @@ namespace ProyectoProgramacion.Comunes
     public class Cuenta
     {
         public string Nombre { get; set; }
-        public decimal Valor { get; set; }
+        public int Valor { get; set; }
         
         // true = Deudora (se suma, positivo): Activos, Gastos, Costos
         // false = Acreedora (se resta, negativo): Pasivos, Capital, Ingresos, Cuentas complementarias
@@ -20,7 +20,7 @@ namespace ProyectoProgramacion.Comunes
         }
 
         // Método para obtener el valor con signo según si es deudora o acreedora
-        public decimal ObtenerValorConSigno()
+        public int ObtenerValorConSigno()
         {
             if (EsDeudora)
             {

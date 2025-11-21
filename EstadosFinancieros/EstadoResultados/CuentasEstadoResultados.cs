@@ -22,7 +22,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
     {
         // TODO: Cambiar de 'readonly' a modificable
         // TODO: Todas las cuentas deben tener EsCreadoPorUsuario = false en su inicialización
-        public static readonly List<Cuenta> Ingresos = new()
+        public static readonly List<Cuenta> Ventas = new()
         {
             new Cuenta("Ventas totales", false),
             new Cuenta("Devoluciones sobre ventas", true), // Cuenta complementaria de ingresos
@@ -34,7 +34,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
         };
 
         // COSTO DE VENTAS (Naturaleza Deudora - se suman porque disminuyen la utilidad)
-        public static readonly List<Cuenta> CostoVentas = new()
+        public static readonly List<Cuenta> CostoDeVentas = new()
         {
             new Cuenta("Inventario inicial", true),
             new Cuenta("Compras", true),
@@ -49,7 +49,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
         };
 
         // GASTOS DE OPERACIÓN (Naturaleza Deudora - se suman porque disminuyen la utilidad)
-        public static readonly List<Cuenta> GastosVenta = new()
+        public static readonly List<Cuenta> GastoDeOperacion = new()
         {
             new Cuenta("Sueldos de vendedores", true),
             new Cuenta("Comisiones de vendedores", true),
@@ -81,7 +81,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
         };
 
         // GASTOS Y PRODUCTOS FINANCIEROS
-        public static readonly List<Cuenta> GastosFinancieros = new()
+        public static readonly List<Cuenta> OtrosResultadosFinancieros = new()
         {
             new Cuenta("Intereses pagados", true),
             new Cuenta("Comisiones bancarias", true),
@@ -90,38 +90,5 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             new Cuenta("Gastos por emisión de obligaciones", true)
         };
 
-        public static readonly List<Cuenta> ProductosFinancieros = new()
-        {
-            new Cuenta("Intereses cobrados", false),
-            new Cuenta("Utilidad en cambio de divisas", false),
-            new Cuenta("Descuentos por pronto pago obtenidos", false),
-            new Cuenta("Dividendos cobrados", false),
-            new Cuenta("Rendimientos de inversiones", false)
-        };
-
-        // OTROS GASTOS Y PRODUCTOS
-        public static readonly List<Cuenta> OtrosGastos = new()
-        {
-            new Cuenta("Pérdida en venta de activo fijo", true),
-            new Cuenta("Pérdida por caso fortuito", true),
-            new Cuenta("Donaciones y donativos", true),
-            new Cuenta("Multas y recargos", true),
-            new Cuenta("Pérdidas extraordinarias", true)
-        };
-
-        public static readonly List<Cuenta> OtrosProductos = new()
-        {
-            new Cuenta("Utilidad en venta de activo fijo", false),
-            new Cuenta("Comisiones cobradas", false),
-            new Cuenta("Ingresos extraordinarios", false),
-            new Cuenta("Utilidades por arrendamiento", false)
-        };
-
-        // IMPUESTOS (Naturaleza Deudora - se suman porque disminuyen la utilidad)
-        public static readonly List<Cuenta> Impuestos = new()
-        {
-            new Cuenta("ISR (Impuesto sobre la renta)", true),
-            new Cuenta("PTU (Participación de los trabajadores en las utilidades)", true)
-        };
     }
 }

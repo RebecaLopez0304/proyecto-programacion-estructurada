@@ -1,6 +1,8 @@
+using System.Security.Cryptography.X509Certificates;
 using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.CuentasEstadoResultados;
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.EstadoResultados;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.MenusEstadoResultados;
-
 namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
 {
     /*
@@ -8,6 +10,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
         Acciones para Ver Cuentas - Estado de Resultados
     ===========================
     
+    
+
+
     TODO: Implementar métodos para visualizar las cuentas del Estado de Resultados
     Seguir el patrón de AccionesVerCuentas.cs del Balance General
     
@@ -31,19 +36,63 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
     */
     public static class AccionesVerCuentas
     {
-        // TODO: Implementar todos los métodos de visualización
-        
-        // Ejemplo de estructura:
-        // public static void MostrarTodasCuentasEstadoResultados()
-        // {
-        //     MostrarLineaDivisoraConTexto("Todas las Cuentas - Estado de Resultados", true, true);
-        //     
-        //     MostrarTituloSubrayado("INGRESOS", true, true);
-        //     EstadoResultados.MostrarSeccion("Ingresos", CuentasEstadoResultados.Ingresos);
-        //     
-        //     // ... continuar con todas las categorías
-        //     
-        //     EsperarTecla();
-        // }
+        public static void MostrarTodoER()
+        {
+            MostrarLineaDivisoraConTexto("Todas las Cuentas - Estado de Resultados", true, false);
+
+            // MostrarLineaDivisoraConTexto("INGRESOS", true);
+            MostrarSeccion("Ventas", Ventas, true);
+            MostrarSeccion("Costos de ventas", CostoDeVentas, true);
+            MostrarSeccion("Gastos de operación", GastoDeOperacion, true);
+            MostrarSeccion("Gastos de administración", GastosAdministracion, true);
+            MostrarSeccion("Gastos y productos financieros", OtrosResultadosFinancieros, true);
+
+            EsperarTecla();
+        }
+
+        public static void MostrarPorCategoriaER()
+        {
+            bool salir = false;
+            while (!salir)
+            {
+                int opcion = MenuPorCategoriaER();
+
+                switch (opcion)
+                {
+                    case 1:
+                        MostrarSeccion("Ventas", Ventas, true);
+                        EsperarTecla();
+                        break;
+
+                    case 2:
+                        MostrarSeccion("Costos de ventas", CostoDeVentas, true);
+                        EsperarTecla();
+                        break;
+
+                    case 3:
+                        MostrarSeccion("Gastos de operación", GastoDeOperacion, true);
+                        EsperarTecla();
+                        break;
+
+                    case 4:
+                        MostrarSeccion("Gastos de administración", GastosAdministracion, true);
+                        EsperarTecla();
+                        break;
+
+                    case 5:
+                        MostrarSeccion("Gastos y productos financieros", OtrosResultadosFinancieros, true);
+                        EsperarTecla();
+                        break;
+
+                    case 0:
+                        salir = true;
+                        break;
+
+                    default:
+                        MostrarMensajeError("Opción no válida. Intente de nuevo.");
+                        break;
+                }
+            }
+        }
     }
 }

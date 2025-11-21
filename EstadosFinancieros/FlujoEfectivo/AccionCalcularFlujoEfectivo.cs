@@ -45,9 +45,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
     
     Flujo del programa:
     1. Solicitar saldo inicial de efectivo
-    2. Crear List<(Cuenta cuenta, decimal valor)> para cada actividad
+    2. Crear List<(Cuenta cuenta, int valor)> para cada actividad
     3. Loop para cada actividad usando MostrarMenuActividadesConSalida()
-    4. Para cada cuenta: solicitar valor decimal
+    4. Para cada cuenta: solicitar valor int
     5. Permitir agregar múltiples cuentas con MostrarMenuContinuar()
     6. Calcular flujo neto por actividad (entradas - salidas)
     7. Sumar todos los flujos al saldo inicial

@@ -17,7 +17,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             MostrarLineaDivisoraConTexto("Calculo de Balance General", true, true);
 
             // Guardará las cuentas seleccionadas con su monto
-            var cuentasSeleccionadas = new List<(Cuenta cuenta, decimal valor)>();
+            var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();
 
             bool continuar = true;
 
@@ -77,7 +77,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
 
                 // Solicitamos el valor numérico para la cuenta seleccionada
                 Console.WriteLine($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': $");
-                decimal valor = (decimal)SolicitarDouble(0);
+                int valor = SolicitarEntero();
 
                 // Agregamos la pareja (cuenta, valor) a la lista de cálculo
                 cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
@@ -111,9 +111,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             resultado.AppendLine("==============================================================");
             resultado.AppendLine();
 
-            decimal totalActivos = 0;
-            decimal totalPasivos = 0;
-            decimal totalCapital = 0;
+            int totalActivos = 0;
+            int totalPasivos = 0;
+            int totalCapital = 0;
 
             // Calculamos y mostramos los ACTIVOS
             resultado.AppendLine("ACTIVOS");
@@ -125,7 +125,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                  CuentasBalanceGeneral.ActivoIntangible.Contains(x.cuenta) ||
                  CuentasBalanceGeneral.OtrosActivos.Contains(x.cuenta))))
             {
-                decimal valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+                int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
                 totalActivos += valorConSigno;
                 string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
                 Console.WriteLine(linea);
@@ -144,7 +144,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 (CuentasBalanceGeneral.PasivoLargoPlazo.Contains(x.cuenta) ||
                  CuentasBalanceGeneral.PasivoCortoPlazo.Contains(x.cuenta))))
             {
-                decimal valorConSigno = item.cuenta.EsDeudora ? item.valor : item.valor;
+                // Para pasivos (normalmente acreedores) aplicamos signo negativo cuando corresponda
+                int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
                 totalPasivos += valorConSigno;
                 string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
                 Console.WriteLine(linea);
@@ -163,7 +164,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
                 CuentasBalanceGeneral.CapitalContribuido.Contains(x.cuenta) ||
                 CuentasBalanceGeneral.CapitalGanado.Contains(x.cuenta)))
             {
-                decimal valorConSigno = item.cuenta.EsDeudora ? item.valor : item.valor;
+                // Para capital aplicamos signo negativo cuando la cuenta es acreedora
+                int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
                 totalCapital += valorConSigno;
                 string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
                 Console.WriteLine(linea);
@@ -175,7 +177,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             resultado.AppendLine();
 
             // Comprobamos la ecuación contable
-            decimal totalPasivoMasCapital = totalPasivos + totalCapital;
+            int totalPasivoMasCapital = totalPasivos + totalCapital;
 
             resultado.AppendLine("==============================================================");
             resultado.AppendLine("                    ECUACION CONTABLE");
@@ -191,7 +193,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             MostrarLineaDivisora(true, false);
             resultado.AppendLine(new string('-', 60));
 
-            bool balanceado = Math.Abs(totalActivos - totalPasivoMasCapital) < 0.01m;
+            // Convertimos a decimal para comparar con una tolerancia pequeña (por centavos)
+            bool balanceado = Math.Abs((decimal)totalActivos - (decimal)totalPasivoMasCapital) < 0.01m;
 
             if (balanceado)
             {
@@ -207,7 +210,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             else
             {
                 // Mensaje claro cuando hay diferencia
-                decimal diferencia = totalActivos - totalPasivoMasCapital;
+                int diferencia = totalActivos - totalPasivoMasCapital;
                 MostrarMensajeError("BALANCE GENERAL DESCUADRADO", true, false);
                 Console.WriteLine($"  Diferencia: ${Math.Abs(diferencia):N2}");
                 Console.WriteLine(diferencia > 0
