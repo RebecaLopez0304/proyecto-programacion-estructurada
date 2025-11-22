@@ -26,8 +26,24 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             int tipoMovimientoOpcion = MostrarMenuTipoMovimiento();
             bool esDeudora = tipoMovimientoOpcion == 1; // Entrada [+] -> EsDeudora = true
 
+            // Pedimos el grupo del Balance General
+            Console.WriteLine();
+            Console.WriteLine("¿A qué grupo del Balance General pertenece esta cuenta?");
+            Console.WriteLine("1. Activo");
+            Console.WriteLine("2. Pasivo");
+            Console.WriteLine("3. Capital Contable");
+            int grupoOpcion = SolicitarEnteroConLimites(1, 3);
+
+            string tipoGrupoBalance = grupoOpcion switch
+            {
+                1 => "Activo",
+                2 => "Pasivo",
+                3 => "Capital",
+                _ => ""
+            };
+
             // Crear la nueva cuenta y marcarla como creada por el usuario
-            Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora)
+            Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora, tipoGrupoBalance)
             {
                 EsCreadoPorUsuario = true
             };
@@ -53,6 +69,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             string naturalezaTexto = esDeudora ? "Entrada [+]" : "Salida [-]";
             Console.WriteLine($"Cuenta: {nombreCuenta}");
             Console.WriteLine($"Tipo de Movimiento: {naturalezaTexto}");
+            Console.WriteLine($"Grupo Balance General: {tipoGrupoBalance}");
 
             // Pausa para que el usuario lea el mensaje
             EsperarTecla();

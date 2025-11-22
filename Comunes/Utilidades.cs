@@ -80,6 +80,31 @@ namespace ProyectoProgramacion.Comunes
                 }
             }
         }
+
+        // Solicita un número entero no negativo (permite 0 o mayor)
+        public static int SolicitarEnteroNoNegativo()
+        {
+            while (true)
+            {
+                try
+                {
+                    int entradaUsuario = int.Parse(Console.ReadLine() ?? string.Empty);
+                    if (entradaUsuario >= 0)
+                    {
+                        return entradaUsuario;
+                    }
+                    else
+                    {
+                        Console.WriteLine("[ERROR] Debe ingresar un numero entero no negativo (0 o mayor). Intente de nuevo\n\n");
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("[ERROR] Entrada no valida. Por favor, intente de nuevo.\n\n");
+                }
+            }
+        }
+
         // Solicita un número entero dentro de unos límites específicos
         // limiteInferior: valor mínimo aceptable (inclusive)
         // limiteSuperior: valor máximo aceptable (inclusive)

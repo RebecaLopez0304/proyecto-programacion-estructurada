@@ -20,6 +20,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          public int Valor2014 { get; set; }
          public int Valor2015 { get; set; }
          public string TipoActividad { get; set; } = string.Empty;
+         public string TipoGrupo { get; set; } = string.Empty; // Activo, Pasivo o Capital
       }
 
       public static void Ejecutar()
@@ -36,7 +37,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          // Validar que el segundo año sea posterior al primero
          while (anio2 <= anio1)
          {
-            MostrarMensajeError("El segundo año debe ser posterior al primer año.", true, false);
+            MostrarMensajeError("El segundo año debe ser posterior al primer año (no pueden ser iguales).", true, false);
             Console.Write($"Ingrese un año posterior a {anio1}: ");
             anio2 = SolicitarAnio();
          }
@@ -49,7 +50,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          int utilidadAntesImpuestos = SolicitarEntero();
 
          Console.Write("Ingrese el total de Depreciaciones y Amortizaciones del período: ");
-         int depreciacionesAmortizaciones = SolicitarEntero();         // Guardar las cuentas seleccionadas con sus valores para ambos años
+         int depreciacionesAmortizaciones = SolicitarEntero();
+
+         // Solicitar saldo inicial de efectivo
+         Console.WriteLine();
+         Console.Write($"Ingrese el saldo de efectivo al inicio del período ({anio1}): ");
+         int saldoInicial = SolicitarEnteroNoNegativo();         // Guardar las cuentas seleccionadas con sus valores para ambos años
          var cuentasConValores = new List<CuentaConValores>();
 
          bool continuar = true;
@@ -105,20 +111,52 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 
             Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
 
-            // Solicitamos los valores para ambos años
-            Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}' en {anio1}: ");
-            int valor2014 = SolicitarEntero();
+            // Validar que la cuenta no haya sido agregada anteriormente
+            if (cuentasConValores.Any(c => c.Cuenta.Nombre == cuentaSeleccionada.Nombre))
+            {
+               MostrarMensajeAdvertencia($"La cuenta '{cuentaSeleccionada.Nombre}' ya fue agregada anteriormente.", true, false);
+               EsperarTecla();
+               continue;
+            }
 
-            Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}' en {anio2}: ");
-            int valor2015 = SolicitarEntero();
+            // Solicitamos los valores según el tipo de actividad
+            // Para Actividades de Operación: solo pedimos el MONTO del movimiento (no saldos)
+            // Para Inversión y Financiamiento: el valor representa el monto de la transacción
 
-            // Agregamos la cuenta con sus valores
+            int valor2014 = 0;
+            int valor2015 = 0;
+
+            if (actividad == 1) // Actividades de Operación
+            {
+               Console.WriteLine($"\nNota: Ingrese el MONTO del movimiento para '{cuentaSeleccionada.Nombre}'");
+               Console.Write($"Monto del movimiento: ");
+               valor2015 = SolicitarEnteroNoNegativo(); // Solo pedimos un valor
+               valor2014 = 0; // No hay saldo anterior en movimientos
+            }
+            else // Actividades de Inversión y Financiamiento
+            {
+               Console.WriteLine($"\nNota: Ingrese el MONTO de la transacción para '{cuentaSeleccionada.Nombre}'");
+               Console.Write($"Monto de la transacción: ");
+               valor2015 = SolicitarEnteroNoNegativo();
+               valor2014 = 0;
+            }
+
+            // Validar que la cuenta tenga clasificación de Balance General
+            if (string.IsNullOrEmpty(cuentaSeleccionada.TipoGrupoBalance))
+            {
+               MostrarMensajeError($"ERROR: La cuenta '{cuentaSeleccionada.Nombre}' no tiene clasificación de Balance General asignada.", true, false);
+               EsperarTecla();
+               continue;
+            }
+
+            // Agregamos la cuenta con sus valores (la clasificación ya viene preestablecida)
             cuentasConValores.Add(new CuentaConValores
             {
                Cuenta = cuentaSeleccionada,
                Valor2014 = valor2014,
                Valor2015 = valor2015,
-               TipoActividad = tipoActividad
+               TipoActividad = tipoActividad,
+               TipoGrupo = cuentaSeleccionada.TipoGrupoBalance // Usamos la clasificación preestablecida
             });
 
             MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada", true, false);
@@ -149,7 +187,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          Console.WriteLine("\n\n");
 
          // ===== REPORTE 2: FLUJO DE EFECTIVO FORMATO CLÁSICO =====
-         GenerarFlujoEfectivoClasico(cuentasConValores, utilidadAntesImpuestos, depreciacionesAmortizaciones, anio1, anio2, resultado);
+         GenerarFlujoEfectivoClasico(cuentasConValores, utilidadAntesImpuestos, depreciacionesAmortizaciones, anio1, anio2, saldoInicial, resultado);
 
          // Preguntar si desea guardar el resultado
          if (PreguntarSiGuardarResultado())
@@ -176,121 +214,121 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine("==============================================================");
          resultado.AppendLine();
 
-         // Encabezados de la tabla
-         string encabezado = string.Format("{0,-40} {1,12} {2,12} {3,12} {4,15} {5,15} {6,15}",
-            "Cuentas", anio1.ToString(), anio2.ToString(), "Variaciones",
-            "Efecto Neto en el Efectivo", "", "Clasificación");
-         string subEncabezado = string.Format("{0,-40} {1,12} {2,12} {3,12} {4,15} {5,15} {6,15}",
-            "", "", "", "", "Entrada", "Salida", "");
+         // Encabezados de la tabla (simplificados ya que no usamos años ni variaciones)
+         string encabezado = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+            "Cuentas", "Efecto Neto en el Efectivo", "", "Clasificación");
+         string subEncabezado = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+            "", "Entrada", "Salida", "");
 
          Console.WriteLine(encabezado);
          resultado.AppendLine(encabezado);
          Console.WriteLine(subEncabezado);
          resultado.AppendLine(subEncabezado);
-         Console.WriteLine(new string('-', 140));
-         resultado.AppendLine(new string('-', 140));
+         Console.WriteLine(new string('-', 100));
+         resultado.AppendLine(new string('-', 100));
 
-         // Variables para totales
-         int totalVariaciones = 0;
+         // Variables para totales generales
          int totalEntradas = 0;
          int totalSalidas = 0;
 
-         // Agregar Utilidad antes de impuestos y Depreciaciones/Amortizaciones primero (siempre AO)
-         int variacionUtilidad = utilidadAntesImpuestos;
-         totalVariaciones += variacionUtilidad;
-         totalEntradas += utilidadAntesImpuestos;
+         // Función auxiliar para procesar un grupo de cuentas
+         void ProcesarGrupo(string nombreGrupo, List<CuentaConValores> cuentasGrupo)
+         {
+            if (cuentasGrupo.Count == 0) return;
 
-         string lineaUtilidad = string.Format("{0,-40} {1,12} {2,12} {3,12} {4,15} {5,15} {6,15}",
-            "Utilidad antes de impuestos", "", "", "",
+            int subtotalEntradas = 0;
+            int subtotalSalidas = 0;
+
+            foreach (var item in cuentasGrupo.OrderBy(c => c.Cuenta.Nombre))
+            {
+               // Para todas las cuentas: Valor2015 contiene el monto del movimiento
+               // EsDeudora indica si es entrada (+) o salida (-)
+               int entrada = 0;
+               int salida = 0;
+
+               if (item.Valor2015 > 0)
+               {
+                  if (item.Cuenta.EsDeudora)
+                  {
+                     entrada = item.Valor2015;
+                     subtotalEntradas += entrada;
+                     totalEntradas += entrada;
+                  }
+                  else
+                  {
+                     salida = item.Valor2015;
+                     subtotalSalidas += salida;
+                     totalSalidas += salida;
+                  }
+               }
+
+               string linea = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+                  item.Cuenta.Nombre,
+                  entrada > 0 ? FormatearMonedaSinPrefijo(entrada) : "",
+                  salida > 0 ? FormatearMonedaSinPrefijo(salida) : "",
+                  item.TipoActividad);
+
+               Console.WriteLine(linea);
+               resultado.AppendLine(linea);
+            }
+
+            // Subtotal del grupo
+            string lineaSubtotal = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+               $"Total de {nombreGrupo}",
+               subtotalEntradas > 0 ? FormatearMonedaSinPrefijo(subtotalEntradas) : "",
+               subtotalSalidas > 0 ? FormatearMonedaSinPrefijo(subtotalSalidas) : "",
+               "");
+
+            Console.WriteLine(lineaSubtotal);
+            resultado.AppendLine(lineaSubtotal);
+            Console.WriteLine();
+            resultado.AppendLine();
+         }
+
+         // Agregar cuentas especiales al inicio (si las hay)
+         string lineaUtilidad = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+            "Utilidad antes de impuestos", 
             FormatearMonedaSinPrefijo(utilidadAntesImpuestos), "", "AO");
          Console.WriteLine(lineaUtilidad);
          resultado.AppendLine(lineaUtilidad);
+         totalEntradas += utilidadAntesImpuestos;
 
-         string lineaDepreciacion = string.Format("{0,-40} {1,12} {2,12} {3,12} {4,15} {5,15} {6,15}",
-            "Depreciaciones y Amortizaciones", "", "", "",
+         string lineaDepreciacion = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+            "Depreciaciones y Amortizaciones",
             FormatearMonedaSinPrefijo(depreciacionesAmortizaciones), "", "AO");
          Console.WriteLine(lineaDepreciacion);
          resultado.AppendLine(lineaDepreciacion);
-
+         Console.WriteLine();
+         resultado.AppendLine();
          totalEntradas += depreciacionesAmortizaciones;
 
-         // Procesar todas las cuentas ordenadas por tipo de actividad
-         var cuentasOrdenadas = cuentas.OrderBy(c => c.TipoActividad).ThenBy(c => c.Cuenta.Nombre);
+         // Agrupar y procesar por Activo, Pasivo y Capital
+         var cuentasActivo = cuentas.Where(c => c.TipoGrupo == "Activo").ToList();
+         var cuentasPasivo = cuentas.Where(c => c.TipoGrupo == "Pasivo").ToList();
+         var cuentasCapital = cuentas.Where(c => c.TipoGrupo == "Capital").ToList();
 
-         foreach (var item in cuentasOrdenadas)
-         {
-            int variacion = item.Valor2015 - item.Valor2014;
-            totalVariaciones += variacion;
+         ProcesarGrupo("Activo", cuentasActivo);
+         ProcesarGrupo("Pasivo", cuentasPasivo);
+         ProcesarGrupo("Capital Contable", cuentasCapital);
 
-            // Determinar si es entrada o salida según la naturaleza de la cuenta y la variación
-            int entrada = 0;
-            int salida = 0;
+         // Línea de totales generales
+         Console.WriteLine(new string('-', 100));
+         resultado.AppendLine(new string('-', 100));
 
-            // Lógica según el tipo de cuenta y si aumentó o disminuyó
-            if (variacion > 0)
-            {
-               // La cuenta aumentó
-               if (item.Cuenta.EsDeudora)
-               {
-                  // Cuenta deudora aumentó = salida de efectivo
-                  salida = Math.Abs(variacion);
-                  totalSalidas += salida;
-               }
-               else
-               {
-                  // Cuenta acreedora aumentó = entrada de efectivo
-                  entrada = variacion;
-                  totalEntradas += entrada;
-               }
-            }
-            else if (variacion < 0)
-            {
-               // La cuenta disminuyó
-               if (item.Cuenta.EsDeudora)
-               {
-                  // Cuenta deudora disminuyó = entrada de efectivo
-                  entrada = Math.Abs(variacion);
-                  totalEntradas += entrada;
-               }
-               else
-               {
-                  // Cuenta acreedora disminuyó = salida de efectivo
-                  salida = Math.Abs(variacion);
-                  totalSalidas += salida;
-               }
-            }
-
-            string linea = string.Format("{0,-40} {1,12} {2,12} {3,12} {4,15} {5,15} {6,15}",
-               item.Cuenta.Nombre,
-               FormatearMonedaSinPrefijo(item.Valor2014),
-               FormatearMonedaSinPrefijo(item.Valor2015),
-               FormatearMonedaSinPrefijo(variacion),
-               entrada > 0 ? FormatearMonedaSinPrefijo(entrada) : "",
-               salida > 0 ? FormatearMonedaSinPrefijo(salida) : "",
-               item.TipoActividad);
-
-            Console.WriteLine(linea);
-            resultado.AppendLine(linea);
-         }
-
-         // Línea de totales
-         Console.WriteLine(new string('-', 140));
-         resultado.AppendLine(new string('-', 140));
-
-         string lineaTotal = string.Format("{0,-40} {1,12} {2,12} {3,12} {4,15} {5,15} {6,15}",
-            "TOTALES", "", "", "",
+         string lineaTotal = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+            "TOTALES",
             FormatearMonedaSinPrefijo(totalEntradas),
             FormatearMonedaSinPrefijo(totalSalidas), "");
 
          Console.WriteLine(lineaTotal);
          resultado.AppendLine(lineaTotal);
 
-         Console.WriteLine(new string('=', 140));
-         resultado.AppendLine(new string('=', 140));
+         Console.WriteLine(new string('=', 100));
+         resultado.AppendLine(new string('=', 100));
          resultado.AppendLine();
       }
 
-      private static void GenerarFlujoEfectivoClasico(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, StringBuilder resultado)
+      private static void GenerarFlujoEfectivoClasico(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, int saldoInicial, StringBuilder resultado)
       {
          MostrarLineaDivisoraConTexto("Estado de Flujo de Efectivo", true, true);
 
@@ -320,18 +358,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          // Procesar cuentas de operación
          foreach (var item in cuentas.Where(c => c.TipoActividad == "AO"))
          {
-            int variacion = item.Valor2015 - item.Valor2014;
-            int efecto = 0;
-
-            // Calcular efecto en flujo
-            if (variacion > 0)
-            {
-               efecto = item.Cuenta.EsDeudora ? -Math.Abs(variacion) : variacion;
-            }
-            else if (variacion < 0)
-            {
-               efecto = item.Cuenta.EsDeudora ? Math.Abs(variacion) : -Math.Abs(variacion);
-            }
+            // Para cuentas de operación, Valor2015 contiene el monto del movimiento
+            // EsDeudora indica si es entrada (+) o salida (-)
+            int efecto = item.Cuenta.EsDeudora ? item.Valor2015 : -item.Valor2015;
 
             flujoOperacion += efecto;
 
@@ -354,17 +383,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 
          foreach (var item in cuentas.Where(c => c.TipoActividad == "AI"))
          {
-            int variacion = item.Valor2015 - item.Valor2014;
-            int efecto = 0;
-
-            if (variacion > 0)
-            {
-               efecto = item.Cuenta.EsDeudora ? -Math.Abs(variacion) : variacion;
-            }
-            else if (variacion < 0)
-            {
-               efecto = item.Cuenta.EsDeudora ? Math.Abs(variacion) : -Math.Abs(variacion);
-            }
+            // EsDeudora indica si es entrada (+) o salida (-)
+            int efecto = item.Cuenta.EsDeudora ? item.Valor2015 : -item.Valor2015;
 
             flujoInversion += efecto;
 
@@ -396,17 +416,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 
          foreach (var item in cuentas.Where(c => c.TipoActividad == "AF"))
          {
-            int variacion = item.Valor2015 - item.Valor2014;
-            int efecto = 0;
-
-            if (variacion > 0)
-            {
-               efecto = item.Cuenta.EsDeudora ? -Math.Abs(variacion) : variacion;
-            }
-            else if (variacion < 0)
-            {
-               efecto = item.Cuenta.EsDeudora ? Math.Abs(variacion) : -Math.Abs(variacion);
-            }
+            // EsDeudora indica si es entrada (+) o salida (-)
+            int efecto = item.Cuenta.EsDeudora ? item.Valor2015 : -item.Valor2015;
 
             flujoFinanciamiento += efecto;
 
@@ -425,11 +436,6 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          // ===== RESUMEN FINAL =====
          int flujoNeto = flujoOperacion + flujoInversion + flujoFinanciamiento;
 
-         // Calcular saldo de efectivo del periodo anterior (necesitamos el saldo de Bancos 2014)
-         var cuentaBancos = cuentas.FirstOrDefault(c => c.Cuenta.Nombre.Contains("Bancos"));
-         int saldoPeriodoAnterior = cuentaBancos?.Valor2014 ?? 0;
-         int saldoFinal = saldoPeriodoAnterior + flujoNeto;
-
          resultado.AppendLine("==============================================================");
          MostrarLineaDivisora(true, true);
 
@@ -438,15 +444,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          Console.WriteLine(lineaFlujoNeto);
          resultado.AppendLine(lineaFlujoNeto);
 
-         string lineaSaldoAnterior = $"Efectivo y equivalentes de efectivo al principio del período: {FormatearMoneda(saldoPeriodoAnterior)}";
-         Console.WriteLine(lineaSaldoAnterior);
-         resultado.AppendLine(lineaSaldoAnterior);
+         string lineaSaldoInicial = $"Efectivo y equivalentes de efectivo al principio del período: {FormatearMoneda(saldoInicial)}";
+         Console.WriteLine(lineaSaldoInicial);
+         resultado.AppendLine(lineaSaldoInicial);
 
+         int saldoFinal = saldoInicial + flujoNeto;
          string lineaSaldoFinal = $"Efectivo y equivalentes de efectivo al final del período: {FormatearMoneda(saldoFinal)}";
          Console.WriteLine(lineaSaldoFinal);
-         resultado.AppendLine(lineaSaldoFinal);
-
-         resultado.AppendLine();
+         resultado.AppendLine(lineaSaldoFinal);         resultado.AppendLine();
          resultado.AppendLine("==============================================================");
       }
 
