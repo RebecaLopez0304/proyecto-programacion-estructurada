@@ -33,14 +33,14 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
-        public static string SolicitarString(string entradaUsuario)
+        public static string SolicitarString()
         {
             while (true)
             {
                 try
                 {
                     string entrada = Console.ReadLine() ?? string.Empty;
-                    entradaUsuario = entrada.Trim();
+                    string entradaUsuario = entrada.Trim();
 
                     if (entradaUsuario.Length > 3)
                     {
@@ -48,7 +48,7 @@ namespace ProyectoProgramacion.Comunes
                     }
                     else
                     {
-                        Console.WriteLine("[Error] debe ingrese al menos 3 caracteres: ");
+                        Console.WriteLine("[Error] Tiene que ingresar mas de 3 caracteres");
                     }
                 }
                 catch (Exception)

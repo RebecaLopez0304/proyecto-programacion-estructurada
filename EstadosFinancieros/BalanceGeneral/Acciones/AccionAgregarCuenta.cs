@@ -19,7 +19,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             // Pedimos el nombre de la cuenta
             Console.WriteLine();
             Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
-            string nombreCuenta = SolicitarString("");
+            string nombreCuenta = SolicitarString();
 
             // Pedimos la naturaleza: si es deudora o acreedora
             int naturalezaOpcion = MostrarMenuNaturalezaCuenta();

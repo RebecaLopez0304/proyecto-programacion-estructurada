@@ -20,7 +20,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             // Pedimos el nombre de la cuenta
             Console.WriteLine();
             Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
-            string nombreCuenta = SolicitarString("");
+            string nombreCuenta = SolicitarString();
 
             // Pedimos el tipo de movimiento
             int tipoMovimientoOpcion = MostrarMenuTipoMovimiento();

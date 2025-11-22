@@ -19,10 +19,10 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 
             // Solicitar datos de la empresa y período
             Console.Write("Ingrese el nombre de la empresa: ");
-            string nombreEmpresa = SolicitarString("");
+            string nombreEmpresa = SolicitarString();
 
             Console.Write("Ingrese el mes del período (ej. Diciembre): ");
-            string mes = SolicitarString("");
+            string mes = SolicitarString();
 
             Console.Write("Ingrese el año del período (ej. 2024): ");
             int anio = SolicitarAnio();

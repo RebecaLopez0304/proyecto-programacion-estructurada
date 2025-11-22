@@ -18,7 +18,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             int categoria = MostrarMenuCategorias("Agregar Cuenta - Estado de Resultados");
             Console.WriteLine();
             Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
-            string nombreCuenta = SolicitarString("");
+            string nombreCuenta = SolicitarString();
 
             int naturalezaOpcion = MostrarMenuNaturalezaCuenta();
             bool esDeudora = naturalezaOpcion == 1;

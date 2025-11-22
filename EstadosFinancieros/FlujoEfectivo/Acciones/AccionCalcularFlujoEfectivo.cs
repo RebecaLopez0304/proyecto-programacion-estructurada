@@ -29,7 +29,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 
          // Solicitar datos de la empresa
          Console.Write("Ingrese el nombre de la empresa: ");
-         string nombreEmpresa = SolicitarString("");
+         string nombreEmpresa = SolicitarString();
 
          // Solicitar año 1 y año 2 con validación
          Console.WriteLine();
