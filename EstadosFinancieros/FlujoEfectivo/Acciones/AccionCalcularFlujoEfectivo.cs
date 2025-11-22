@@ -13,6 +13,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
    */
    public static class AccionCalcularFlujoEfectivo
    {
+      // MARK: - Estructura de Datos
+
       // Estructura para almacenar datos de una cuenta con valores de 2 años
       private class CuentaConValores
       {
@@ -23,9 +25,13 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          public string TipoGrupo { get; set; } = string.Empty; // Activo, Pasivo o Capital
       }
 
+      // MARK: - Método Principal
+
       public static void Ejecutar()
       {
          MostrarLineaDivisoraConTexto("Calcular Flujo de Efectivo", true, true);
+
+         // MARK: Solicitud de Datos Iniciales
 
          // Solicitar datos de la empresa
          Console.Write("Ingrese el nombre de la empresa: ");
@@ -60,7 +66,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          // Solicitar saldo inicial de efectivo
          Console.WriteLine();
          Console.Write($"Ingrese el saldo de efectivo al inicio del período ({anio1}): ");
-         int saldoInicial = SolicitarEnteroNoNegativo();         // Guardar las cuentas seleccionadas con sus valores para ambos años
+         int saldoInicial = SolicitarEnteroNoNegativo();
+
+         // MARK: Selección de Cuentas por Actividad
+
+         // Guardar las cuentas seleccionadas con sus valores para ambos años
          var cuentasConValores = new List<CuentaConValores>();
 
          bool continuar = true;
@@ -183,6 +193,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             return;
          }
 
+         // MARK: Generación de Reportes
+
          // ===== GENERAR AMBOS REPORTES =====
          var resultado = new StringBuilder();
 
@@ -209,6 +221,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          EsperarTecla();
       }
 
+      // MARK: Tabla de Variaciones
+
       private static void GenerarTablaVariaciones(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, string nombreEmpresa, StringBuilder resultado)
       {
          MostrarLineaDivisoraConTexto("Tabla de Variaciones - Flujo de Efectivo", true, true);
@@ -233,6 +247,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(subEncabezado);
          Console.WriteLine(new string('-', 100));
          resultado.AppendLine(new string('-', 100));
+
+         // MARK: Cálculo de Totales por Grupo
 
          // Variables para totales generales
          int totalEntradas = 0;
@@ -335,6 +351,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine();
       }
 
+      // MARK: - Flujo de Efectivo Clásico
+
       private static void GenerarFlujoEfectivoClasico(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, int saldoInicial, string nombreEmpresa, StringBuilder resultado)
       {
          MostrarLineaDivisoraConTexto("Estado de Flujo de Efectivo", true, true);
@@ -350,6 +368,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          int flujoOperacion = utilidadAntesImpuestos + depreciacionesAmortizaciones;
          int flujoInversion = 0;
          int flujoFinanciamiento = 0;
+
+         // MARK: Actividades de Operación
 
          // ===== A. ACTIVIDADES DE OPERACIÓN =====
          resultado.AppendLine("A. ACTIVIDADES DE OPERACIÓN");
@@ -385,6 +405,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(flujoOpLinea);
          resultado.AppendLine();
 
+         // MARK: Actividades de Inversión
+
          // ===== B. ACTIVIDADES DE INVERSIÓN =====
          resultado.AppendLine("B. ACTIVIDADES DE INVERSIÓN");
          resultado.AppendLine(new string('-', 60));
@@ -418,6 +440,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(lineaExcedente);
          resultado.AppendLine();
 
+         // MARK: Actividades de Financiamiento
+
          // ===== C. ACTIVIDADES DE FINANCIAMIENTO =====
          resultado.AppendLine("C. ACTIVIDADES DE FINANCIAMIENTO");
          resultado.AppendLine(new string('-', 60));
@@ -442,6 +466,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(flujoFinLinea);
          resultado.AppendLine();
 
+         // MARK: Resumen Final del Flujo
+
          // ===== RESUMEN FINAL =====
          int flujoNeto = flujoOperacion + flujoInversion + flujoFinanciamiento;
 
@@ -463,6 +489,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(lineaSaldoFinal); resultado.AppendLine();
          resultado.AppendLine("==============================================================");
       }
+
+      // MARK: - Funciones de Formato
 
       // Función auxiliar para formatear sin el prefijo "NIO" (para tablas)
       private static string FormatearMonedaSinPrefijo(int valor)

@@ -1,12 +1,7 @@
-// Importa funcionalidades comunes del proyecto (por ejemplo, utilidades de consola)
 using ProyectoProgramacion.Comunes;
-// Importa métodos estáticos de Utilidades para usarlos directamente
-using static ProyectoProgramacion.Comunes.Utilidades;
-// Importa las acciones para ver cuentas del Balance General
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones.AccionesVerCuentas;
-// Importa las clases de acciones individuales
 using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
-// Importa los menús específicos del Balance General
+using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones.AccionesVerCuentas;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
@@ -18,7 +13,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
     */
     public static class BalanceGeneral
     {
-        // Punto de entrada para el módulo de Balance General
+        // MARK: Inicio Balance general
         public static void Ejecutar()
         {
             // Bandera para mantener el menú hasta que el usuario pida salir
@@ -62,7 +57,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             }
         }
 
-        // Menú local para ver cuentas dentro del módulo Balance General
+        // MARK: Ver cuentas
         private static void VerCuentas()
         {
             // Bandera para permanecer en el sub-menú hasta volver
@@ -96,7 +91,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
             }
         }
 
-        // Muestra una lista de cuentas con su 'naturaleza' (deudora/acreedora)
+        // MARK: Mostrar seccion por cuenta
         public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
         {
             // Título con subrayado para separar secciones

@@ -1,15 +1,12 @@
-// Importa utilidades generales del proyecto
 using ProyectoProgramacion.Comunes;
-// Permite usar métodos de Utilidades sin prefijo
-using static ProyectoProgramacion.Comunes.Utilidades;
-// Importa menús específicos para pedir categorías y opciones
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
-// Para construir texto de salida (StringBuilder)
+using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 using System.Text;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {
+    // MARK: Calculo de Balance General
     public static class AccionCalcularBalanceGeneral
     {
         // Método principal que guía al usuario para ingresar valores y calcular el balance
@@ -29,7 +26,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 
             Console.WriteLine();
 
-            // Guardará las cuentas seleccionadas con su monto
+            // MARK: Cuentas seleccionadas para el cálculo
             var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();
 
             bool continuar = true;
@@ -74,6 +71,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                     _ => ""
                 };
 
+
+                // MARK: Selección de cuenta y valor
                 // Mostramos las cuentas de la categoría y pedimos al usuario que elija una
                 MostrarTituloSubrayado($"Cuentas de {nombreCategoria}", true, true);
                 for (int i = 0; i < listaCuentas.Count; i++)
@@ -106,6 +105,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                 }
             }
 
+            // MARK: Validación de cuentas seleccionadas
             // Si no hay cuentas, avisamos y salimos
             if (cuentasSeleccionadas.Count == 0)
             {
@@ -117,6 +117,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             // Creamos el reporte en pantalla y en memoria
             MostrarLineaDivisoraConTexto("Resultado del Balance General", true, true);
 
+            // MARK: Reporte en consola
             var resultado = new StringBuilder();
             resultado.AppendLine("==============================================================");
             resultado.AppendLine($"                    {nombreEmpresa.ToUpper()}");
@@ -130,7 +131,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             int totalPasivos = 0;
             int totalCapital = 0;
 
-            // Calculamos y mostramos los ACTIVOS
+            // MARK: Activos
             resultado.AppendLine("ACTIVOS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("ACTIVOS", true, true);
@@ -151,7 +152,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             resultado.AppendLine(totalActivosLinea);
             resultado.AppendLine();
 
-            // Calculamos y mostramos los PASIVOS
+            // MARK: Pasivos
             resultado.AppendLine("PASIVOS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("PASIVOS", true, true);
@@ -171,7 +172,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             resultado.AppendLine(totalPasivosLinea);
             resultado.AppendLine();
 
-            // Calculamos y mostramos el CAPITAL
+            // MARK: Capital
             resultado.AppendLine("CAPITAL CONTABLE");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("CAPITAL CONTABLE", true, true);
@@ -191,6 +192,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             resultado.AppendLine(totalCapitalLinea);
             resultado.AppendLine();
 
+            // MARK: Comprobación de la ecuación contable
             // Comprobamos la ecuación contable
             int totalPasivoMasCapital = totalPasivos + totalCapital;
 
@@ -211,6 +213,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             // Convertimos a decimal para comparar con una tolerancia pequeña (por centavos)
             bool balanceado = Math.Abs((decimal)totalActivos - (decimal)totalPasivoMasCapital) < 0.01m;
 
+            // MARK: Resultado de la comprobación
             if (balanceado)
             {
                 // Mensaje amigable cuando el balance cuadra

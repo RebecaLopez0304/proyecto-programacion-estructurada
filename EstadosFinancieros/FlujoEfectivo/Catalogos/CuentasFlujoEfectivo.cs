@@ -6,7 +6,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos
     // Cada lista representa una actividad: Operación, Inversión, Financiamiento
     public static class CuentasFlujoEfectivo
     {
-        // MARK: Actividades de Operación
+        // MARK: - Actividades de Operación
         // Movimientos de efectivo relacionados con las actividades principales del negocio
         public static readonly List<Cuenta> ActividadesOperacion = new()
         {
@@ -65,7 +65,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos
             new Cuenta("Disminución en impuestos por pagar", false, "Pasivo")
         };
 
-        // MARK: Actividades de Inversión
+        // MARK: - Actividades de Inversión
         // Compra y venta de activos de largo plazo e inversiones
         public static readonly List<Cuenta> ActividadesInversion = new()
         {
@@ -118,7 +118,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos
             new Cuenta("Cobro de préstamos otorgados", true, "Activo")
         };
 
-        // MARK: Actividades de Financiamiento
+        // MARK: - Actividades de Financiamiento
         // Obtención y pago de recursos de accionistas y acreedores
         public static readonly List<Cuenta> ActividadesFinanciamiento = new()
         {

@@ -12,8 +12,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
     */
     public static class AccionAgregarCuenta
     {
+        // MARK: - Método Principal
+
         public static void Ejecutar()
         {
+            // MARK: Solicitud de Datos de la Cuenta
+
             // Pedimos al usuario a qué actividad pertenece la nueva cuenta
             int actividad = MostrarMenuActividades();
 
@@ -41,6 +45,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
                 3 => "Capital",
                 _ => ""
             };
+
+            // MARK: Creación y Almacenamiento de Cuenta
 
             // Crear la nueva cuenta y marcarla como creada por el usuario
             Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora, tipoGrupoBalance)

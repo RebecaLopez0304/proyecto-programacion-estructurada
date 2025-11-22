@@ -7,6 +7,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {
     public static class AccionesVerCuentas
     {
+        // MARK: Mostrar todas las cuentas
         public static void MostrarTodasCuentasBalanceGeneral()
         {
             // Título general
@@ -34,6 +35,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             Console.ReadKey();
         }
 
+        // MARK: Mostrar cuentas Activos - Pasivos - Capital
         public static void MostrarCuentasGeneralesBalanceGeneral()
         {
             bool salir = false;
@@ -77,6 +79,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             }
         }
 
+    
+        // MARK: Mostrar cuentas subclasificadas
         public static void MostrarCuentasSubclasificadasBalanceGeneral()
         {
             bool volver = false;

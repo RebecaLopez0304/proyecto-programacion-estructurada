@@ -12,6 +12,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
     */
     public static class AccionAgregarCuenta
     {
+        // MARK: Accion agregar cuenta
         public static void Ejecutar()
         {
 
@@ -29,7 +30,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
                 EsCreadoPorUsuario = true
             };
 
-            // Agregar a la lista correspondiente
+            // MARK: Agregar a la lista correspondiente
             switch (categoria)
             {
                 case 1:

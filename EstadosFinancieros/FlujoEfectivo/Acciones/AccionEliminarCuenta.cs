@@ -12,9 +12,13 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
     */
     public static class AccionEliminarCuenta
     {
+        // MARK: - Método Principal
+
         public static void Ejecutar()
         {
             MostrarTituloSubrayado("Eliminar Cuenta - Flujo de Efectivo", true, true);
+
+            // MARK: Recolección de Cuentas del Usuario
 
             // recolectamos todas las cuentas que fueron creadas por el usuario
             var todasCuentasUsuario = new List<(Cuenta cuenta, string actividad, List<Cuenta> listaOriginal)>();
@@ -43,6 +47,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
                 EsperarTecla();
                 return;
             }
+
+            // MARK: Visualización y Selección de Cuenta
+
             // Mostramos las cuentas agrupadas por categoría para que el usuario elija cuál eliminar
 
             var cuentasPorCategoria = todasCuentasUsuario.GroupBy(x => x.actividad);
@@ -67,6 +74,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             int seleccion = SolicitarEnteroConLimites(1, todasCuentasUsuario.Count);
 
             var cuentaSeleccionada = indiceCuentas[seleccion];
+
+            // MARK: Confirmación y Eliminación
 
             // Confirmación antes de eliminar
             int confirmacion = MostrarMenuConfirmacion($"\n¿Esta seguro que desea eliminar la cuenta '{cuentaSeleccionada.cuenta.Nombre}'?");

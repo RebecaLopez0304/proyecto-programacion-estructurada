@@ -10,7 +10,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
     */
     public static class MenusFlujoEfectivo
     {
-        // MARK: Menú Principal
+        // MARK: - Menú Principal
         public static int MostrarMenuPrincipal()
         {
             MostrarLineaDivisoraConTexto("Menu Flujo de Efectivo", true, true);
@@ -28,7 +28,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
             return opcion;
         }
 
-        // MARK: Menú Ver Cuentas
+        // MARK: - Menú Ver Cuentas
         public static int MostrarMenuVerCuentas()
         {
             MostrarTituloSubrayado("Ver Cuentas - Flujo de Efectivo", true, true);
@@ -41,7 +41,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
             int opcion = SolicitarEnteroConLimites(0, 2);
             return opcion;
         }
-        // MARK: Menú Por Actividad
+
+        // MARK: - Menú Por Actividad
         public static int MenuPorCategoriaFE()
         {
             MostrarTituloSubrayado("Ver Cuentas - Flujo de Efectivo - Por Actividad", true, true);
@@ -55,7 +56,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
             int opcion = SolicitarEnteroConLimites(0, 3);
             return opcion;
         }
-        // MARK: Menú Actividades
+
+        // MARK: - Menú Actividades
         public static int MostrarMenuActividades()
         {
             MostrarTituloSubrayado("Seleccione la actividad del flujo de efectivo", true, true);
@@ -85,7 +87,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
             return opcion;
         }
 
-        // MARK: Menú Tipo de Movimiento
+        // MARK: - Menú Tipo de Movimiento
         public static int MostrarMenuTipoMovimiento()
         {
             Console.WriteLine();
@@ -96,7 +98,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
             return opcion;
         }
 
-        // MARK: Menú Confirmación
+        // MARK: - Menú Confirmación
         public static int MostrarMenuConfirmacion(string mensaje)
         {
             Console.WriteLine($"{mensaje}");
@@ -106,7 +108,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
             return confirmacion;
         }
 
-        // MARK: Menú Continuar
+        // MARK: - Menú Continuar
         public static int MostrarMenuContinuar()
         {
             Console.WriteLine();

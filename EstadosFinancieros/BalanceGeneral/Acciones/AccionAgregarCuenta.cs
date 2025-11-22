@@ -1,10 +1,7 @@
-// Utilidades comunes del proyecto (como lectura/validación de consola)
 using ProyectoProgramacion.Comunes;
-// Importa métodos estáticos de Utilidades para usarlos sin prefijo
-using static ProyectoProgramacion.Comunes.Utilidades;
-// Importa los menús del Balance General (para pedir opciones al usuario)
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
+using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {

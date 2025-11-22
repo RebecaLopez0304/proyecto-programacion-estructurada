@@ -12,6 +12,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 
     public static class FlujoEfectivo
     {
+        // MARK: - Método Principal de Ejecución
+
         public static void Ejecutar()
         {
             // Bandera para mantener el menú hasta que el usuario pida salir
@@ -22,6 +24,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
             {
                 // Pide la opción al usuario
                 int opcion = MostrarMenuPrincipal();
+
+                // MARK: Procesamiento de Opciones del Menú Principal
 
                 // Ejecuta la acción según la opción elegida
                 switch (opcion)
@@ -56,6 +60,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 
 
         }
+
+        // MARK: - Método para Ver Cuentas
+
         private static void VerCuentas()
         {
             bool volver = false;
@@ -80,6 +87,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                 }
             }
         }
+
+        // MARK: - Método para Mostrar Sección
 
         public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
         {

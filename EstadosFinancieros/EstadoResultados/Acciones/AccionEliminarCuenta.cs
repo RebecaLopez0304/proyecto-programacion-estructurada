@@ -16,6 +16,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
         {
             MostrarTituloSubrayado("Eliminar Cuenta - Estado de Resultados", true, true);
 
+            // MARK: Busqueda de cuentas creadas por el usuario
             // Recolectamos todas las cuentas que fueron creadas por el usuario
             var todasCuentasUsuario = new List<(Cuenta cuenta, string categoria, List<Cuenta> listaOriginal)>();
 
@@ -53,6 +54,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
                 if (cuenta.EsCreadoPorUsuario)
                     todasCuentasUsuario.Add((cuenta, "Otros Resultados Financieros", CuentasEstadoResultados.OtrosResultadosFinancieros));
             }
+
+            // MARK: Comprobación de cuentas personalizadas
             // Si no hay cuentas personalizadas, avisamos y salimos
             if (todasCuentasUsuario.Count == 0)
             {
@@ -68,7 +71,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             int numeroGlobal = 1;
             var indiceCuentas = new Dictionary<int, (Cuenta cuenta, List<Cuenta> listaOriginal)>();
 
-
+            // MARK: Mostrar cuentas agrupadas por categoría
             foreach (var grupo in cuentasPorCategoria)
             {
                 MostrarTituloSubrayado(grupo.Key, false, true);
@@ -90,7 +93,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
 
             var cuentaSeleccionada = indiceCuentas[seleccion];
 
-            // Confirmación antes de eliminar
+            // MARK: Confirmación antes de eliminar
             int confirmacion = MostrarMenuConfirmacion($"\n¿Esta seguro que desea eliminar la cuenta '{cuentaSeleccionada.cuenta.Nombre}'?");
 
             if (confirmacion == 1)
@@ -106,10 +109,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
 
             // Pausa final
             EsperarTecla();
-
-
-            MostrarMensajeAdvertencia("Esta funcionalidad aun no esta implementada.", true, true);
-            EsperarTecla();
+            // MostrarMensajeAdvertencia("Esta funcionalidad aun no esta implementada.", true, true);
+            // EsperarTecla();
         }
     }
 }

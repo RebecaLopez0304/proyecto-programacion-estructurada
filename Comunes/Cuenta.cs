@@ -14,6 +14,7 @@ namespace ProyectoProgramacion.Comunes
         // Clasificación en el Balance General: "Activo", "Pasivo", "Capital", o "" si no aplica
         public string TipoGrupoBalance { get; set; }
 
+        // Objeto cuenta con sus características
         public Cuenta(string nombre, bool esDeudora = true, string tipoGrupoBalance = "")
         {
             Nombre = nombre;
@@ -21,34 +22,6 @@ namespace ProyectoProgramacion.Comunes
             EsDeudora = esDeudora;
             EsCreadoPorUsuario = false; // Por defecto, las cuentas son del sistema
             TipoGrupoBalance = tipoGrupoBalance;
-        }
-
-        // Método para obtener el valor con signo según si es deudora o acreedora
-        public int ObtenerValorConSigno()
-        {
-            if (EsDeudora)
-            {
-                return Valor;  // Deudora: suma (positivo)
-            }
-            else
-            {
-                return -Valor; // Acreedora: resta (negativo)
-            }
-        }
-
-        // Método para mostrar el signo visual
-        public string ObtenerSignoVisual()
-        {
-            if (Valor == 0) return "";
-
-            if (EsDeudora)
-            {
-                return "(+)";  // Deudora: positivo
-            }
-            else
-            {
-                return "(-)";  // Acreedora: negativo
-            }
         }
     }
 }

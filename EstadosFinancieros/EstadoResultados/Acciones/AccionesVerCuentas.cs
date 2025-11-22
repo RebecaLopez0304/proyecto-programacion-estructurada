@@ -12,6 +12,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
     */
     public static class AccionesVerCuentas
     {
+        // MARK: Mostrar todas las cuentas
         public static void MostrarTodoER()
         {
             MostrarLineaDivisoraConTexto("Todas las Cuentas - Estado de Resultados", true, false);
@@ -26,6 +27,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             EsperarTecla();
         }
 
+        // MARK: Mostrar cuentas por categoría
         public static void MostrarPorCategoriaER()
         {
             bool salir = false;

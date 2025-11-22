@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 
 namespace ProyectoProgramacion.Comunes
 {
@@ -33,6 +31,7 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
+        // MARK: Solicitar una cadena con validaciones
         public static string SolicitarString()
         {
             while (true)
@@ -58,6 +57,7 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
+        // MARK: Solicitar un número entero positivo
         public static int SolicitarEntero()
         {
             while (true)
@@ -81,7 +81,7 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
-        // Solicita un número entero no negativo (permite 0 o mayor)
+        // MARK: Solicitar un número entero no negativo
         public static int SolicitarEnteroNoNegativo()
         {
             while (true)
@@ -105,7 +105,7 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
-        // Solicita un número entero dentro de unos límites específicos
+        // MARK: Solicitar un número entero dentro de unos límites específicos
         // limiteInferior: valor mínimo aceptable (inclusive)
         // limiteSuperior: valor máximo aceptable (inclusive)
         public static int SolicitarEnteroConLimites(int limiteInferior, int limiteSuperior)
@@ -132,6 +132,10 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
+
+
+
+        // MARK: UTILIDADES VISUALES - inicio
         public static void MostrarLineaDivisora(bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
         {
             if (SaltoDeLineaInicio)
@@ -254,6 +258,8 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
+        // MARK: UTILIDADES VISUALES - fin
+
         /*
         ===========================
             Funciones de Guardado de Resultados
@@ -264,6 +270,7 @@ namespace ProyectoProgramacion.Comunes
         // nombreEstadoFinanciero: "balance-general", "estado-resultados", "flujo-efectivo"
         // contenido: todo el texto que se guardará en el archivo
         // retorna: ruta completa del archivo guardado
+        // MARK: Guardar en archivo
         public static string GuardarResultadoEnArchivo(string nombreEstadoFinanciero, string contenido)
         {
             try
@@ -307,6 +314,7 @@ namespace ProyectoProgramacion.Comunes
 
         // Obtiene el siguiente número disponible para el archivo
         // Busca archivos existentes y retorna el número más alto + 1
+        // MARK: Guardar archivo - obtener siguiente número
         private static int ObtenerSiguienteNumeroArchivo(string carpeta, string nombreBase)
         {
             string patron = $"{nombreBase}-*.txt";
@@ -345,6 +353,8 @@ namespace ProyectoProgramacion.Comunes
 
         // Pregunta al usuario si desea guardar el resultado
         // retorna: true si quiere guardar, false si no
+
+        // MARK: Guardar archivo - preguntar si guardar
         public static bool PreguntarSiGuardarResultado()
         {
             MostrarLineaDivisora(true, true);
@@ -362,7 +372,7 @@ namespace ProyectoProgramacion.Comunes
             Función de Formateo de Moneda
         ===========================
         */
-
+        // MARK: Utilidad Moneda
         // Formatea un número como moneda en córdobas nicaragüenses (NIO)
         // Formato: NIO C$ 1,234.56
         public static string FormatearMoneda(int valor)

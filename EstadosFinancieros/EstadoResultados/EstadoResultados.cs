@@ -49,6 +49,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             EsperarTecla();
         }
 
+        // MARK: Ver Cuentas
         private static void VerCuentas()
         {
             bool regresar = false;
@@ -72,6 +73,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
             }
         }
 
+        // MARK: Mostrar Sección
         public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas, bool v)//
         {
             MostrarTituloSubrayado(titulo, true);

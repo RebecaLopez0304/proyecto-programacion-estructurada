@@ -12,6 +12,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
     */
     public static class AccionesVerCuentas
     {
+        // MARK: - Visualización de Todas las Cuentas
+
         public static void MostrarTodasCuentasFlujoEfectivo()
         {
             MostrarLineaDivisoraConTexto("Todas las Cuentas - Flujo de Efectivo", true, true);
@@ -20,6 +22,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             MostrarSeccion("Actividades Financiamiento", ActividadesFinanciamiento);
             EsperarTecla();
         }
+
+        // MARK: - Visualización de Cuentas por Actividad
 
         public static void MostrarCuentasPorActividad()
         {

@@ -1,14 +1,13 @@
-// Utilidades y menús comunes del proyecto
 using ProyectoProgramacion.Comunes;
+using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
-using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 {
     public static class AccionEliminarCuenta
     {
-        // Permite eliminar una cuenta personalizada creada por el usuario
+        /// MARK: Funcion para eliminar
         public static void Ejecutar()
         {
             MostrarTituloSubrayado("Eliminar Cuenta - Balance General", true, true);
@@ -67,7 +66,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                     todasCuentasUsuario.Add((cuenta, "Capital Ganado", CuentasBalanceGeneral.CapitalGanado));
             }
 
-            // Si no hay cuentas personalizadas, avisamos y salimos
+            // MARK: Usuario no creo cuentas
+            // si el usuario no ha creado ninguna cuenta personalizada, entonces mostramos mensaje de advertencia y salimos
             if (todasCuentasUsuario.Count == 0)
             {
                 MostrarMensajeAdvertencia("No has creado ninguna cuenta personalizada aun.", true, false);
@@ -103,7 +103,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 
             var cuentaSeleccionada = indiceCuentas[seleccion];
 
-            // Confirmación antes de eliminar
+            // MARK: confirmacion de usuario
+            // Solicitamos al usuario su confirmacion de eliminar la cuenta seleccionada.
             int confirmacion = MostrarMenuConfirmacion($"\n¿Esta seguro que desea eliminar la cuenta '{cuentaSeleccionada.cuenta.Nombre}'?");
 
             if (confirmacion == 1)
