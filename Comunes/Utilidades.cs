@@ -350,5 +350,29 @@ namespace ProyectoProgramacion.Comunes
         {
             return $"NIO C$ {valor:N2}";
         }
+
+        // Solicita un año válido (entre 1900 y 2100)
+        public static int SolicitarAnio()
+        {
+            while (true)
+            {
+                try
+                {
+                    int anio = int.Parse(Console.ReadLine() ?? string.Empty);
+                    if (anio >= 1900 && anio <= 2100)
+                    {
+                        return anio;
+                    }
+                    else
+                    {
+                        Console.Write("[ERROR] El año debe estar entre 1900 y 2100. Intente de nuevo: ");
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.Write("[ERROR] Entrada no válida. Ingrese un año válido: ");
+                }
+            }
+        }
     }
 }
