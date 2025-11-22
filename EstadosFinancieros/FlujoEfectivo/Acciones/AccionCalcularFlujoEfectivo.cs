@@ -27,7 +27,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
       {
          MostrarLineaDivisoraConTexto("Calcular Flujo de Efectivo", true, true);
 
+         // Solicitar datos de la empresa
+         Console.Write("Ingrese el nombre de la empresa: ");
+         string nombreEmpresa = SolicitarString("");
+
          // Solicitar año 1 y año 2 con validación
+         Console.WriteLine();
          Console.Write("Ingrese el primer año (ej. 2014): ");
          int anio1 = SolicitarAnio();
 
@@ -182,12 +187,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          var resultado = new StringBuilder();
 
          // ===== REPORTE 1: TABLA DE VARIACIONES =====
-         GenerarTablaVariaciones(cuentasConValores, utilidadAntesImpuestos, depreciacionesAmortizaciones, anio1, anio2, resultado);
+         GenerarTablaVariaciones(cuentasConValores, utilidadAntesImpuestos, depreciacionesAmortizaciones, anio1, anio2, nombreEmpresa, resultado);
 
          Console.WriteLine("\n\n");
 
          // ===== REPORTE 2: FLUJO DE EFECTIVO FORMATO CLÁSICO =====
-         GenerarFlujoEfectivoClasico(cuentasConValores, utilidadAntesImpuestos, depreciacionesAmortizaciones, anio1, anio2, saldoInicial, resultado);
+         GenerarFlujoEfectivoClasico(cuentasConValores, utilidadAntesImpuestos, depreciacionesAmortizaciones, anio1, anio2, saldoInicial, nombreEmpresa, resultado);
 
          // Preguntar si desea guardar el resultado
          if (PreguntarSiGuardarResultado())
@@ -204,13 +209,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          EsperarTecla();
       }
 
-      private static void GenerarTablaVariaciones(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, StringBuilder resultado)
+      private static void GenerarTablaVariaciones(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, string nombreEmpresa, StringBuilder resultado)
       {
          MostrarLineaDivisoraConTexto("Tabla de Variaciones - Flujo de Efectivo", true, true);
 
          resultado.AppendLine("==============================================================");
+         resultado.AppendLine($"                    {nombreEmpresa.ToUpper()}");
          resultado.AppendLine("              FLUJO DE EFECTIVO - TABLA DE VARIACIONES");
-         resultado.AppendLine($"                    {DateTime.Now:dd/MM/yyyy HH:mm:ss}");
+         resultado.AppendLine($"                Del año {anio1} al {anio2}");
+         resultado.AppendLine($"          (Expresado en Córdobas - NIO C$)");
          resultado.AppendLine("==============================================================");
          resultado.AppendLine();
 
@@ -287,7 +294,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 
          // Agregar cuentas especiales al inicio (si las hay)
          string lineaUtilidad = string.Format("{0,-50} {1,15} {2,15} {3,15}",
-            "Utilidad antes de impuestos", 
+            "Utilidad antes de impuestos",
             FormatearMonedaSinPrefijo(utilidadAntesImpuestos), "", "AO");
          Console.WriteLine(lineaUtilidad);
          resultado.AppendLine(lineaUtilidad);
@@ -328,13 +335,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine();
       }
 
-      private static void GenerarFlujoEfectivoClasico(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, int saldoInicial, StringBuilder resultado)
+      private static void GenerarFlujoEfectivoClasico(List<CuentaConValores> cuentas, int utilidadAntesImpuestos, int depreciacionesAmortizaciones, int anio1, int anio2, int saldoInicial, string nombreEmpresa, StringBuilder resultado)
       {
          MostrarLineaDivisoraConTexto("Estado de Flujo de Efectivo", true, true);
 
          resultado.AppendLine("==============================================================");
+         resultado.AppendLine($"                    {nombreEmpresa.ToUpper()}");
          resultado.AppendLine("                ESTADO DE FLUJO DE EFECTIVO");
-         resultado.AppendLine($"                    al 31/12/{anio2}");
+         resultado.AppendLine($"                Del año {anio1} al {anio2}");
+         resultado.AppendLine($"          (Expresado en Córdobas - NIO C$)");
          resultado.AppendLine("==============================================================");
          resultado.AppendLine();
 
@@ -451,7 +460,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          int saldoFinal = saldoInicial + flujoNeto;
          string lineaSaldoFinal = $"Efectivo y equivalentes de efectivo al final del período: {FormatearMoneda(saldoFinal)}";
          Console.WriteLine(lineaSaldoFinal);
-         resultado.AppendLine(lineaSaldoFinal);         resultado.AppendLine();
+         resultado.AppendLine(lineaSaldoFinal); resultado.AppendLine();
          resultado.AppendLine("==============================================================");
       }
 

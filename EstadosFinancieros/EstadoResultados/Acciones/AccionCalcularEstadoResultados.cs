@@ -17,6 +17,18 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
         {
             MostrarLineaDivisoraConTexto("Calcular Estado de Resultados", true, true);
 
+            // Solicitar datos de la empresa y período
+            Console.Write("Ingrese el nombre de la empresa: ");
+            string nombreEmpresa = SolicitarString("");
+
+            Console.Write("Ingrese el mes del período (ej. Diciembre): ");
+            string mes = SolicitarString("");
+
+            Console.Write("Ingrese el año del período (ej. 2024): ");
+            int anio = SolicitarAnio();
+
+            Console.WriteLine();
+
             // Guardar las cuentas seleccionadas con sus montos
             var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();
 
@@ -100,8 +112,10 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
 
             var resultado = new StringBuilder();
             resultado.AppendLine("==============================================================");
-            resultado.AppendLine("                    ESTADO DE RESULTADOS");
-            resultado.AppendLine($"                    {DateTime.Now:dd/MM/yyyy HH:mm:ss}");
+            resultado.AppendLine($"                    {nombreEmpresa.ToUpper()}");
+            resultado.AppendLine("                  ESTADO DE RESULTADOS");
+            resultado.AppendLine($"            Del 1 al 31 de {mes} de {anio}");
+            resultado.AppendLine($"          (Expresado en Córdobas - NIO C$)");
             resultado.AppendLine("==============================================================");
             resultado.AppendLine();
 

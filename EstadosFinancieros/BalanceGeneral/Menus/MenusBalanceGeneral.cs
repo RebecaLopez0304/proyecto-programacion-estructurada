@@ -8,12 +8,13 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus
         public static int MostrarMenuPrincipal()
         {
             MostrarLineaDivisoraConTexto("Menu Balance General", true, true);
-            MostrarTituloSubrayado("Seleccione una opcion (0-4):", false, true);
+            MostrarTituloSubrayado("Seleccione una opcion:", false, true);
             Console.WriteLine("1. Ver Cuentas");
             Console.WriteLine("2. Agregar Cuenta");
             Console.WriteLine("3. Eliminar Cuenta");
             MostrarLineaDivisora(false, true);
             Console.WriteLine("4. Realizar calculo de Balance General");
+            MostrarLineaDivisora(false, true);
             VolverAtras();
             MostrarLineaDivisora(true, true);
 
@@ -28,8 +29,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus
             Console.WriteLine("1. Ver todas las cuentas");
             Console.WriteLine("2. Ver cuentas generales (Activos, Pasivos, Capital)");
             Console.WriteLine("3. Ver cuentas subclasificadas");
-            MostrarLineaDivisora(true, true);
+            MostrarLineaDivisora(false, true);
             VolverAtras();
+            MostrarLineaDivisora(true, true);
 
             int opcion = SolicitarEnteroConLimites(0, 3);
             return opcion;
@@ -39,20 +41,20 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus
         public static int MostrarMenuCategorias(string titulo)
         {
             MostrarTituloSubrayado(titulo, true, true);
-            Console.WriteLine("Seleccione la categoria principal:");
+            Console.WriteLine("Seleccione la categoria de cuenta:");
             MostrarLineaDivisora(true, false);
 
-            MostrarTituloSubrayado("Activos", false, true);
+            MostrarTituloSubrayado("ACTIVOS", false, true);
             Console.WriteLine("1. Activo Circulante");
             Console.WriteLine("2. Activo Fijo");
             Console.WriteLine("3. Activo Intangible");
             Console.WriteLine("4. Otros Activos");
 
-            MostrarTituloSubrayado("Pasivos", false, true);
+            MostrarTituloSubrayado("PASIVOS", false, true);
             Console.WriteLine("5. Pasivo a Largo Plazo");
             Console.WriteLine("6. Pasivo a Corto Plazo");
 
-            MostrarTituloSubrayado("Capital", false, true);
+            MostrarTituloSubrayado("CAPITAL", false, true);
             Console.WriteLine("7. Capital Contribuido");
             Console.WriteLine("8. Capital Ganado");
             MostrarLineaDivisora(true, true);
@@ -118,7 +120,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus
             Console.WriteLine();
             Console.WriteLine("¿Desea agregar otra cuenta?");
             Console.WriteLine("1. Si, agregar otra cuenta");
-            Console.WriteLine("2. No, calcular Balance General");
+            Console.WriteLine("2. No, finalizar y calcular Balance General");
             int opcion = SolicitarEnteroConLimites(1, 2);
             return opcion;
         }

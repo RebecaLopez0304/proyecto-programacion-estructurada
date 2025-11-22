@@ -17,6 +17,18 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
         {
             MostrarLineaDivisoraConTexto("Calculo de Balance General", true, true);
 
+            // Solicitar datos de la empresa y período
+            Console.Write("Ingrese el nombre de la empresa: ");
+            string nombreEmpresa = SolicitarString("");
+
+            Console.Write("Ingrese el mes del período (ej. Diciembre): ");
+            string mes = SolicitarString("");
+
+            Console.Write("Ingrese el año del período (ej. 2024): ");
+            int anio = SolicitarAnio();
+
+            Console.WriteLine();
+
             // Guardará las cuentas seleccionadas con su monto
             var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();
 
@@ -107,8 +119,10 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
 
             var resultado = new StringBuilder();
             resultado.AppendLine("==============================================================");
+            resultado.AppendLine($"                    {nombreEmpresa.ToUpper()}");
             resultado.AppendLine("                    BALANCE GENERAL");
-            resultado.AppendLine($"                    {DateTime.Now:dd/MM/yyyy HH:mm:ss}");
+            resultado.AppendLine($"                Al {mes} de {anio}");
+            resultado.AppendLine($"          (Expresado en Córdobas - NIO C$)");
             resultado.AppendLine("==============================================================");
             resultado.AppendLine();
 
