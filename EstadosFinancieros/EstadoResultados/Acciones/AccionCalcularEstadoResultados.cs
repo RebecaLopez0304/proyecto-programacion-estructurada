@@ -70,14 +70,13 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
                 Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
 
                 // Solicitamos el valor numérico para la cuenta seleccionada
-                Console.WriteLine($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': $");
+                Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': ");
                 int valor = SolicitarEntero();
 
                 // Agregamos la pareja (cuenta, valor) a la lista de cálculo
                 cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
-                cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
 
-                MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor ${valor:N2}", true, false);
+                MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
 
                 // Preguntamos si desea continuar agregando cuentas
                 int opcion = MostrarMenuContinuar();
@@ -126,12 +125,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
                 totalVentas += valorConSigno;
 
                 string signo = item.cuenta.EsDeudora ? "(-)" : "(+)";
-                string linea = $"  {signo} {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
 
-            string totalVentasLinea = $"VENTAS NETAS: ${totalVentas:N2}";
+            string totalVentasLinea = $"VENTAS NETAS: {FormatearMoneda(totalVentas)}";
             Console.WriteLine(totalVentasLinea);
             resultado.AppendLine(totalVentasLinea);
             resultado.AppendLine();
@@ -149,19 +148,19 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
                 totalCostoVentas += valorConSigno;
 
                 string signo = item.cuenta.EsDeudora ? "(+)" : "(-)";
-                string linea = $"  {signo} {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
 
-            string totalCostoLinea = $"TOTAL COSTO DE VENTAS: ${totalCostoVentas:N2}";
+            string totalCostoLinea = $"TOTAL COSTO DE VENTAS: {FormatearMoneda(totalCostoVentas)}";
             Console.WriteLine(totalCostoLinea);
             resultado.AppendLine(totalCostoLinea);
             resultado.AppendLine();
 
             // MARK: UTILIDAD BRUTA
             int utilidadBruta = totalVentas - totalCostoVentas;
-            string utilidadBrutaLinea = $"UTILIDAD BRUTA: ${utilidadBruta:N2}";
+            string utilidadBrutaLinea = $"UTILIDAD BRUTA: {FormatearMoneda(utilidadBruta)}";
             Console.WriteLine(utilidadBrutaLinea);
             resultado.AppendLine(utilidadBrutaLinea);
             resultado.AppendLine();
@@ -175,12 +174,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             {
                 // Gastos son Egresos, siempre suman
                 totalGastosOperacion += item.valor;
-                string linea = $"  (+) {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  (+) {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
 
-            string totalGastosOpLinea = $"TOTAL GASTOS DE OPERACIÓN: ${totalGastosOperacion:N2}";
+            string totalGastosOpLinea = $"TOTAL GASTOS DE OPERACIÓN: {FormatearMoneda(totalGastosOperacion)}";
             Console.WriteLine(totalGastosOpLinea);
             resultado.AppendLine(totalGastosOpLinea);
             resultado.AppendLine();
@@ -194,12 +193,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             {
                 // Gastos son Egresos, siempre suman
                 totalGastosAdministracion += item.valor;
-                string linea = $"  (+) {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  (+) {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
 
-            string totalGastosAdminLinea = $"TOTAL GASTOS DE ADMINISTRACIÓN: ${totalGastosAdministracion:N2}";
+            string totalGastosAdminLinea = $"TOTAL GASTOS DE ADMINISTRACIÓN: {FormatearMoneda(totalGastosAdministracion)}";
             Console.WriteLine(totalGastosAdminLinea);
             resultado.AppendLine(totalGastosAdminLinea);
             resultado.AppendLine();
@@ -207,7 +206,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             // MARK: UTILIDAD DE OPERACIÓN
             int totalGastosOperacionCompletos = totalGastosOperacion + totalGastosAdministracion;
             int utilidadOperacion = utilidadBruta - totalGastosOperacionCompletos;
-            string utilidadOpLinea = $"UTILIDAD DE OPERACIÓN: ${utilidadOperacion:N2}";
+            string utilidadOpLinea = $"UTILIDAD DE OPERACIÓN: {FormatearMoneda(utilidadOperacion)}";
             Console.WriteLine(utilidadOpLinea);
             resultado.AppendLine(utilidadOpLinea);
             resultado.AppendLine();
@@ -225,12 +224,12 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
                 totalOtrosResultados += valorConSigno;
 
                 string signo = item.cuenta.EsDeudora ? "(-)" : "(+)";
-                string linea = $"  {signo} {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
 
-            string totalOtrosLinea = $"TOTAL OTROS RESULTADOS: ${totalOtrosResultados:N2}";
+            string totalOtrosLinea = $"TOTAL OTROS RESULTADOS: {FormatearMoneda(totalOtrosResultados)}";
             Console.WriteLine(totalOtrosLinea);
             resultado.AppendLine(totalOtrosLinea);
             resultado.AppendLine();
@@ -244,8 +243,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             MostrarLineaDivisoraConTexto("Resultado Final", true, true);
 
             string resultadoLinea = resultadoFinal >= 0
-                ? $"UTILIDAD NETA: ${resultadoFinal:N2}"
-                : $"PÉRDIDA NETA: ${Math.Abs(resultadoFinal):N2}";
+                ? $"UTILIDAD NETA: {FormatearMoneda(resultadoFinal)}"
+                : $"PÉRDIDA NETA: {FormatearMoneda(Math.Abs(resultadoFinal))}";
 
             Console.WriteLine(resultadoLinea);
             resultado.AppendLine(resultadoLinea);

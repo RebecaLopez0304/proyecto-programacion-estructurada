@@ -3,26 +3,31 @@ using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos.Cue
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.FlujoEfectivo;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
 
-namespace ProyectoProgramacion
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 {
+    /*
+    ===========================
+        Acciones para Ver Cuentas - Flujo de Efectivo
+    ===========================
+    */
     public static class AccionesVerCuentas
     {
         public static void MostrarTodasCuentasFlujoEfectivo()
-         {
-           MostrarLineaDivisoraConTexto("Todas las Cuentas - Flujo de Efectivo", true, true);
-             MostrarSeccion("Actividades Operación", ActividadesOperacion);
-             MostrarSeccion("Actividades Inversión", ActividadesInversion);
-             MostrarSeccion("Actividades Financiamiento", ActividadesFinanciamiento);
-             EsperarTecla();
+        {
+            MostrarLineaDivisoraConTexto("Todas las Cuentas - Flujo de Efectivo", true, true);
+            MostrarSeccion("Actividades Operación", ActividadesOperacion);
+            MostrarSeccion("Actividades Inversión", ActividadesInversion);
+            MostrarSeccion("Actividades Financiamiento", ActividadesFinanciamiento);
+            EsperarTecla();
         }
-       
+
         public static void MostrarCuentasPorActividad()
         {
             bool salir = false;
 
             while (!salir)
             {
-                int opcion = MostrarMenuActividades ();
+                int opcion = MostrarMenuActividades();
 
                 switch (opcion)
                 {

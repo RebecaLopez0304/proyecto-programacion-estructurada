@@ -243,40 +243,40 @@ namespace ProyectoProgramacion.Comunes
         {
             try
             {
-            // Obtiene la ruta de la carpeta "Resultados" en el directorio actual - <ruta_actual>/Resultados
-            // Path.Combine combina el resultado que nos devuelve GetCurrentDirectory + el nombre de la carpeta que queremos crear/verificar, en este caso es resultados
+                // Obtiene la ruta de la carpeta "Resultados" en el directorio actual - <ruta_actual>/Resultados
+                // Path.Combine combina el resultado que nos devuelve GetCurrentDirectory + el nombre de la carpeta que queremos crear/verificar, en este caso es resultados
 
-            // GetCurrentDirectory devuelve esto -> F:\REBECA\proyecto-programacion
-            // y Path.Combine combina el resultado y nos devuelve esto -> F:\REBECA\proyecto-programacion\Resultados
-            string carpetaResultados = Path.Combine(Directory.GetCurrentDirectory(), "Resultados");
+                // GetCurrentDirectory devuelve esto -> F:\REBECA\proyecto-programacion
+                // y Path.Combine combina el resultado y nos devuelve esto -> F:\REBECA\proyecto-programacion\Resultados
+                string carpetaResultados = Path.Combine(Directory.GetCurrentDirectory(), "Resultados");
 
-            // Si la carpeta "Resultados" no existe, la crea
-            // si existe no hace nada
-            if (!Directory.Exists(carpetaResultados))
-            {
-                Directory.CreateDirectory(carpetaResultados);
-            }
+                // Si la carpeta "Resultados" no existe, la crea
+                // si existe no hace nada
+                if (!Directory.Exists(carpetaResultados))
+                {
+                    Directory.CreateDirectory(carpetaResultados);
+                }
 
-            // Obtiene el siguiente número disponible para el archivo (autoincremental)
-            int numero = ObtenerSiguienteNumeroArchivo(carpetaResultados, nombreEstadoFinanciero);
+                // Obtiene el siguiente número disponible para el archivo (autoincremental)
+                int numero = ObtenerSiguienteNumeroArchivo(carpetaResultados, nombreEstadoFinanciero);
 
-            // Construye el nombre del archivo con el formato: <nombreEstadoFinanciero>-<numero>.txt
-            string nombreArchivo = $"{nombreEstadoFinanciero}-{numero}.txt";
+                // Construye el nombre del archivo con el formato: <nombreEstadoFinanciero>-<numero>.txt
+                string nombreArchivo = $"{nombreEstadoFinanciero}-{numero}.txt";
 
-            // Une la carpeta y el nombre del archivo para obtener la ruta completa
-            string rutaCompleta = Path.Combine(carpetaResultados, nombreArchivo);
+                // Une la carpeta y el nombre del archivo para obtener la ruta completa
+                string rutaCompleta = Path.Combine(carpetaResultados, nombreArchivo);
 
-            // Escribe el contenido en el archivo especificado
-            File.WriteAllText(rutaCompleta, contenido);
+                // Escribe el contenido en el archivo especificado
+                File.WriteAllText(rutaCompleta, contenido);
 
-            // Retorna la ruta completa del archivo guardado
-            return rutaCompleta;
+                // Retorna la ruta completa del archivo guardado
+                return rutaCompleta;
             }
             catch (Exception ex)
             {
-            // Si ocurre un error, muestra un mensaje y retorna string.Empty
-            MostrarMensajeError($"Error al guardar el archivo: {ex.Message}", true, true);
-            return string.Empty;
+                // Si ocurre un error, muestra un mensaje y retorna string.Empty
+                MostrarMensajeError($"Error al guardar el archivo: {ex.Message}", true, true);
+                return string.Empty;
             }
         }
 
@@ -302,7 +302,7 @@ namespace ProyectoProgramacion.Comunes
                 // Divide el nombre del archivo usando el guion como separador
                 // Esto genera un arreglo, por ejemplo: ["balance", "general", "3"]
                 string[] partes = nombreArchivo.Split('-');
-                
+
                 // Verifica que haya al menos dos partes y que la última parte sea un número entero
                 // partes[^1] accede al último elemento del arreglo (el número autoincremental)
                 if (partes.Length >= 2 && int.TryParse(partes[^1], out int numero))
@@ -330,6 +330,25 @@ namespace ProyectoProgramacion.Comunes
 
             int opcion = SolicitarEnteroConLimites(1, 2);
             return opcion == 1;
+        }
+
+        /*
+        ===========================
+            Función de Formateo de Moneda
+        ===========================
+        */
+
+        // Formatea un número como moneda en córdobas nicaragüenses (NIO)
+        // Formato: NIO C$ 1,234.56
+        public static string FormatearMoneda(int valor)
+        {
+            return $"NIO C$ {valor:N2}";
+        }
+
+        // Sobrecarga para valores decimales
+        public static string FormatearMoneda(decimal valor)
+        {
+            return $"NIO C$ {valor:N2}";
         }
     }
 }

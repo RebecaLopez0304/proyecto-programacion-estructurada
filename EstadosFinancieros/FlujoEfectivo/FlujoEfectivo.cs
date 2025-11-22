@@ -5,9 +5,9 @@ using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFl
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 {
-    
+
     //===========================
-   //     Clase Flujo de Efectivo
+    //     Clase Flujo de Efectivo
     //===========================
 
     public static class FlujoEfectivo
@@ -28,7 +28,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                 {
                     case 1:
                         // Ver listas de cuentas
-                      VerCuentas();
+                        VerCuentas();
                         break;
                     case 2:
                         // Agregar una cuenta nueva
@@ -39,7 +39,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                         AccionEliminarCuenta.Ejecutar();
                         break;
                     case 4:
-                       // AccionCalcularFlujoEfectivo.Ejecutar();
+                        // Calcular el flujo de efectivo
+                        AccionCalcularFlujoEfectivo.Ejecutar();
                         break;
                     case 0:
                         // Salir del módulo
@@ -52,10 +53,10 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                         break;
                 }
             }
-        
-        
+
+
         }
-         private static void VerCuentas()
+        private static void VerCuentas()
         {
             bool volver = false;
             while (!volver)
@@ -80,13 +81,13 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
             }
         }
 
-        public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)//
+        public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
         {
             MostrarTituloSubrayado(titulo, true);
 
             foreach (var cuenta in listaDeCuentas)
             {
-                string naturaleza = cuenta.EsDeudora ? "[ Egreso    ]" : "[ Ingreso   ]";
+                string naturaleza = cuenta.EsDeudora ? "[ Entrada   ]" : "[ Salida    ]";
                 Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
             }
         }

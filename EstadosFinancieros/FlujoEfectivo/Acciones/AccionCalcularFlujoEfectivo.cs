@@ -1,93 +1,240 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
+using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos;
 using System.Text;
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 {
-    /*
-    ===========================
-        Acción Calcular Flujo de Efectivo
-    ===========================
-    
-    TODO: Implementar el cálculo interactivo del Flujo de Efectivo
-    Seguir el patrón de AccionCalcularBalanceGeneral.cs pero con la lógica del Flujo de Efectivo
-    
-    Estructura del cálculo:
-    
-    1. SALDO INICIAL DE EFECTIVO
-       - Solicitar al usuario el saldo inicial de efectivo al inicio del período
-    
-    2. FLUJO DE EFECTIVO DE ACTIVIDADES DE OPERACIÓN
-       - Solicitar cuentas de Actividades de Operación interactivamente
-       - Sumar entradas [+] (EsDeudora = true)
-       - Restar salidas [-] (EsDeudora = false)
-       - Calcular: FLUJO NETO DE OPERACIÓN
-    
-    3. FLUJO DE EFECTIVO DE ACTIVIDADES DE INVERSIÓN
-       - Solicitar cuentas de Actividades de Inversión
-       - Sumar entradas [+] (ventas de activos, cobros de préstamos)
-       - Restar salidas [-] (compras de activos, préstamos otorgados)
-       - Calcular: FLUJO NETO DE INVERSIÓN
-    
-    4. FLUJO DE EFECTIVO DE ACTIVIDADES DE FINANCIAMIENTO
-       - Solicitar cuentas de Actividades de Financiamiento
-       - Sumar entradas [+] (préstamos obtenidos, aportaciones de capital)
-       - Restar salidas [-] (pago de préstamos, dividendos, reembolsos)
-       - Calcular: FLUJO NETO DE FINANCIAMIENTO
-    
-    5. CÁLCULO DEL SALDO FINAL
-       - Saldo Inicial
-       - + Flujo Neto de Operación
-       - + Flujo Neto de Inversión
-       - + Flujo Neto de Financiamiento
-       - = SALDO FINAL DE EFECTIVO
-    
-    Flujo del programa:
-    1. Solicitar saldo inicial de efectivo
-    2. Crear List<(Cuenta cuenta, int valor)> para cada actividad
-    3. Loop para cada actividad usando MostrarMenuActividadesConSalida()
-    4. Para cada cuenta: solicitar valor int
-    5. Permitir agregar múltiples cuentas con MostrarMenuContinuar()
-    6. Calcular flujo neto por actividad (entradas - salidas)
-    7. Sumar todos los flujos al saldo inicial
-    8. Mostrar resultado formateado con:
-       - Saldo inicial
-       - Detalle de cada actividad con sus cuentas
-       - Flujo neto de cada actividad
-       - SALDO FINAL DE EFECTIVO
-    
-    IMPORTANTE:
-    - EsDeudora = true significa ENTRADA de efectivo [+] (se suma)
-    - EsDeudora = false significa SALIDA de efectivo [-] (se resta)
-    - Mostrar claramente cada actividad con sus totales
-    - Al final mostrar si hubo aumento o disminución neto de efectivo
-    - Formato: usar MostrarTituloSubrayado() para cada actividad
-    
-    GUARDADO DE RESULTADOS:
-    - Usar StringBuilder para construir el contenido del archivo
-    - Agregar fecha y hora al inicio del documento
-    - Incluir saldo inicial, todas las actividades, flujos netos y saldo final
-    - Al final preguntar: if (PreguntarSiGuardarResultado())
-    - Guardar con: GuardarResultadoEnArchivo("flujo-efectivo", resultado.ToString())
-    - Mostrar mensaje de éxito con la ruta del archivo guardado
-    - El archivo se guardará como: flujo-efectivo-1.txt, flujo-efectivo-2.txt, etc.
-    */
-    public static class AccionCalcularFlujoEfectivo
-    {
-        public static void Ejecutar()
-        {
-            // TODO: Implementar toda la lógica de cálculo del Flujo de Efectivo
-            // Esta funcionalidad requiere:
-            // - Solicitar saldo inicial de efectivo
-            // - Selección interactiva de cuentas por actividad
-            // - Cálculo de flujo neto por actividad (entradas - salidas)
-            // - Suma de: Saldo Inicial + Flujo Operación + Flujo Inversión + Flujo Financiamiento
-            // - Presentación clara mostrando cada actividad y el saldo final
-            
-            MostrarMensajeAdvertencia("Esta funcionalidad aun no esta implementada.", true, true);
-            MostrarMensajeAdvertencia("Debe calcular: Saldo Inicial + Operacion + Inversion + Financiamiento = Saldo Final", true, false);
+   /*
+   ===========================
+       Acción Calcular Flujo de Efectivo
+   ===========================
+   */
+   public static class AccionCalcularFlujoEfectivo
+   {
+      public static void Ejecutar()
+      {
+         MostrarLineaDivisoraConTexto("Calcular Flujo de Efectivo", true, true);
+
+         // Solicitar saldo inicial de efectivo
+         Console.Write("Ingrese el saldo inicial de efectivo: ");
+         int saldoInicial = SolicitarEntero();
+
+         // Guardar las cuentas seleccionadas con sus montos
+         var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();
+
+         bool continuar = true;
+
+         while (continuar)
+         {
+            // El usuario elige una actividad; 0 indica terminar
+            int actividad = MostrarMenuActividadesConSalida();
+
+            if (actividad == 0)
+            {
+               continuar = false;
+               continue;
+            }
+
+            // Selecciona la lista de cuentas según la actividad elegida
+            List<Cuenta> listaCuentas = actividad switch
+            {
+               1 => CuentasFlujoEfectivo.ActividadesOperacion,
+               2 => CuentasFlujoEfectivo.ActividadesInversion,
+               3 => CuentasFlujoEfectivo.ActividadesFinanciamiento,
+               _ => new List<Cuenta>()
+            };
+
+            // Nombre amigable de la actividad para mostrar al usuario
+            string nombreActividad = actividad switch
+            {
+               1 => "Actividades de Operación",
+               2 => "Actividades de Inversión",
+               3 => "Actividades de Financiamiento",
+               _ => "Actividad Desconocida"
+            };
+
+            // Mostramos las cuentas de la actividad y pedimos al usuario que elija una
+            MostrarTituloSubrayado($"Cuentas de {nombreActividad}", true, true);
+            for (int i = 0; i < listaCuentas.Count; i++)
+            {
+               string naturaleza = listaCuentas[i].EsDeudora ? "[Entrada ]" : "[Salida  ]";
+               Console.WriteLine($"{i + 1}. {naturaleza} {listaCuentas[i].Nombre}");
+            }
+            MostrarLineaDivisora(true, true);
+
+            Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");
+            int indiceCuenta = SolicitarEnteroConLimites(1, listaCuentas.Count) - 1;
+
+            Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
+
+            // Solicitamos el valor numérico para la cuenta seleccionada
+            Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': ");
+            int valor = SolicitarEntero();
+
+            // Agregamos la pareja (cuenta, valor) a la lista de cálculo
+            cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
+
+            MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
+
+            // Preguntamos si desea continuar agregando cuentas
+            int opcion = MostrarMenuContinuar();
+
+            if (opcion == 2)
+            {
+               continuar = false;
+            }
+         }
+
+         // Si no hay cuentas, avisamos y salimos
+         if (cuentasSeleccionadas.Count == 0)
+         {
+            MostrarMensajeAdvertencia("No se agregaron cuentas al calculo.", true, false);
             EsperarTecla();
-        }
-    }
+            return;
+         }
+
+         // ===== AHORA SÍ CALCULAMOS TODO (FUERA DEL LOOP) =====
+
+         // Creamos el reporte en pantalla y en memoria
+         MostrarLineaDivisoraConTexto("Resultado del Flujo de Efectivo", true, true);
+
+         var resultado = new StringBuilder();
+         resultado.AppendLine("==============================================================");
+         resultado.AppendLine("                    FLUJO DE EFECTIVO");
+         resultado.AppendLine($"                    {DateTime.Now:dd/MM/yyyy HH:mm:ss}");
+         resultado.AppendLine("==============================================================");
+         resultado.AppendLine();
+
+         // Mostrar saldo inicial
+         string saldoInicialLinea = $"SALDO INICIAL DE EFECTIVO: {FormatearMoneda(saldoInicial)}";
+         Console.WriteLine(saldoInicialLinea);
+         resultado.AppendLine(saldoInicialLinea);
+         resultado.AppendLine();
+
+         int flujoOperacion = 0;
+         int flujoInversion = 0;
+         int flujoFinanciamiento = 0;
+
+         // ===== SECCIÓN 1: ACTIVIDADES DE OPERACIÓN =====
+         resultado.AppendLine("ACTIVIDADES DE OPERACIÓN");
+         resultado.AppendLine(new string('-', 60));
+         MostrarTituloSubrayado("ACTIVIDADES DE OPERACIÓN", true, true);
+
+         foreach (var item in cuentasSeleccionadas.Where(x => CuentasFlujoEfectivo.ActividadesOperacion.Contains(x.cuenta)))
+         {
+            // Si es Entrada (true) = suma
+            // Si es Salida (false) = resta
+            int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+            flujoOperacion += valorConSigno;
+
+            string signo = item.cuenta.EsDeudora ? "(+)" : "(-)";
+            string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+            Console.WriteLine(linea);
+            resultado.AppendLine(linea);
+         }
+
+         string flujoOpLinea = $"FLUJO NETO DE OPERACIÓN: {FormatearMoneda(flujoOperacion)}";
+         Console.WriteLine(flujoOpLinea);
+         resultado.AppendLine(flujoOpLinea);
+         resultado.AppendLine();
+
+         // ===== SECCIÓN 2: ACTIVIDADES DE INVERSIÓN =====
+         resultado.AppendLine("ACTIVIDADES DE INVERSIÓN");
+         resultado.AppendLine(new string('-', 60));
+         MostrarTituloSubrayado("ACTIVIDADES DE INVERSIÓN", true, true);
+
+         foreach (var item in cuentasSeleccionadas.Where(x => CuentasFlujoEfectivo.ActividadesInversion.Contains(x.cuenta)))
+         {
+            // Si es Entrada (true) = venta, suma
+            // Si es Salida (false) = compra, resta
+            int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+            flujoInversion += valorConSigno;
+
+            string signo = item.cuenta.EsDeudora ? "(+)" : "(-)";
+            string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+            Console.WriteLine(linea);
+            resultado.AppendLine(linea);
+         }
+
+         string flujoInvLinea = $"FLUJO NETO DE INVERSIÓN: {FormatearMoneda(flujoInversion)}";
+         Console.WriteLine(flujoInvLinea);
+         resultado.AppendLine(flujoInvLinea);
+         resultado.AppendLine();
+
+         // ===== SECCIÓN 3: ACTIVIDADES DE FINANCIAMIENTO =====
+         resultado.AppendLine("ACTIVIDADES DE FINANCIAMIENTO");
+         resultado.AppendLine(new string('-', 60));
+         MostrarTituloSubrayado("ACTIVIDADES DE FINANCIAMIENTO", true, true);
+
+         foreach (var item in cuentasSeleccionadas.Where(x => CuentasFlujoEfectivo.ActividadesFinanciamiento.Contains(x.cuenta)))
+         {
+            // Si es Entrada (true) = préstamo obtenido, aportación, suma
+            // Si es Salida (false) = pago, dividendo, resta
+            int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+            flujoFinanciamiento += valorConSigno;
+
+            string signo = item.cuenta.EsDeudora ? "(+)" : "(-)";
+            string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+            Console.WriteLine(linea);
+            resultado.AppendLine(linea);
+         }
+
+         string flujoFinLinea = $"FLUJO NETO DE FINANCIAMIENTO: {FormatearMoneda(flujoFinanciamiento)}";
+         Console.WriteLine(flujoFinLinea);
+         resultado.AppendLine(flujoFinLinea);
+         resultado.AppendLine();
+
+         // ===== CÁLCULO DEL SALDO FINAL =====
+         int aumentoDisminucionNeto = flujoOperacion + flujoInversion + flujoFinanciamiento;
+         int saldoFinal = saldoInicial + aumentoDisminucionNeto;
+
+         resultado.AppendLine("==============================================================");
+         resultado.AppendLine("                    RESUMEN FINAL");
+         resultado.AppendLine("==============================================================");
+         MostrarLineaDivisoraConTexto("Resumen Final", true, true);
+
+         string aumentoLinea = aumentoDisminucionNeto >= 0
+             ? $"AUMENTO NETO EN EFECTIVO: {FormatearMoneda(aumentoDisminucionNeto)}"
+             : $"DISMINUCIÓN NETA EN EFECTIVO: {FormatearMoneda(Math.Abs(aumentoDisminucionNeto))}";
+
+         Console.WriteLine(aumentoLinea);
+         resultado.AppendLine(aumentoLinea);
+
+         string saldoFinalLinea = $"SALDO FINAL DE EFECTIVO: {FormatearMoneda(saldoFinal)}";
+         Console.WriteLine(saldoFinalLinea);
+         resultado.AppendLine(saldoFinalLinea);
+         resultado.AppendLine();
+
+         if (aumentoDisminucionNeto >= 0)
+         {
+            MostrarMensajeExito("La empresa generó efectivo en el período", true, false);
+            resultado.AppendLine("[RESULTADO] La empresa generó efectivo en el período");
+         }
+         else
+         {
+            MostrarMensajeError("La empresa utilizó efectivo en el período", true, false);
+            resultado.AppendLine("[RESULTADO] La empresa utilizó efectivo en el período");
+         }
+
+         resultado.AppendLine();
+         resultado.AppendLine("==============================================================");
+
+         // Preguntar si desea guardar el resultado
+         if (PreguntarSiGuardarResultado())
+         {
+            string rutaArchivo = GuardarResultadoEnArchivo("flujo-efectivo", resultado.ToString());
+
+            if (!string.IsNullOrEmpty(rutaArchivo))
+            {
+               MostrarMensajeExito($"Resultado guardado exitosamente en:", true, false);
+               Console.WriteLine($"  {rutaArchivo}");
+            }
+         }
+
+         EsperarTecla();
+      }
+   }
 }
+

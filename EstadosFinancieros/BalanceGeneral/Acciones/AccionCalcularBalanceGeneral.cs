@@ -77,13 +77,13 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                 Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
 
                 // Solicitamos el valor numérico para la cuenta seleccionada
-                Console.WriteLine($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': $");
+                Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': ");
                 int valor = SolicitarEntero();
 
                 // Agregamos la pareja (cuenta, valor) a la lista de cálculo
                 cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
 
-                MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor ${valor:N2}", true, false);
+                MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
 
                 // Preguntamos si desea continuar agregando cuentas
                 int opcion = MostrarMenuContinuar();
@@ -128,11 +128,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             {
                 int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
                 totalActivos += valorConSigno;
-                string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
-            string totalActivosLinea = $"TOTAL ACTIVOS: ${totalActivos:N2}";
+            string totalActivosLinea = $"TOTAL ACTIVOS: {FormatearMoneda(totalActivos)}";
             Console.WriteLine(totalActivosLinea);
             resultado.AppendLine(totalActivosLinea);
             resultado.AppendLine();
@@ -148,11 +148,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                 // Para pasivos (normalmente acreedores) aplicamos signo negativo cuando corresponda
                 int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
                 totalPasivos += valorConSigno;
-                string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
-            string totalPasivosLinea = $"TOTAL PASIVOS: ${totalPasivos:N2}";
+            string totalPasivosLinea = $"TOTAL PASIVOS: {FormatearMoneda(totalPasivos)}";
             Console.WriteLine(totalPasivosLinea);
             resultado.AppendLine(totalPasivosLinea);
             resultado.AppendLine();
@@ -168,11 +168,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                 // Para capital aplicamos signo negativo cuando la cuenta es acreedora
                 int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
                 totalCapital += valorConSigno;
-                string linea = $"  {item.cuenta.Nombre}: ${item.valor:N2}";
+                string linea = $"  {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
-            string totalCapitalLinea = $"TOTAL CAPITAL CONTABLE: ${totalCapital:N2}";
+            string totalCapitalLinea = $"TOTAL CAPITAL CONTABLE: {FormatearMoneda(totalCapital)}";
             Console.WriteLine(totalCapitalLinea);
             resultado.AppendLine(totalCapitalLinea);
             resultado.AppendLine();
@@ -184,9 +184,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             resultado.AppendLine("                    ECUACION CONTABLE");
             resultado.AppendLine("==============================================================");
             MostrarLineaDivisoraConTexto("Ecuacion Contable", true, true);
-            
-            string activosLinea = $"Activos           : ${totalActivos:N2}";
-            string pasivoCapitalLinea = $"Pasivos + Capital : ${totalPasivoMasCapital:N2}";
+
+            string activosLinea = $"Activos           : {FormatearMoneda(totalActivos)}";
+            string pasivoCapitalLinea = $"Pasivos + Capital : {FormatearMoneda(totalPasivoMasCapital)}";
             Console.WriteLine(activosLinea);
             Console.WriteLine(pasivoCapitalLinea);
             resultado.AppendLine(activosLinea);
@@ -213,13 +213,13 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                 // Mensaje claro cuando hay diferencia
                 int diferencia = totalActivos - totalPasivoMasCapital;
                 MostrarMensajeError("BALANCE GENERAL DESCUADRADO", true, false);
-                Console.WriteLine($"  Diferencia: ${Math.Abs(diferencia):N2}");
+                Console.WriteLine($"  Diferencia: {FormatearMoneda(Math.Abs(diferencia))}");
                 Console.WriteLine(diferencia > 0
                     ? "  Hay mas activos que pasivos + capital"
                     : "  Hay mas pasivos + capital que activos");
                 resultado.AppendLine();
                 resultado.AppendLine("[ADVERTENCIA] BALANCE GENERAL DESCUADRADO");
-                resultado.AppendLine($"Diferencia: ${Math.Abs(diferencia):N2}");
+                resultado.AppendLine($"Diferencia: {FormatearMoneda(Math.Abs(diferencia))}");
                 resultado.AppendLine(diferencia > 0
                     ? "Hay mas activos que pasivos + capital"
                     : "Hay mas pasivos + capital que activos");
@@ -232,7 +232,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             if (PreguntarSiGuardarResultado())
             {
                 string rutaArchivo = GuardarResultadoEnArchivo("balance-general", resultado.ToString());
-                
+
                 if (!string.IsNullOrEmpty(rutaArchivo))
                 {
                     MostrarMensajeExito($"Resultado guardado exitosamente en:", true, false);

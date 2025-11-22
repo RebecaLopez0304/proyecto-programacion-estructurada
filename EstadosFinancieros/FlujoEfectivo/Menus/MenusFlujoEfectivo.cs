@@ -10,37 +10,43 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
     */
     public static class MenusFlujoEfectivo
     {
-         public static int MostrarMenuPrincipal()
-         {
-             MostrarLineaDivisoraConTexto("Flujo de Efectivo", true, true);
-             Console.WriteLine("1. Ver Cuentas");
-             Console.WriteLine("2. Agregar Cuenta");
-             Console.WriteLine("3. Eliminar Cuenta");
-             Console.WriteLine("4. Calcular Flujo de Efectivo");
-             MostrarLineaDivisora(true, true);
-             Console.WriteLine("0. Volver");
-             return SolicitarEnteroConLimites(0, 4);
-         }
+        public static int MostrarMenuPrincipal()
+        {
+            MostrarLineaDivisoraConTexto("Menu Flujo de Efectivo", true, true);
+            MostrarTituloSubrayado("Seleccione una opcion (0-4):", false, true);
+            Console.WriteLine("1. Ver Cuentas");
+            Console.WriteLine("2. Agregar Cuenta");
+            Console.WriteLine("3. Eliminar Cuenta");
+            MostrarLineaDivisora(false, true);
+            Console.WriteLine("4. Realizar calculo de Flujo de Efectivo");
+            VolverAtras();
+            MostrarLineaDivisora(true, true);
+
+            int opcion = SolicitarEnteroConLimites(0, 4);
+            return opcion;
+        }
 
         public static int MostrarMenuVerCuentas()
-         {
-             MostrarTituloSubrayado("Ver Cuentas - Flujo de Efectivo", true, true);
-             Console.WriteLine("1. Ver todas las cuentas");
-             Console.WriteLine("2. Ver por actividad");
-             VolverAtras();
-
-             int opcion = SolicitarEnteroConLimites(0, 2);
-             return opcion;
-         }
-         public static int MenuPorCategoriaFE()
         {
-            MostrarTituloSubrayado("Ver Cuentas - flujo de efectivo - Cuentas", true, true);
-            Console.WriteLine("1. Gastos de Operación");
-            Console.WriteLine("2. Gastos de Inversión");
-            Console.WriteLine("3. Gastos de Financiamiento");
+            MostrarTituloSubrayado("Ver Cuentas - Flujo de Efectivo", true, true);
+            Console.WriteLine("1. Ver todas las cuentas");
+            Console.WriteLine("2. Ver por actividad");
+            MostrarLineaDivisora(true, true);
             VolverAtras();
 
-            int opcion = SolicitarEnteroConLimites(0, 5);
+            int opcion = SolicitarEnteroConLimites(0, 2);
+            return opcion;
+        }
+        public static int MenuPorCategoriaFE()
+        {
+            MostrarTituloSubrayado("Ver Cuentas - Flujo de Efectivo - Por Actividad", true, true);
+            Console.WriteLine("1. Actividades de Operación");
+            Console.WriteLine("2. Actividades de Inversión");
+            Console.WriteLine("3. Actividades de Financiamiento");
+            MostrarLineaDivisora(true, true);
+            VolverAtras();
+
+            int opcion = SolicitarEnteroConLimites(0, 3);
             return opcion;
         }
         public static int MostrarMenuActividades()
@@ -49,6 +55,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
             Console.WriteLine("1. Actividades de Operación");
             Console.WriteLine("2. Actividades de Inversión");
             Console.WriteLine("3. Actividades de Financiamiento");
+            MostrarLineaDivisora(true, true);
             VolverAtras();
 
             int opcion = SolicitarEnteroConLimites(0, 3);
@@ -56,21 +63,25 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus
         }
         public static int MostrarMenuActividadesConSalida()
         {
-            MostrarTituloSubrayado("Seleccione la actividad del flujo de efectivo (0 para terminar):", true, true);
-            Console.WriteLine("0. Terminar selección");
+            MostrarTituloSubrayado("Seleccione la actividad del flujo de efectivo", true, true);
+            Console.WriteLine("Seleccione el tipo de actividad que desea agregar al calculo:");
+            MostrarLineaDivisora(true, false);
             Console.WriteLine("1. Actividades de Operación");
             Console.WriteLine("2. Actividades de Inversión");
             Console.WriteLine("3. Actividades de Financiamiento");
+            MostrarLineaDivisora(true, false);
+            Console.WriteLine("0. Finalizar y calcular Flujo de Efectivo");
+            MostrarLineaDivisora(false, true);
 
             int opcion = SolicitarEnteroConLimites(0, 3);
             return opcion;
         }
         public static int MostrarMenuTipoMovimiento()
         {
-            MostrarTituloSubrayado("Seleccione el tipo de movimiento:", true, true);
-            Console.WriteLine("1. Entrada de efectivo [+]");
-            Console.WriteLine("2. Salida de efectivo [-]");
-
+            Console.WriteLine();
+            Console.WriteLine("¿El movimiento es una Entrada de efectivo?");
+            Console.WriteLine("1. Si (Entrada - aumenta efectivo)");
+            Console.WriteLine("2. No (Salida - disminuye efectivo)");
             int opcion = SolicitarEnteroConLimites(1, 2);
             return opcion;
         }
