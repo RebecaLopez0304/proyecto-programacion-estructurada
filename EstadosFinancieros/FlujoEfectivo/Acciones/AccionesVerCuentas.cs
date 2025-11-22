@@ -1,44 +1,55 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos.CuentasFlujoEfectivo;
+using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.FlujoEfectivo;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
+namespace ProyectoProgramacion
 {
-    /*
-    ===========================
-        Acciones para Ver Cuentas - Flujo de Efectivo
-    ===========================
-    
-    TODO: Implementar métodos para visualizar las cuentas del Flujo de Efectivo
-    Seguir el patrón de AccionesVerCuentas.cs del Balance General
-    
-    Métodos requeridos:
-    1. MostrarTodasCuentasFlujoEfectivo() - Mostrar las 3 actividades con sus cuentas
-    2. MostrarCuentasPorActividad() - Menú para seleccionar una actividad específica
-    
-    Actividades a mostrar:
-    - Actividades de Operación (operaciones diarias del negocio)
-    - Actividades de Inversión (compra/venta de activos fijos e inversiones)
-    - Actividades de Financiamiento (préstamos, capital, dividendos)
-    
-    IMPORTANTE: 
-    - Usar FlujoEfectivo.MostrarSeccion() para mostrar cada lista de cuentas
-    - Indicar [+] para entradas de efectivo y [-] para salidas
-    */
     public static class AccionesVerCuentas
     {
-        // TODO: Implementar todos los métodos de visualización
-        
-        // Ejemplo de estructura:
-        // public static void MostrarTodasCuentasFlujoEfectivo()
-        // {
-        //     MostrarLineaDivisoraConTexto("Todas las Cuentas - Flujo de Efectivo", true, true);
-        //     
-        //     MostrarTituloSubrayado("ACTIVIDADES DE OPERACIÓN", true, true);
-        //     FlujoEfectivo.MostrarSeccion("Operación", CuentasFlujoEfectivo.ActividadesOperacion);
-        //     
-        //     // ... continuar con las otras 2 actividades
-        //     
-        //     EsperarTecla();
-        // }
+        public static void MostrarTodasCuentasFlujoEfectivo()
+         {
+           MostrarLineaDivisoraConTexto("Todas las Cuentas - Flujo de Efectivo", true, true);
+             MostrarSeccion("Actividades Operación", ActividadesOperacion);
+             MostrarSeccion("Actividades Inversión", ActividadesInversion);
+             MostrarSeccion("Actividades Financiamiento", ActividadesFinanciamiento);
+             EsperarTecla();
+        }
+       
+        public static void MostrarCuentasPorActividad()
+        {
+            bool salir = false;
+
+            while (!salir)
+            {
+                int opcion = MostrarMenuActividades ();
+
+                switch (opcion)
+                {
+                    case 1:
+                        MostrarSeccion("Actividades de Operación", ActividadesOperacion);
+                        EsperarTecla();
+                        break;
+
+                    case 2:
+                        MostrarSeccion("Actividades de Inversión", ActividadesInversion);
+                        EsperarTecla();
+                        break;
+
+                    case 3:
+                        MostrarSeccion("Actividades de Financiamiento", ActividadesFinanciamiento);
+                        EsperarTecla();
+                        break;
+
+                    case 0:
+                        salir = true;
+                        break;
+
+                    default:
+                        MostrarMensajeError("Opcion no valida. Intente de nuevo.");
+                        break;
+                }
+            }
+        }
     }
 }

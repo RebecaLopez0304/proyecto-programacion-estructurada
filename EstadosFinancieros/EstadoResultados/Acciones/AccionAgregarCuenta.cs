@@ -58,10 +58,6 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             string naturalezaTexto = esDeudora ? "Egreso (-)" : "Ingreso (+)";
             Console.WriteLine($"Cuenta: {nombreCuenta}");
             Console.WriteLine($"Naturaleza: {naturalezaTexto}");
-
-
-            MostrarMensajeAdvertencia("Esta funcionalidad aun no esta implementada.", true, true);
-            EsperarTecla();
         }
     }
 }

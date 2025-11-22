@@ -1,46 +1,53 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
+using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos; // Agrega esta línea para acceder a CuentasFlujoEfectivo
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
 {
-    /*
-    ===========================
-        Acción Agregar Cuenta - Flujo de Efectivo
-    ===========================
     
-    TODO: Implementar la lógica para agregar nuevas cuentas al Flujo de Efectivo
-    Seguir el patrón de AccionAgregarCuenta.cs del Balance General
-    
-    Flujo requerido:
-    1. Mostrar menú de actividades (MenusFlujoEfectivo.MostrarMenuActividades())
-    2. Solicitar nombre de la cuenta
-    3. Solicitar tipo de movimiento (Entrada [+] / Salida [-]) usando MostrarMenuTipoMovimiento()
-    4. Crear nueva instancia de Cuenta con EsCreadoPorUsuario = true
-       - Si es ENTRADA: EsDeudora = true
-       - Si es SALIDA: EsDeudora = false
-    5. Agregar a la lista correspondiente según la actividad seleccionada
-    6. Mostrar mensaje de éxito con MostrarMensajeExito()
-    
-    Actividades disponibles (3):
-    1. Actividades de Operación -> CuentasFlujoEfectivo.ActividadesOperacion
-    2. Actividades de Inversión -> CuentasFlujoEfectivo.ActividadesInversion
-    3. Actividades de Financiamiento -> CuentasFlujoEfectivo.ActividadesFinanciamiento
-    
-    IMPORTANTE: 
-    - Marcar SIEMPRE la cuenta como EsCreadoPorUsuario = true
-    - En Flujo de Efectivo: EsDeudora = true significa ENTRADA [+]
-    - En Flujo de Efectivo: EsDeudora = false significa SALIDA [-]
-    */
+   // ===========================
+     //   Acción Agregar Cuenta - Flujo de Efectivo
+    //===========================
     public static class AccionAgregarCuenta
     {
         public static void Ejecutar()
         {
-            // TODO: Implementar toda la lógica de agregar cuenta
-            // Seguir el patrón exacto de Balance General
+            int actividad = MostrarMenuActividades();
+            Console.WriteLine();
+            Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
+            string nombreCuenta = SolicitarString("");
+
+            int tipoMovimientoOpcion = MostrarMenuTipoMovimiento();
+            bool esDeudora = tipoMovimientoOpcion == 1; // Entrada [+] -> EsDeudora = true
+
+            // Crear la nueva cuenta y marcarla como creada por el usuario
+            Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora)
+            {
+                EsCreadoPorUsuario = true
+            };
             
-            MostrarMensajeAdvertencia("Esta funcionalidad aun no esta implementada.", true, true);
-            EsperarTecla();
+            switch (actividad)
+            {
+                case 1:
+                    CuentasFlujoEfectivo.ActividadesOperacion.Add(nuevaCuenta);
+                    MostrarMensajeExito($"Cuenta agregada exitosamente a Actividades de Operación", true, false);
+                    break;
+                case 2:
+                    CuentasFlujoEfectivo.ActividadesInversion.Add(nuevaCuenta);
+                    MostrarMensajeExito($"Cuenta agregada exitosamente a Actividades de Inversión", true, false);
+                    break;
+                case 3:
+                    CuentasFlujoEfectivo.ActividadesFinanciamiento.Add(nuevaCuenta);
+                    MostrarMensajeExito($"Cuenta agregada exitosamente a Actividades de Financiamiento", true, false);
+                    break;
+            }
+
+            string naturalezaTexto = esDeudora ? "Entrada [+]" : "Salida [-]";
+            Console.WriteLine($"Cuenta: {nombreCuenta}");
+            Console.WriteLine($"Tipo de Movimiento: {naturalezaTexto}");
         }
+
+        
     }
 }

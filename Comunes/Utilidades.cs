@@ -80,7 +80,9 @@ namespace ProyectoProgramacion.Comunes
                 }
             }
         }
-
+        // Solicita un número entero dentro de unos límites específicos
+        // limiteInferior: valor mínimo aceptable (inclusive)
+        // limiteSuperior: valor máximo aceptable (inclusive)
         public static int SolicitarEnteroConLimites(int limiteInferior, int limiteSuperior)
         {
             while (true)

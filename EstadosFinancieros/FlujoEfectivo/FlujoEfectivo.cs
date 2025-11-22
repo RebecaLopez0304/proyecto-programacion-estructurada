@@ -5,58 +5,90 @@ using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFl
 
 namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
 {
-    /*
-    ===========================
-        Clase Flujo de Efectivo
-    ===========================
     
-    TODO: Esta clase debe seguir el mismo patrón arquitectónico que BalanceGeneral.
-    
-    Estructura requerida:
-    1. Crear MenusFlujoEfectivo.cs con todas las funciones de menú
-    2. Crear AccionesVerCuentas.cs para visualizar cuentas del flujo de efectivo
-    3. Crear AccionAgregarCuenta.cs para agregar nuevas cuentas (marcar con EsCreadoPorUsuario = true)
-    4. Crear AccionEliminarCuenta.cs para eliminar solo cuentas creadas por el usuario
-    5. Crear AccionCalcularFlujoEfectivo.cs para realizar el cálculo interactivo
-    
-    El cálculo debe:
-    - Solicitar saldo inicial de efectivo
-    - Permitir seleccionar cuentas de cada actividad interactivamente
-    - Actividades de Operación: partir de utilidad neta, ajustar por partidas que no generan efectivo
-    - Actividades de Inversión: compras/ventas de activos fijos e inversiones
-    - Actividades de Financiamiento: préstamos, aportaciones, dividendos pagados
-    - Calcular flujo neto por cada actividad
-    - Sumar: Saldo inicial + Flujo Operación + Flujo Inversión + Flujo Financiamiento = Saldo final
-    - Mostrar resultado con formato claro mostrando cada actividad y sus totales
-    
-    Categorías de actividades (ver CuentasFlujoEfectivo.cs):
-    - Actividades de Operación (operaciones normales del negocio)
-    - Actividades de Inversión (compra/venta de activos a largo plazo)
-    - Actividades de Financiamiento (deuda y capital)
-    
-    Naturaleza de las cuentas en flujo de efectivo:
-    - EsDeudora = true significa ENTRADA de efectivo [+]
-    - EsDeudora = false significa SALIDA de efectivo [-]
-    */
+    //===========================
+   //     Clase Flujo de Efectivo
+    //===========================
+
     public static class FlujoEfectivo
     {
         public static void Ejecutar()
         {
-            // TODO: Implementar menú principal similar a BalanceGeneral
-            // Debe tener opciones:
-            // 1. Ver Cuentas (llamar a AccionesVerCuentas)
-            // 2. Agregar Cuenta (llamar a AccionAgregarCuenta.Ejecutar())
-            // 3. Eliminar Cuenta (llamar a AccionEliminarCuenta.Ejecutar())
-            // 4. Calcular Flujo de Efectivo (llamar a AccionCalcularFlujoEfectivo.Ejecutar())
-            // 0. Volver al menú principal
-            
-            MostrarMensajeAdvertencia("El modulo de Flujo de Efectivo aun no esta implementado.", true, true);
-            MostrarMensajeAdvertencia("Debe seguir la misma estructura que Balance General.", true, false);
-            EsperarTecla();
+            // Bandera para mantener el menú hasta que el usuario pida salir
+            bool volver = false;
+
+            // Bucle principal del módulo: muestra el menú repetidamente
+            while (!volver)
+            {
+                // Pide la opción al usuario
+                int opcion = MostrarMenuPrincipal();
+
+                // Ejecuta la acción según la opción elegida
+                switch (opcion)
+                {
+                    case 1:
+                        // Ver listas de cuentas
+                      VerCuentas();
+                        break;
+                    case 2:
+                        // Agregar una cuenta nueva
+                        AccionAgregarCuenta.Ejecutar();
+                        break;
+                    case 3:
+                        // Eliminar una cuenta creada por el usuario
+                        AccionEliminarCuenta.Ejecutar();
+                        break;
+                    case 4:
+                       // AccionCalcularFlujoEfectivo.Ejecutar();
+                        break;
+                    case 0:
+                        // Salir del módulo
+                        volver = true;
+                        Console.WriteLine("\n\n");
+                        break;
+                    default:
+                        // Opción inválida: aviso simple
+                        MostrarMensajeError("Opcion no valida. Intente de nuevo.");
+                        break;
+                }
+            }
+        
+        
+        }
+         private static void VerCuentas()
+        {
+            bool volver = false;
+            while (!volver)
+            {
+                int opcion = MostrarMenuVerCuentas();
+
+                switch (opcion)
+                {
+                    case 1:
+                        AccionesVerCuentas.MostrarTodasCuentasFlujoEfectivo();
+                        break;
+                    case 2:
+                        AccionesVerCuentas.MostrarCuentasPorActividad();
+                        break;
+                    case 0:
+                        volver = true;
+                        break;
+                    default:
+                        MostrarMensajeError("Opcion no valida. Intente de nuevo.");
+                        break;
+                }
+            }
         }
 
-        // TODO: Crear método MostrarSeccion para visualizar listas de cuentas
-        // Este método debe ser público y utilizado por AccionesVerCuentas
-        // Similar al método MostrarSeccion en BalanceGeneral.cs
+        public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)//
+        {
+            MostrarTituloSubrayado(titulo, true);
+
+            foreach (var cuenta in listaDeCuentas)
+            {
+                string naturaleza = cuenta.EsDeudora ? "[ Egreso    ]" : "[ Ingreso   ]";
+                Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
+            }
+        }
     }
 }

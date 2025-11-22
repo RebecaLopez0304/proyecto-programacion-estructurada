@@ -109,26 +109,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus
             Console.WriteLine();
             Console.WriteLine("¿Desea agregar otra cuenta?");
             Console.WriteLine("1. Si, agregar otra cuenta");
-            Console.WriteLine("2. No, calcular Balance General");
+            Console.WriteLine("2. No, calcular Estado de Resultados de resultados");
             int opcion = SolicitarEnteroConLimites(1, 2);
             return opcion;
         }
-
-        // MARK: Menú Cuentas Generales
-        public static int MostrarMenuCuentasGenerales()
-        {
-            MostrarTituloSubrayado("Cuentas Generales del Balance General", true, true);
-            Console.WriteLine("1. Activos");
-            Console.WriteLine("2. Pasivos");
-            Console.WriteLine("3. Capital");
-            MostrarLineaDivisora(true, true);
-            VolverAtras();
-
-            int opcion = SolicitarEnteroConLimites(0, 3);
-            return opcion;
-        }
-
-
-
     }
 }

@@ -1,47 +1,87 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
+using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
+namespace ProyectoProgramacion
 {
-    /*
-    ===========================
-        Acción Eliminar Cuenta - Flujo de Efectivo
-    ===========================
     
-    TODO: Implementar la lógica para eliminar cuentas creadas por el usuario
-    Seguir el patrón de AccionEliminarCuenta.cs del Balance General
-    
-    Flujo requerido:
-    1. Recopilar todas las cuentas con EsCreadoPorUsuario == true de las 3 actividades
-    2. Guardar en lista de tuplas: (cuenta, actividad, listaOriginal)
-    3. Si no hay cuentas de usuario, mostrar MostrarMensajeAdvertencia() y salir
-    4. Agrupar cuentas por actividad usando LINQ GroupBy
-    5. Mostrar todas las cuentas numeradas globalmente
-    6. Solicitar selección de cuenta a eliminar
-    7. Mostrar confirmación con MostrarMenuConfirmacion()
-    8. Si confirma: eliminar de la lista original y mostrar MostrarMensajeExito()
-    9. Si cancela: mostrar MostrarMensajeCancelacion()
-    
-    Actividades a revisar (3):
-    1. CuentasFlujoEfectivo.ActividadesOperacion
-    2. CuentasFlujoEfectivo.ActividadesInversion
-    3. CuentasFlujoEfectivo.ActividadesFinanciamiento
-    
-    IMPORTANTE:
-    - SOLO eliminar cuentas con EsCreadoPorUsuario == true
-    - Usar LINQ para agrupar y filtrar
-    - Usar Dictionary<int, (Cuenta, List<Cuenta>)> para mapear números a cuentas
-    - Mostrar [+] para entradas y [-] para salidas
-    */
+    //===========================
+   //     Acción Eliminar Cuenta - Flujo de Efectivo
+    //===========================
     public static class AccionEliminarCuenta
     {
         public static void Ejecutar()
         {
-            // TODO: Implementar toda la lógica de eliminar cuenta
-            // Seguir el patrón exacto de Balance General
+            MostrarTituloSubrayado("Eliminar Cuenta - Flujo de Efectivo", true, true);
             
-            MostrarMensajeAdvertencia("Esta funcionalidad aun no esta implementada.", true, true);
+            // recolectamos todas las cuentas que fueron creadas por el usuario
+            var todasCuentasUsuario = new List<(Cuenta cuenta, string actividad, List<Cuenta> listaOriginal)>();
+
+            // Recorremos cada lista y agregamos solo las cuentas marcadas como creadas por el usuario
+            foreach (var cuenta in CuentasFlujoEfectivo.ActividadesOperacion)
+            {
+                if (cuenta.EsCreadoPorUsuario)
+                    todasCuentasUsuario.Add((cuenta, "Actividades de Operación", CuentasFlujoEfectivo.ActividadesOperacion));
+            }
+            foreach (var cuenta in CuentasFlujoEfectivo.ActividadesInversion)
+            {
+                if (cuenta.EsCreadoPorUsuario)
+                    todasCuentasUsuario.Add((cuenta, "Actividades de Inversión", CuentasFlujoEfectivo.ActividadesInversion));
+            }
+            foreach (var cuenta in CuentasFlujoEfectivo.ActividadesFinanciamiento)
+            {
+                if (cuenta.EsCreadoPorUsuario)
+                    todasCuentasUsuario.Add((cuenta, "Actividades de Financiamiento", CuentasFlujoEfectivo.ActividadesFinanciamiento));
+            } 
+            // Si no hay cuentas de usuario, mostrar mensaje y salir
+            if (todasCuentasUsuario.Count == 0)
+            {
+                MostrarMensajeAdvertencia("No hay cuentas creadas por el usuario para eliminar.", true, false);
+                Console.WriteLine("\tUsa la opcion 'Agregar Cuenta' para crear tus propias cuentas.");
+                 EsperarTecla();
+                return;
+            }
+           // Mostramos las cuentas agrupadas por categoría para que el usuario elija cuál eliminar
+          
+            var cuentasPorCategoria = todasCuentasUsuario.GroupBy(x => x.actividad);
+            int numeroGlobal = 1;
+            var indiceCuentas = new Dictionary<int, (Cuenta cuenta, List<Cuenta> listaOriginal)>();
+            
+            foreach (var grupo in cuentasPorCategoria)
+            {
+                MostrarTituloSubrayado(grupo.Key, false, true);
+                foreach (var item in grupo)
+                {
+                    string naturaleza = item.cuenta.EsDeudora ? "[Deudora  ]" : "[Acreedora]";
+                    Console.WriteLine($"{numeroGlobal}. {naturaleza} {item.cuenta.Nombre}");
+                    indiceCuentas[numeroGlobal] = (item.cuenta, item.listaOriginal);
+                    numeroGlobal++;
+                }
+                Console.WriteLine();
+            }
+            // Pedimos al usuario que seleccione el número de la cuenta a eliminar
+             MostrarLineaDivisora(true, true);
+            Console.WriteLine($"Seleccione el numero de la cuenta a eliminar (1-{todasCuentasUsuario.Count}):");
+            int seleccion = SolicitarEnteroConLimites(1, todasCuentasUsuario.Count);
+
+            var cuentaSeleccionada = indiceCuentas[seleccion];
+
+            // Confirmación antes de eliminar
+            int confirmacion = MostrarMenuConfirmacion($"\n¿Esta seguro que desea eliminar la cuenta '{cuentaSeleccionada.cuenta.Nombre}'?");
+
+            if (confirmacion == 1)
+            {
+                string nombreEliminado = cuentaSeleccionada.cuenta.Nombre;
+                cuentaSeleccionada.listaOriginal.Remove(cuentaSeleccionada.cuenta);
+                MostrarMensajeExito($"Cuenta '{nombreEliminado}' eliminada exitosamente.", true, false);
+            }
+            else
+            {
+                MostrarMensajeCancelacion("Operacion cancelada.", true, false);
+            }
+
+            // Pausa final
             EsperarTecla();
         }
     }
