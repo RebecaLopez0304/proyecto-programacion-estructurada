@@ -96,11 +96,17 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             // (+) Obras en construcción aún no terminadas
             new Cuenta("Construcciones en proceso", true),
 
-            // (+) Equipos de producción de la empresa
-            new Cuenta("Maquinaria", true),
+            // (+) Maquinaria y equipo utilizado en la producción
+            new Cuenta("Maquinaria y equipo", true),
+
+            // (-) Pérdida de valor acumulada de la maquinaria por uso y tiempo, disminuye el valor del activo
+            new Cuenta("depreciacion acumulada de maquinaria y equipo obras en proceso", false),
 
             // (+) Muebles y equipos para oficinas
             new Cuenta("Mobiliario y equipos de oficina", true),
+
+            // (-) Pérdida de valor acumulada del edificio por uso y tiempo, disminuye el valor del activo
+             new Cuenta("depreciacion acumulada de mobiliario y equipo de oficina,", false),
 
             // (+) Mobiliario en general del negocio
             new Cuenta("Muebles y enseres", true),
@@ -108,8 +114,16 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             // (+) Vehículos propiedad de la empresa
             new Cuenta("Equipo de transporte", true),
 
+            new Cuenta("depreciacion acumulada de equipo de transporte", false),
+
             // (+) Vehículos destinados a distribución
             new Cuenta("Equipo de entrega y reparto", true),
+           
+           // (+) Equipos y aparatos usados en la producción
+            new Cuenta("Equipo de computo", true),
+           
+           // (-) Pérdida de valor acumulada del equipo de cómputo por uso y tiempo, disminuye el valor del activo
+            new Cuenta("depreciacion acumulada de equipo de computo", false),
         };
 
         // MARK: Activos intangibles
@@ -161,11 +175,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             // (+) Seguros pagados por adelantado
             new Cuenta("Primas de seguros y fianzas", true),
 
-            // (+) Material promocional y educativo
-            new Cuenta("Muestras médicas y literatura", true),
-
-            // (+) Alquileres pagados antes de su vencimiento
-            new Cuenta("Rentas pagadas por anticipado", true),
+            //(+) Gastos legales pagados por anticipado
+            new Cuenta("franquicias", true),
 
             // (+) Intereses pagados antes de devengarse
             new Cuenta("Intereses pagados por anticipado", true),
@@ -189,6 +200,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
 
             // (+) Equipo fuera de operación
             new Cuenta("Maquinaria no utilizada", true),
+
+            // (+) Alquileres pagados antes de su vencimiento
+            new Cuenta("Rentas pagadas por anticipado", true)
         };
 
         // MARK: Pasivos
@@ -209,6 +223,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
 
             // (-) Títulos de deuda a largo plazo emitidos
             new Cuenta("Bonos por pagar", false),
+
+            // (-) Deudas con terceros por conceptos distintos a compras
+            new Cuenta("Acreedores diversos a largo plazo", false),
+
+            // (-) Hipotecas por pagar a largo plazo
+            new Cuenta("Hipotecas por pagar", false),
+
+            // (-) Obligaciones laborales a largo plazo
+            new Cuenta("Obligaciones por pagar", false),
         };
 
         // MARK: Pasivo a Corto Plazo
@@ -287,6 +310,18 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
 
             // (+) Pérdidas no compensadas que disminuyen el capital contable
             new Cuenta("Pérdidas acumuladas", true),
+
+            // (+) Resultado del ejercicio fiscal actual
+            new Cuenta("Utilidad de ejercicio", true),
+            
+            // (+) Resultado negativo del ejercicio fiscal actual 
+            new Cuenta("Perdida del ejercicio", false),
+
+            // (-) Resultados de ejercicios anteriores
+            new Cuenta("Resultado de ejercicio anteriores", false),
+            
+            // (-) Reservas voluntarias establecidas por la empresa
+            new Cuenta("Reservas", false),
         };
     }
 }
