@@ -18,8 +18,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             // Recorremos cada lista y agregamos solo las cuentas marcadas como creadas por el usuario
             foreach (var cuenta in CuentasBalanceGeneral.ActivoCirculante)
             {
-                if (cuenta.EsCreadoPorUsuario)
-                    todasCuentasUsuario.Add((cuenta, "Activo Circulante", CuentasBalanceGeneral.ActivoCirculante));
+                if (cuenta.EsCreadoPorUsuario)//
+                    todasCuentasUsuario.Add((cuenta, "Activo Circulante", CuentasBalanceGeneral.ActivoCirculante));// 
             }
 
             foreach (var cuenta in CuentasBalanceGeneral.ActivoFijo)
@@ -80,17 +80,17 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             MostrarTituloSubrayado("Cuentas creadas por ti (eliminables)", true, true);
 
             var cuentasPorCategoria = todasCuentasUsuario.GroupBy(x => x.categoria);
-            int numeroGlobal = 1;
+            int numeroGlobal = 1;// 
             var indiceCuentas = new Dictionary<int, (Cuenta cuenta, List<Cuenta> listaOriginal)>();
 
             foreach (var grupo in cuentasPorCategoria)
             {
-                MostrarTituloSubrayado(grupo.Key, false, true);
+                MostrarTituloSubrayado(grupo.Key, false, true);// aqui le decimos el tipo de grupo de cuentas
                 foreach (var item in grupo)
                 {
                     string naturaleza = item.cuenta.EsDeudora ? "[Deudora  ]" : "[Acreedora]";
                     Console.WriteLine($"{numeroGlobal}. {naturaleza} {item.cuenta.Nombre}");
-                    indiceCuentas[numeroGlobal] = (item.cuenta, item.listaOriginal);
+                    indiceCuentas[numeroGlobal] = (item.cuenta, item.listaOriginal);// aqui almacenamos la cuenta y la lista original
                     numeroGlobal++;
                 }
                 Console.WriteLine();
@@ -99,7 +99,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             // Pedimos al usuario que seleccione el número de la cuenta a eliminar
             MostrarLineaDivisora(true, true);
             Console.WriteLine($"Seleccione el numero de la cuenta a eliminar (1-{todasCuentasUsuario.Count}):");
-            int seleccion = SolicitarEnteroConLimites(1, todasCuentasUsuario.Count);
+            int seleccion = SolicitarEnteroConLimites(1, todasCuentasUsuario.Count);//
 
             var cuentaSeleccionada = indiceCuentas[seleccion];
 

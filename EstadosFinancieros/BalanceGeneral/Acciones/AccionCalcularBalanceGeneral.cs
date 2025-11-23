@@ -27,7 +27,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             Console.WriteLine();
 
             // MARK: Cuentas seleccionadas para el cálculo
-            var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();
+            var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();// es la lista donde almacenamos las cuentas y sus valores para el cálculo
 
             bool continuar = true;
 
@@ -54,7 +54,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                     6 => CuentasBalanceGeneral.PasivoCortoPlazo,
                     7 => CuentasBalanceGeneral.CapitalContribuido,
                     8 => CuentasBalanceGeneral.CapitalGanado,
-                    _ => new List<Cuenta>()
+                    _ => new List<Cuenta>()// lista vacía por defecto
                 };
 
                 // Nombre amigable de la categoría para mostrar al usuario
@@ -82,10 +82,10 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
                 }
                 MostrarLineaDivisora(true, true);
 
-                Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");
-                int indiceCuenta = SolicitarEnteroConLimites(1, listaCuentas.Count) - 1;
+                Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");// count significa la cantidad de elementos en la lista
+                int indiceCuenta = SolicitarEnteroConLimites(1, listaCuentas.Count) - 1;// restamos 1 para obtener el índice correcto en la lista
 
-                Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
+                Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];// índice correcto en la lista 
 
                 // Solicitamos el valor numérico para la cuenta seleccionada
                 Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': ");

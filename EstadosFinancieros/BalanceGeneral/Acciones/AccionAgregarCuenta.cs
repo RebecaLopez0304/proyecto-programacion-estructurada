@@ -66,7 +66,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             }
 
             // Mostramos un resumen sencillo de la cuenta creada
-            string naturalezaTexto = esDeudora ? "Deudora (+)" : "Acreedora (-)";
+            string naturalezaTexto = esDeudora ? "Deudora (+)" : "Acreedora (-)";//
             Console.WriteLine($"Cuenta: {nombreCuenta}");
             Console.WriteLine($"Naturaleza: {naturalezaTexto}");
 

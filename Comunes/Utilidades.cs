@@ -38,10 +38,10 @@ namespace ProyectoProgramacion.Comunes
             {
                 try
                 {
-                    string entrada = Console.ReadLine() ?? string.Empty;
-                    string entradaUsuario = entrada.Trim();
+                    string entrada = Console.ReadLine() ?? string.Empty;// validamos la entrada del usuario
+                    string entradaUsuario = entrada.Trim();// eliminamos espacios en blanco al inicio y al final
 
-                    if (entradaUsuario.Length > 3)
+                    if (entradaUsuario.Length >= 3)
                     {
                         return entradaUsuario;
                     }
