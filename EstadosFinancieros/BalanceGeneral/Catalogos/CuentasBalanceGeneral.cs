@@ -8,6 +8,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
     {
         // MARK: Activos
         // cosas que posee la empresa y que tienen valor
+
+        // MARK: Activos circulantes
         public static List<Cuenta> ActivoCirculante = new()
         {
             // (+) Dinero en efectivo disponible en caja

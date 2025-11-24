@@ -18,8 +18,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             Console.Write("Ingrese el nombre de la empresa: ");
             string nombreEmpresa = SolicitarString();
 
-            Console.Write("Ingrese el mes del período (ej. Diciembre): ");
-            string mes = SolicitarString();
+            Console.Write("Ingrese el mes del período: ");
+            string mes = MesNumeroALetra();
 
             Console.Write("Ingrese el año del período (ej. 2024): ");
             int anio = SolicitarAnio();
@@ -135,15 +135,17 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             resultado.AppendLine("ACTIVOS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("ACTIVOS", true, true);
-            foreach (var item in cuentasSeleccionadas.Where(x => x.cuenta.EsDeudora &&
-                (CuentasBalanceGeneral.ActivoCirculante.Contains(x.cuenta) ||
-                 CuentasBalanceGeneral.ActivoFijo.Contains(x.cuenta) ||
-                 CuentasBalanceGeneral.ActivoIntangible.Contains(x.cuenta) ||
-                 CuentasBalanceGeneral.OtrosActivos.Contains(x.cuenta))))
+
+            // Where: Busca por coincidencia todas las cuentas que son de naturaleza deudora y pertenecen a alguna categoría de activos
+            foreach (var cuentaActivo in cuentasSeleccionadas.Where(cuentaSeleccionada => cuentaSeleccionada.cuenta.EsDeudora &&
+                (CuentasBalanceGeneral.ActivoCirculante.Contains(cuentaSeleccionada.cuenta) ||
+                 CuentasBalanceGeneral.ActivoFijo.Contains(cuentaSeleccionada.cuenta) ||
+                 CuentasBalanceGeneral.ActivoIntangible.Contains(cuentaSeleccionada.cuenta) ||
+                 CuentasBalanceGeneral.OtrosActivos.Contains(cuentaSeleccionada.cuenta))))
             {
-                int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+                int valorConSigno = cuentaActivo.cuenta.EsDeudora ? cuentaActivo.valor : -cuentaActivo.valor;
                 totalActivos += valorConSigno;
-                string linea = $"  {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                string linea = $"  {cuentaActivo.cuenta.Nombre}: {FormatearMoneda(cuentaActivo.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
@@ -156,14 +158,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             resultado.AppendLine("PASIVOS");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("PASIVOS", true, true);
-            foreach (var item in cuentasSeleccionadas.Where(x => !x.cuenta.EsDeudora &&
-                (CuentasBalanceGeneral.PasivoLargoPlazo.Contains(x.cuenta) ||
-                 CuentasBalanceGeneral.PasivoCortoPlazo.Contains(x.cuenta))))
+            foreach (var cuentaPasivo in cuentasSeleccionadas.Where(cuentaSeleccionada => !cuentaSeleccionada.cuenta.EsDeudora &&
+                (CuentasBalanceGeneral.PasivoLargoPlazo.Contains(cuentaSeleccionada.cuenta) ||
+                 CuentasBalanceGeneral.PasivoCortoPlazo.Contains(cuentaSeleccionada.cuenta))))
             {
                 // Para pasivos (normalmente acreedores) aplicamos signo negativo cuando corresponda
-                int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+                int valorConSigno = cuentaPasivo.cuenta.EsDeudora ? cuentaPasivo.valor : -cuentaPasivo.valor;
                 totalPasivos += valorConSigno;
-                string linea = $"  {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                string linea = $"  {cuentaPasivo.cuenta.Nombre}: {FormatearMoneda(cuentaPasivo.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
@@ -176,14 +178,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             resultado.AppendLine("CAPITAL CONTABLE");
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("CAPITAL CONTABLE", true, true);
-            foreach (var item in cuentasSeleccionadas.Where(x =>
-                CuentasBalanceGeneral.CapitalContribuido.Contains(x.cuenta) ||
-                CuentasBalanceGeneral.CapitalGanado.Contains(x.cuenta)))
+            foreach (var cuentaCapital in cuentasSeleccionadas.Where(cuentaSeleccionada =>
+                CuentasBalanceGeneral.CapitalContribuido.Contains(cuentaSeleccionada.cuenta) ||
+                CuentasBalanceGeneral.CapitalGanado.Contains(cuentaSeleccionada.cuenta)))
             {
                 // Para capital aplicamos signo negativo cuando la cuenta es acreedora
-                int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+                int valorConSigno = cuentaCapital.cuenta.EsDeudora ? cuentaCapital.valor : -cuentaCapital.valor;
                 totalCapital += valorConSigno;
-                string linea = $"  {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                string linea = $"  {cuentaCapital.cuenta.Nombre}: {FormatearMoneda(cuentaCapital.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }

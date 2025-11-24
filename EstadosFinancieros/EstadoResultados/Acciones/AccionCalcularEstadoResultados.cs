@@ -131,15 +131,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             MostrarTituloSubrayado("VENTAS", true, true);
 
             // Filtrar SOLO las cuentas de Ventas
-            foreach (var item in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.Ventas.Contains(x.cuenta)))
+            foreach (var cuentaConValor in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.Ventas.Contains(x.cuenta)))
             {
                 // Si es Ingreso (false) = ventas, suma
                 // Si es Egreso (true) = devolución/descuento, resta
-                int valorConSigno = item.cuenta.EsDeudora ? -item.valor : item.valor;
+                int valorConSigno = cuentaConValor.cuenta.EsDeudora ? -cuentaConValor.valor : cuentaConValor.valor;
                 totalVentas += valorConSigno;
 
-                string signo = item.cuenta.EsDeudora ? "(-)" : "(+)";
-                string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                string signo = cuentaConValor.cuenta.EsDeudora ? "(-)" : "(+)";
+                string linea = $"  {signo} {cuentaConValor.cuenta.Nombre}: {FormatearMoneda(cuentaConValor.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
@@ -154,15 +154,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("COSTO DE VENTAS", true, true);
 
-            foreach (var item in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.CostoDeVentas.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.CostoDeVentas.Contains(x.cuenta)))
             {
                 // Si es Egreso (true) = costo, suma
                 // Si es Ingreso (false) = descuento/devolución, resta
-                int valorConSigno = item.cuenta.EsDeudora ? item.valor : -item.valor;
+                int valorConSigno = cuentaSeleccionada.cuenta.EsDeudora ? cuentaSeleccionada.valor : -cuentaSeleccionada.valor;
                 totalCostoVentas += valorConSigno;
 
-                string signo = item.cuenta.EsDeudora ? "(+)" : "(-)";
-                string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                string signo = cuentaSeleccionada.cuenta.EsDeudora ? "(+)" : "(-)";
+                string linea = $"  {signo} {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
@@ -184,11 +184,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("GASTOS DE OPERACIÓN", true, true);
 
-            foreach (var item in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.GastoDeOperacion.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.GastoDeOperacion.Contains(x.cuenta)))
             {
                 // Gastos son Egresos, siempre suman
-                totalGastosOperacion += item.valor;
-                string linea = $"  (+) {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                totalGastosOperacion += cuentaSeleccionada.valor;
+                string linea = $"  (+) {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
@@ -203,11 +203,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("GASTOS DE ADMINISTRACIÓN", true, true);
 
-            foreach (var item in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.GastosAdministracion.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.GastosAdministracion.Contains(x.cuenta)))
             {
                 // Gastos son Egresos, siempre suman
-                totalGastosAdministracion += item.valor;
-                string linea = $"  (+) {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                totalGastosAdministracion += cuentaSeleccionada.valor;
+                string linea = $"  (+) {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }
@@ -230,15 +230,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("OTROS RESULTADOS FINANCIEROS", true, true);
 
-            foreach (var item in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.OtrosResultadosFinancieros.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.OtrosResultadosFinancieros.Contains(x.cuenta)))
             {
                 // Si es Egreso = gasto financiero, resta
                 // Si es Ingreso = producto financiero, suma
-                int valorConSigno = item.cuenta.EsDeudora ? -item.valor : item.valor;
+                int valorConSigno = cuentaSeleccionada.cuenta.EsDeudora ? -cuentaSeleccionada.valor : cuentaSeleccionada.valor;
                 totalOtrosResultados += valorConSigno;
 
-                string signo = item.cuenta.EsDeudora ? "(-)" : "(+)";
-                string linea = $"  {signo} {item.cuenta.Nombre}: {FormatearMoneda(item.valor)}";
+                string signo = cuentaSeleccionada.cuenta.EsDeudora ? "(-)" : "(+)";
+                string linea = $"  {signo} {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
                 Console.WriteLine(linea);
                 resultado.AppendLine(linea);
             }

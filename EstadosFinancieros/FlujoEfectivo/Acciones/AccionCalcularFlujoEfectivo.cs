@@ -262,34 +262,34 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             int subtotalEntradas = 0;
             int subtotalSalidas = 0;
 
-            foreach (var item in cuentasGrupo.OrderBy(c => c.Cuenta.Nombre))
+            foreach (var cuentaConValores in cuentasGrupo.OrderBy(c => c.Cuenta.Nombre))
             {
                // Para todas las cuentas: Valor2015 contiene el monto del movimiento
                // EsDeudora indica si es entrada (+) o salida (-)
                int entrada = 0;
                int salida = 0;
 
-               if (item.Valor2015 > 0)
+               if (cuentaConValores.Valor2015 > 0)
                {
-                  if (item.Cuenta.EsDeudora)
+                  if (cuentaConValores.Cuenta.EsDeudora)
                   {
-                     entrada = item.Valor2015;
+                     entrada = cuentaConValores.Valor2015;
                      subtotalEntradas += entrada;
                      totalEntradas += entrada;
                   }
                   else
                   {
-                     salida = item.Valor2015;
+                     salida = cuentaConValores.Valor2015;
                      subtotalSalidas += salida;
                      totalSalidas += salida;
                   }
                }
 
                string linea = string.Format("{0,-50} {1,15} {2,15} {3,15}",
-                  item.Cuenta.Nombre,
+                  cuentaConValores.Cuenta.Nombre,
                   entrada > 0 ? FormatearMonedaSinPrefijo(entrada) : "",
                   salida > 0 ? FormatearMonedaSinPrefijo(salida) : "",
-                  item.TipoActividad);
+                  cuentaConValores.TipoActividad);
 
                Console.WriteLine(linea);
                resultado.AppendLine(linea);
@@ -385,15 +385,15 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(lineaDepreciacion);
 
          // Procesar cuentas de operación
-         foreach (var item in cuentas.Where(c => c.TipoActividad == "AO"))
+         foreach (var cuentaOperacion in cuentas.Where(c => c.TipoActividad == "AO"))
          {
             // Para cuentas de operación, Valor2015 contiene el monto del movimiento
             // EsDeudora indica si es entrada (+) o salida (-)
-            int efecto = item.Cuenta.EsDeudora ? item.Valor2015 : -item.Valor2015;
+            int efecto = cuentaOperacion.Cuenta.EsDeudora ? cuentaOperacion.Valor2015 : -cuentaOperacion.Valor2015;
 
             flujoOperacion += efecto;
 
-            string linea = $"{item.Cuenta.Nombre,-45} {FormatearMoneda(efecto)}";
+            string linea = $"{cuentaOperacion.Cuenta.Nombre,-45} {FormatearMoneda(efecto)}";
             Console.WriteLine(linea);
             resultado.AppendLine(linea);
          }
@@ -412,14 +412,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(new string('-', 60));
          MostrarTituloSubrayado("B. ACTIVIDADES DE INVERSIÓN", true, true);
 
-         foreach (var item in cuentas.Where(c => c.TipoActividad == "AI"))
+         foreach (var cuentaInversion in cuentas.Where(c => c.TipoActividad == "AI"))
          {
             // EsDeudora indica si es entrada (+) o salida (-)
-            int efecto = item.Cuenta.EsDeudora ? item.Valor2015 : -item.Valor2015;
+            int efecto = cuentaInversion.Cuenta.EsDeudora ? cuentaInversion.Valor2015 : -cuentaInversion.Valor2015;
 
             flujoInversion += efecto;
 
-            string linea = $"{item.Cuenta.Nombre,-45} {FormatearMoneda(efecto)}";
+            string linea = $"{cuentaInversion.Cuenta.Nombre,-45} {FormatearMoneda(efecto)}";
             Console.WriteLine(linea);
             resultado.AppendLine(linea);
          }
@@ -447,14 +447,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(new string('-', 60));
          MostrarTituloSubrayado("C. ACTIVIDADES DE FINANCIAMIENTO", true, true);
 
-         foreach (var item in cuentas.Where(c => c.TipoActividad == "AF"))
+         foreach (var cuentaFinanciamiento in cuentas.Where(c => c.TipoActividad == "AF"))
          {
             // EsDeudora indica si es entrada (+) o salida (-)
-            int efecto = item.Cuenta.EsDeudora ? item.Valor2015 : -item.Valor2015;
+            int efecto = cuentaFinanciamiento.Cuenta.EsDeudora ? cuentaFinanciamiento.Valor2015 : -cuentaFinanciamiento.Valor2015;
 
             flujoFinanciamiento += efecto;
 
-            string linea = $"{item.Cuenta.Nombre,-45} {FormatearMoneda(efecto)}";
+            string linea = $"{cuentaFinanciamiento.Cuenta.Nombre,-45} {FormatearMoneda(efecto)}";
             Console.WriteLine(linea);
             resultado.AppendLine(linea);
          }

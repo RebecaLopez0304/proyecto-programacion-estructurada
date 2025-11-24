@@ -57,6 +57,67 @@ namespace ProyectoProgramacion.Comunes
             }
         }
 
+        public static string MesNumeroALetra()
+        {
+            int mesUsuario = SolicitarEnteroConLimites(1, 12);
+            string mesSeleccionado = "";
+
+            switch (mesUsuario)
+            {
+                case 1:
+                    mesSeleccionado = "Enero";
+                    break;
+                case 2:
+                    mesSeleccionado = "Febrero";
+                    break;
+
+                case 3:
+                    mesSeleccionado = "Marzo";
+                    break;
+
+                case 4:
+                    mesSeleccionado = "Abril";
+                    break;
+
+                case 5:
+                    mesSeleccionado = "Mayo";
+                    break;
+
+                case 6:
+                    mesSeleccionado = "Junio";
+                    break;
+
+                case 7:
+                    mesSeleccionado = "Julio";
+                    break;
+
+                case 8:
+                    mesSeleccionado = "Agosto";
+                    break;
+
+                case 9:
+                    mesSeleccionado = "Septiembre";
+                    break;
+
+                case 10:
+                    mesSeleccionado = "Octubre";
+                    break;
+
+                case 11:
+                    mesSeleccionado = "Noviembre";
+                    break;
+
+                case 12:
+                    mesSeleccionado = "Diciembre";
+                    break;
+
+                default:
+                    break;
+            }
+
+            return mesSeleccionado;
+        }
+
         // MARK: Solicitar un número entero positivo
         public static int SolicitarEntero()
         {
@@ -381,7 +442,7 @@ namespace ProyectoProgramacion.Comunes
         }
 
         // Sobrecarga para valores decimales
-        public static string FormatearMoneda(decimal valor)
+        public static string FormatearMonedaDecimal(decimal valor)
         {
             return $"NIO C$ {valor:N2}";
         }

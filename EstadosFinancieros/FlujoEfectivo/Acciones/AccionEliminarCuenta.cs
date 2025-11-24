@@ -59,11 +59,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             foreach (var grupo in cuentasPorCategoria)
             {
                 MostrarTituloSubrayado(grupo.Key, false, true);
-                foreach (var item in grupo)
+                foreach (var detalleCuenta in grupo)
                 {
-                    string naturaleza = item.cuenta.EsDeudora ? "[Entrada ]" : "[Salida  ]";
-                    Console.WriteLine($"{numeroGlobal}. {naturaleza} {item.cuenta.Nombre}");
-                    indiceCuentas[numeroGlobal] = (item.cuenta, item.listaOriginal);
+                    string naturaleza = detalleCuenta.cuenta.EsDeudora ? "[Entrada ]" : "[Salida  ]";
+                    Console.WriteLine($"{numeroGlobal}. {naturaleza} {detalleCuenta.cuenta.Nombre}");
+                    indiceCuentas[numeroGlobal] = (detalleCuenta.cuenta, detalleCuenta.listaOriginal);
                     numeroGlobal++;
                 }
                 Console.WriteLine();

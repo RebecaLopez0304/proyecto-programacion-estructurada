@@ -79,18 +79,21 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             // Mostramos las cuentas agrupadas por categoría para que el usuario elija cuál eliminar
             MostrarTituloSubrayado("Cuentas creadas por ti (eliminables)", true, true);
 
-            var cuentasPorCategoria = todasCuentasUsuario.GroupBy(x => x.categoria);
+            var cuentasPorCategoria = todasCuentasUsuario.GroupBy(cuentaUsuario => cuentaUsuario.categoria);
             int numeroGlobal = 1;// 
+
+            // el indice para las cuentas es para poder diferenciar las cuentas creadas por usuario 
+            // de las cuentas predeterminadas del sistema. 
             var indiceCuentas = new Dictionary<int, (Cuenta cuenta, List<Cuenta> listaOriginal)>();
 
-            foreach (var grupo in cuentasPorCategoria)
+            foreach (var cuentasAgrupadas in cuentasPorCategoria)
             {
-                MostrarTituloSubrayado(grupo.Key, false, true);// aqui le decimos el tipo de grupo de cuentas
-                foreach (var item in grupo)
+                MostrarTituloSubrayado(cuentasAgrupadas.Key, false, true);// aqui le decimos el tipo de grupo de cuentas
+                foreach (var cuentaUsuario in cuentasAgrupadas)
                 {
-                    string naturaleza = item.cuenta.EsDeudora ? "[Deudora  ]" : "[Acreedora]";
-                    Console.WriteLine($"{numeroGlobal}. {naturaleza} {item.cuenta.Nombre}");
-                    indiceCuentas[numeroGlobal] = (item.cuenta, item.listaOriginal);// aqui almacenamos la cuenta y la lista original
+                    string naturaleza = cuentaUsuario.cuenta.EsDeudora ? "[Deudora  ]" : "[Acreedora]";
+                    Console.WriteLine($"{numeroGlobal}. {naturaleza} {cuentaUsuario.cuenta.Nombre}");
+                    indiceCuentas[numeroGlobal] = (cuentaUsuario.cuenta, cuentaUsuario.listaOriginal);// aqui almacenamos la cuenta y la lista original
                     numeroGlobal++;
                 }
                 Console.WriteLine();
@@ -102,10 +105,11 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
             int seleccion = SolicitarEnteroConLimites(1, todasCuentasUsuario.Count);//
 
             var cuentaSeleccionada = indiceCuentas[seleccion];
+            string nombreCuentaSeleccionada = cuentaSeleccionada.cuenta.Nombre;
 
             // MARK: confirmacion de usuario
             // Solicitamos al usuario su confirmacion de eliminar la cuenta seleccionada.
-            int confirmacion = MostrarMenuConfirmacion($"\n¿Esta seguro que desea eliminar la cuenta '{cuentaSeleccionada.cuenta.Nombre}'?");
+            int confirmacion = MostrarMenuConfirmacion($"\n¿Esta seguro que desea eliminar la cuenta '{nombreCuentaSeleccionada}'?");
 
             if (confirmacion == 1)
             {

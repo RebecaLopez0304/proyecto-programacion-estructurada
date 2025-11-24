@@ -72,14 +72,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             var indiceCuentas = new Dictionary<int, (Cuenta cuenta, List<Cuenta> listaOriginal)>();
 
             // MARK: Mostrar cuentas agrupadas por categoría
-            foreach (var grupo in cuentasPorCategoria)
+            foreach (var cuentasAgrupadas in cuentasPorCategoria)
             {
-                MostrarTituloSubrayado(grupo.Key, false, true);
-                foreach (var item in grupo)
+                MostrarTituloSubrayado(cuentasAgrupadas.Key, false, true);
+                foreach (var cuentaUsuario in cuentasAgrupadas)
                 {
-                    string naturaleza = item.cuenta.EsDeudora ? "[Egreso  ]" : "[Ingreso ]";
-                    Console.WriteLine($"{numeroGlobal}. {naturaleza} {item.cuenta.Nombre}");
-                    indiceCuentas[numeroGlobal] = (item.cuenta, item.listaOriginal);
+                    string naturaleza = cuentaUsuario.cuenta.EsDeudora ? "[Egreso  ]" : "[Ingreso ]";
+                    Console.WriteLine($"{numeroGlobal}. {naturaleza} {cuentaUsuario.cuenta.Nombre}");
+                    indiceCuentas[numeroGlobal] = (cuentaUsuario.cuenta, cuentaUsuario.listaOriginal);
                     numeroGlobal++;
                 }
                 Console.WriteLine();
