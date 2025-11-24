@@ -21,12 +21,12 @@ namespace ProyectoProgramacion.Comunes
                     }
                     else
                     {
-                        Console.WriteLine("[ERROR] Debe ingresar un número entero positivo. Intente de nuevo\n\n");
+                        MostrarMensajeError("Debe ingresar un número positivo mayor que 0.", false, true);
                     }
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("[ERROR] Entrada no válida. Por favor, intente de nuevo.\n\n");
+                    MostrarMensajeError("Entrada no válida. Debe ingresar un número válido.", false, true);
                 }
             }
         }
@@ -38,21 +38,27 @@ namespace ProyectoProgramacion.Comunes
             {
                 try
                 {
-                    string entrada = Console.ReadLine() ?? string.Empty;// validamos la entrada del usuario
-                    string entradaUsuario = entrada.Trim();// eliminamos espacios en blanco al inicio y al final
+                    string entrada = Console.ReadLine() ?? string.Empty;
+                    string entradaUsuario = entrada.Trim();
 
+                    // Verifica que tenga al menos 3 caracteres
                     if (entradaUsuario.Length >= 3)
                     {
+                        // Si la entrada es solo números, lanza excepción para que lo capture el catch
+                        if (entradaUsuario.All(char.IsDigit))
+                        {
+                            throw new Exception("La entrada no puede ser solo números.");
+                        }
                         return entradaUsuario;
                     }
                     else
                     {
-                        Console.WriteLine("[Error] Tiene que ingresar mas de 3 caracteres");
+                        MostrarMensajeError("Debe ingresar al menos 3 caracteres.", false, true);
                     }
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("[ERROR] favor ingresar un valor valido");
+                    MostrarMensajeError("Entrada no válida. Debe ingresar un texto válido que no sea solo números.", false, true);
                 }
             }
         }
@@ -132,12 +138,12 @@ namespace ProyectoProgramacion.Comunes
                     }
                     else
                     {
-                        Console.WriteLine("[ERROR] Debe ingresar un numero entero positivo. Intente de nuevo\n\n");
+                        MostrarMensajeError("Debe ingresar un número entero positivo (mayor que 0).", false, true);
                     }
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("[ERROR] Entrada no valida. Por favor, intente de nuevo.\n\n");
+                    MostrarMensajeError("Entrada no válida. Debe ingresar un número entero válido.", false, true);
                 }
             }
         }
@@ -156,12 +162,12 @@ namespace ProyectoProgramacion.Comunes
                     }
                     else
                     {
-                        Console.WriteLine("[ERROR] Debe ingresar un numero entero no negativo (0 o mayor). Intente de nuevo\n\n");
+                        MostrarMensajeError("Debe ingresar un número entero no negativo (0 o mayor).", false, true);
                     }
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("[ERROR] Entrada no valida. Por favor, intente de nuevo.\n\n");
+                    MostrarMensajeError("Entrada no válida. Debe ingresar un número entero válido.", false, true);
                 }
             }
         }
@@ -183,12 +189,12 @@ namespace ProyectoProgramacion.Comunes
                     }
                     else
                     {
-                        Console.WriteLine($"[ERROR] Debe ingresar un numero entero entre {limiteInferior} y {limiteSuperior}. Intente de nuevo\n\n");
+                        MostrarMensajeError($"Debe ingresar un número entero entre {limiteInferior} y {limiteSuperior}.", false, true);
                     }
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("[ERROR] Entrada no valida. Por favor, intente de nuevo.\n\n");
+                    MostrarMensajeError("Entrada no válida. Debe ingresar un número entero válido.", false, true);
                 }
             }
         }
@@ -461,12 +467,14 @@ namespace ProyectoProgramacion.Comunes
                     }
                     else
                     {
-                        Console.Write("[ERROR] El año debe estar entre 1900 y 2100. Intente de nuevo: ");
+                        MostrarMensajeError("El año debe estar entre 1900 y 2100.", false, false);
+                        Console.Write("Intente de nuevo: ");
                     }
                 }
                 catch (Exception)
                 {
-                    Console.Write("[ERROR] Entrada no válida. Ingrese un año válido: ");
+                    MostrarMensajeError("Entrada no válida. Debe ingresar un año válido.", false, false);
+                    Console.Write("Intente de nuevo: ");
                 }
             }
         }

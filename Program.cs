@@ -39,7 +39,7 @@ namespace ProyectoProgramacion
                         Console.WriteLine("Saliendo del programa...");
                         break;
                     default:
-                        Console.WriteLine("Opcion no valida. Intente de nuevo.");
+                        MostrarMensajeError("Opción no válida. Intente de nuevo.");
                         break;
                 }
             }
@@ -49,7 +49,7 @@ namespace ProyectoProgramacion
         {
             MostrarLineaDivisoraConTexto("Menu Principal", true, true);
             MostrarTituloSubrayado("Seleccione una opcion (0-3):");
-            
+
             Console.WriteLine("1. Balance General");
             Console.WriteLine("2. Estado de Resultados");
             Console.WriteLine("3. Flujo de Efectivo");

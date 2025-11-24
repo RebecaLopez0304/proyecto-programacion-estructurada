@@ -53,7 +53,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                         break;
                     default:
                         // Opción inválida: aviso simple
-                        MostrarMensajeError("Opcion no valida. Intente de nuevo.");
+                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
                         break;
                 }
             }
@@ -82,7 +82,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
                         volver = true;
                         break;
                     default:
-                        MostrarMensajeError("Opcion no valida. Intente de nuevo.");
+                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
                         break;
                 }
             }

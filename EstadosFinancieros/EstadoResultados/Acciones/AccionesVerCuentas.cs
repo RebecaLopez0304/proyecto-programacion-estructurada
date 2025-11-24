@@ -67,7 +67,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
                         break;
 
                     default:
-                        MostrarMensajeError("Opción no válida. Intente de nuevo.");
+                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
                         break;
                 }
             }

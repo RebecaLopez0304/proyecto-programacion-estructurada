@@ -55,7 +55,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
                         break;
 
                     default:
-                        MostrarMensajeError("Opcion no valida. Intente de nuevo.");
+                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
                         break;
                 }
             }
