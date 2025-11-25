@@ -172,7 +172,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(totalCostoLinea);
             resultado.AppendLine();
 
-            // MARK: UTILIDAD BRUTA
+            // MARK: Formula
+            // UTILIDAD BRUTA
             int utilidadBruta = totalVentas - totalCostoVentas;
             string utilidadBrutaLinea = $"UTILIDAD BRUTA: {FormatearMoneda(utilidadBruta)}";
             Console.WriteLine(utilidadBrutaLinea);
@@ -217,7 +218,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(totalGastosAdminLinea);
             resultado.AppendLine();
 
-            // MARK: UTILIDAD DE OPERACIÓN
+            // MARK: Formula
+            // UTILIDAD DE OPERACIÓN
             int totalGastosOperacionCompletos = totalGastosOperacion + totalGastosAdministracion;
             int utilidadOperacion = utilidadBruta - totalGastosOperacionCompletos;
             string utilidadOpLinea = $"UTILIDAD DE OPERACIÓN: {FormatearMoneda(utilidadOperacion)}";
@@ -248,7 +250,8 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(totalOtrosLinea);
             resultado.AppendLine();
 
-            // MARK: RESULTADO FINAL (UTILIDAD O PÉRDIDA)
+            // MARK: Formula
+            // RESULTADO FINAL (UTILIDAD O PÉRDIDA)
             int resultadoFinal = utilidadOperacion + totalOtrosResultados;
 
             resultado.AppendLine("==============================================================");
