@@ -127,7 +127,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
             Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
 
             // Validar que la cuenta no haya sido agregada anteriormente
-            if (cuentasConValores.Any(c => c.Cuenta.Nombre == cuentaSeleccionada.Nombre))
+            if (cuentasConValores.Any(cuentaConValores => cuentaConValores.Cuenta.Nombre == cuentaSeleccionada.Nombre))
             {
                MostrarMensajeAdvertencia($"La cuenta '{cuentaSeleccionada.Nombre}' ya fue agregada anteriormente.", true, false);
                EsperarTecla();
@@ -236,9 +236,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine();
 
          // Encabezados de la tabla (simplificados ya que no usamos años ni variaciones)
-         string encabezado = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+         string encabezado = string.Format("{0,-50} {1,15} {2,15} {3,15}", // Esto es para que la tabla no rompa su estetica
             "Cuentas", "Efecto Neto en el Efectivo", "", "Clasificación");
-         string subEncabezado = string.Format("{0,-50} {1,15} {2,15} {3,15}",
+         string subEncabezado = string.Format("{0,-50} {1,15} {2,15} {3,15}", // Esto es para que la tabla no rompa su estetica
             "", "Entrada", "Salida", "");
 
          Console.WriteLine(encabezado);
@@ -326,9 +326,9 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          totalEntradas += depreciacionesAmortizaciones;
 
          // Agrupar y procesar por Activo, Pasivo y Capital
-         var cuentasActivo = cuentas.Where(c => c.TipoGrupo == "Activo").ToList();
-         var cuentasPasivo = cuentas.Where(c => c.TipoGrupo == "Pasivo").ToList();
-         var cuentasCapital = cuentas.Where(c => c.TipoGrupo == "Capital").ToList();
+         var cuentasActivo = cuentas.Where(cuenta => cuenta.TipoGrupo == "Activo").ToList();
+         var cuentasPasivo = cuentas.Where(cuenta => cuenta.TipoGrupo == "Pasivo").ToList();
+         var cuentasCapital = cuentas.Where(cuenta => cuenta.TipoGrupo == "Capital").ToList();
 
          ProcesarGrupo("Activo", cuentasActivo);
          ProcesarGrupo("Pasivo", cuentasPasivo);
@@ -385,7 +385,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(lineaDepreciacion);
 
          // Procesar cuentas de operación
-         foreach (var cuentaOperacion in cuentas.Where(c => c.TipoActividad == "AO"))
+         foreach (var cuentaOperacion in cuentas.Where(cuentaOperacion => cuentaOperacion.TipoActividad == "AO"))
          {
             // Para cuentas de operación, Valor2015 contiene el monto del movimiento
             // EsDeudora indica si es entrada (+) o salida (-)
@@ -412,7 +412,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(new string('-', 60));
          MostrarTituloSubrayado("B. ACTIVIDADES DE INVERSIÓN", true, true);
 
-         foreach (var cuentaInversion in cuentas.Where(c => c.TipoActividad == "AI"))
+         foreach (var cuentaInversion in cuentas.Where(cuentaInversion => cuentaInversion.TipoActividad == "AI"))
          {
             // EsDeudora indica si es entrada (+) o salida (-)
             int efecto = cuentaInversion.Cuenta.EsDeudora ? cuentaInversion.Valor2015 : -cuentaInversion.Valor2015;
@@ -447,7 +447,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
          resultado.AppendLine(new string('-', 60));
          MostrarTituloSubrayado("C. ACTIVIDADES DE FINANCIAMIENTO", true, true);
 
-         foreach (var cuentaFinanciamiento in cuentas.Where(c => c.TipoActividad == "AF"))
+         foreach (var cuentaFinanciamiento in cuentas.Where(cuentaFinanciamiento => cuentaFinanciamiento.TipoActividad == "AF"))
          {
             // EsDeudora indica si es entrada (+) o salida (-)
             int efecto = cuentaFinanciamiento.Cuenta.EsDeudora ? cuentaFinanciamiento.Valor2015 : -cuentaFinanciamiento.Valor2015;

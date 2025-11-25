@@ -131,7 +131,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             MostrarTituloSubrayado("VENTAS", true, true);
 
             // Filtrar SOLO las cuentas de Ventas
-            foreach (var cuentaConValor in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.Ventas.Contains(x.cuenta)))
+            foreach (var cuentaConValor in cuentasSeleccionadas.Where(cuentaConValor => CuentasEstadoResultados.Ventas.Contains(cuentaConValor.cuenta)))
             {
                 // Si es Ingreso (false) = ventas, suma
                 // Si es Egreso (true) = devolución/descuento, resta
@@ -154,7 +154,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("COSTO DE VENTAS", true, true);
 
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.CostoDeVentas.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.CostoDeVentas.Contains(cuentaSeleccionada.cuenta)))
             {
                 // Si es Egreso (true) = costo, suma
                 // Si es Ingreso (false) = descuento/devolución, resta
@@ -184,7 +184,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("GASTOS DE OPERACIÓN", true, true);
 
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.GastoDeOperacion.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.GastoDeOperacion.Contains(cuentaSeleccionada.cuenta)))
             {
                 // Gastos son Egresos, siempre suman
                 totalGastosOperacion += cuentaSeleccionada.valor;
@@ -203,7 +203,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("GASTOS DE ADMINISTRACIÓN", true, true);
 
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.GastosAdministracion.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.GastosAdministracion.Contains(cuentaSeleccionada.cuenta)))
             {
                 // Gastos son Egresos, siempre suman
                 totalGastosAdministracion += cuentaSeleccionada.valor;
@@ -230,7 +230,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
             resultado.AppendLine(new string('-', 60));
             MostrarTituloSubrayado("OTROS RESULTADOS FINANCIEROS", true, true);
 
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(x => CuentasEstadoResultados.OtrosResultadosFinancieros.Contains(x.cuenta)))
+            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.OtrosResultadosFinancieros.Contains(cuentaSeleccionada.cuenta)))
             {
                 // Si es Egreso = gasto financiero, resta
                 // Si es Ingreso = producto financiero, suma
