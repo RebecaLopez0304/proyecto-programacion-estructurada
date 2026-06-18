@@ -1,104 +1,82 @@
 using ProyectoProgramacion.Comunes;
-using static ProyectoProgramacion.Comunes.Utilidades;
 using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones;
+using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos;
+using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo;
+
+/// <summary>
+/// Módulo del Flujo de Efectivo. Coordina el menú y reparte el trabajo entre las acciones:
+/// ver, agregar, eliminar, buscar, modificar y calcular cuentas.
+/// </summary>
+public static class FlujoEfectivo
 {
+    #region Menú principal
 
-    //===========================
-    //     Clase Flujo de Efectivo
-    //===========================
-
-    public static class FlujoEfectivo
+    /// <summary>Muestra el menú del módulo hasta que el usuario elige volver (0).</summary>
+    public static void Ejecutar()
     {
-        // MARK: - Método Principal de Ejecución
+        bool volver = false;
 
-        public static void Ejecutar()
+        while (!volver)
         {
-            // Bandera para mantener el menú hasta que el usuario pida salir
-            bool volver = false;
-
-            // Bucle principal del módulo: muestra el menú repetidamente
-            while (!volver)
+            switch (MostrarMenuPrincipal())
             {
-                // Pide la opción al usuario
-                int opcion = MostrarMenuPrincipal();
-
-                // MARK: Procesamiento de Opciones del Menú Principal
-
-                // Ejecuta la acción según la opción elegida
-                switch (opcion)
-                {
-                    case 1:
-                        // Ver listas de cuentas
-                        VerCuentas();
-                        break;
-                    case 2:
-                        // Agregar una cuenta nueva
-                        AccionAgregarCuenta.Ejecutar();
-                        break;
-                    case 3:
-                        // Eliminar una cuenta creada por el usuario
-                        AccionEliminarCuenta.Ejecutar();
-                        break;
-                    case 4:
-                        // Calcular el flujo de efectivo
-                        AccionCalcularFlujoEfectivo.Ejecutar();
-                        break;
-                    case 0:
-                        // Salir del módulo
-                        volver = true;
-                        Console.WriteLine("\n\n");
-                        break;
-                    default:
-                        // Opción inválida: aviso simple
-                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
-                        break;
-                }
-            }
-
-
-        }
-
-        // MARK: - Método para Ver Cuentas
-
-        private static void VerCuentas()
-        {
-            bool volver = false;
-            while (!volver)
-            {
-                int opcion = MostrarMenuVerCuentas();
-
-                switch (opcion)
-                {
-                    case 1:
-                        AccionesVerCuentas.MostrarTodasCuentasFlujoEfectivo();
-                        break;
-                    case 2:
-                        AccionesVerCuentas.MostrarCuentasPorActividad();
-                        break;
-                    case 0:
-                        volver = true;
-                        break;
-                    default:
-                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
-                        break;
-                }
-            }
-        }
-
-        // MARK: - Método para Mostrar Sección
-
-        public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
-        {
-            MostrarTituloSubrayado(titulo, true);
-
-            foreach (var cuenta in listaDeCuentas)
-            {
-                string naturaleza = cuenta.EsDeudora ? "[ Entrada   ]" : "[ Salida    ]";
-                Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
+                case 1: VerCuentas(); break;
+                case 2: AccionAgregarCuenta.Ejecutar(); break;
+                case 3: AccionesCuentas.EliminarCuenta(ObtenerCatalogo()); break;
+                case 4: AccionesCuentas.BuscarCuenta(ObtenerCatalogo()); break;
+                case 5: AccionesCuentas.ModificarCuenta(ObtenerCatalogo()); break;
+                case 6: AccionCalcularFlujoEfectivo.Ejecutar(); break;
+                case 0: volver = true; break;
             }
         }
     }
+
+    #endregion
+
+    #region Catálogo de cuentas
+
+    /// <summary>Devuelve todas las listas del Flujo de Efectivo junto al nombre de su actividad.</summary>
+    public static List<(string grupo, List<Cuenta> lista)> ObtenerCatalogo() => new()
+    {
+        ("Actividades de Operación", CuentasFlujoEfectivo.ActividadesOperacion),
+        ("Actividades de Inversión", CuentasFlujoEfectivo.ActividadesInversion),
+        ("Actividades de Financiamiento", CuentasFlujoEfectivo.ActividadesFinanciamiento),
+    };
+
+    #endregion
+
+    #region Ver cuentas
+
+    /// <summary>Submenú para ver las cuentas (todas o por actividad).</summary>
+    private static void VerCuentas()
+    {
+        bool volver = false;
+
+        while (!volver)
+        {
+            switch (MostrarMenuVerCuentas())
+            {
+                case 1: AccionesVerCuentas.MostrarTodasCuentasFlujoEfectivo(); break;
+                case 2: AccionesVerCuentas.MostrarCuentasPorActividad(); break;
+                case 0: volver = true; break;
+            }
+        }
+    }
+
+    /// <summary>Imprime una sección con su título y las cuentas indicadas (entrada/salida + nombre).</summary>
+    public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
+    {
+        MostrarTituloSubrayado(titulo, true);
+
+        foreach (Cuenta cuenta in listaDeCuentas)
+        {
+            string naturaleza = cuenta.EsDeudora ? "[ Entrada   ]" : "[ Salida    ]";
+            Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
+        }
+    }
+
+    #endregion
 }

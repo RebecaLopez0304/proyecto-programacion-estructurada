@@ -1,84 +1,44 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.FlujoEfectivo;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
-using ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones;
+
+/// <summary>Acción para que el usuario agregue una cuenta nueva a una actividad del Flujo de Efectivo.</summary>
+public static class AccionAgregarCuenta
 {
-    /*
-    ===========================
-        Acción Agregar Cuenta - Flujo de Efectivo
-    ===========================
-    */
-    public static class AccionAgregarCuenta
+    public static void Ejecutar()
     {
-        // MARK: - Método Principal
+        // La actividad (1-3) coincide en orden con ObtenerCatalogo(), por eso usamos [actividad - 1].
+        int actividad = MostrarMenuActividades();
 
-        public static void Ejecutar()
+        Console.WriteLine("\nIngrese el nombre de la nueva cuenta:");
+        string nombre = SolicitarString();
+
+        bool esEntrada = MostrarMenuTipoMovimiento() == 1; // Entrada (deudora) / Salida (acreedora)
+
+        // En Flujo de Efectivo cada cuenta también indica a qué grupo del Balance General pertenece.
+        Console.WriteLine("\n¿A qué grupo del Balance General pertenece esta cuenta?");
+        Console.WriteLine("1. Activo");
+        Console.WriteLine("2. Pasivo");
+        Console.WriteLine("3. Capital Contable");
+        string tipoGrupoBalance = SolicitarEnteroConLimites(1, 3) switch
         {
-            // MARK: Solicitud de Datos de la Cuenta
+            1 => "Activo",
+            2 => "Pasivo",
+            _ => "Capital",
+        };
 
-            // Pedimos al usuario a qué actividad pertenece la nueva cuenta
-            int actividad = MostrarMenuActividades();
+        var (grupo, lista) = ObtenerCatalogo()[actividad - 1];
 
-            // Pedimos el nombre de la cuenta
-            Console.WriteLine();
-            Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
-            string nombreCuenta = SolicitarString();
+        Cuenta nueva = Cuenta.Crear(nombre, esEntrada, tipoGrupoBalance);
+        nueva.EsCreadoPorUsuario = true;
+        lista.Add(nueva);
 
-            // Pedimos el tipo de movimiento
-            int tipoMovimientoOpcion = MostrarMenuTipoMovimiento();
-            bool esDeudora = tipoMovimientoOpcion == 1; // Entrada [+] -> EsDeudora = true
-
-            // Pedimos el grupo del Balance General
-            Console.WriteLine();
-            Console.WriteLine("¿A qué grupo del Balance General pertenece esta cuenta?");
-            Console.WriteLine("1. Activo");
-            Console.WriteLine("2. Pasivo");
-            Console.WriteLine("3. Capital Contable");
-            int grupoOpcion = SolicitarEnteroConLimites(1, 3);
-
-            string tipoGrupoBalance = grupoOpcion switch
-            {
-                1 => "Activo",
-                2 => "Pasivo",
-                3 => "Capital",
-                _ => ""
-            };
-
-            // MARK: Creación y Almacenamiento de Cuenta
-
-            // Crear la nueva cuenta y marcarla como creada por el usuario
-            Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora, tipoGrupoBalance)
-            {
-                EsCreadoPorUsuario = true
-            };
-
-            // Según la actividad elegida, agregamos la cuenta a la lista correspondiente
-            switch (actividad)
-            {
-                case 1:
-                    CuentasFlujoEfectivo.ActividadesOperacion.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Actividades de Operación", true, false);
-                    break;
-                case 2:
-                    CuentasFlujoEfectivo.ActividadesInversion.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Actividades de Inversión", true, false);
-                    break;
-                case 3:
-                    CuentasFlujoEfectivo.ActividadesFinanciamiento.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Actividades de Financiamiento", true, false);
-                    break;
-            }
-
-            // Mostramos un resumen sencillo de la cuenta creada
-            string naturalezaTexto = esDeudora ? "Entrada [+]" : "Salida [-]";
-            Console.WriteLine($"Cuenta: {nombreCuenta}");
-            Console.WriteLine($"Tipo de Movimiento: {naturalezaTexto}");
-            Console.WriteLine($"Grupo Balance General: {tipoGrupoBalance}");
-
-            // Pausa para que el usuario lea el mensaje
-            EsperarTecla();
-        }
+        MostrarMensajeExito($"Cuenta '{nombre}' agregada exitosamente a {grupo}.", true, false);
+        Console.WriteLine($"Tipo de Movimiento: {(esEntrada ? "Entrada [+]" : "Salida [-]")}");
+        Console.WriteLine($"Grupo Balance General: {tipoGrupoBalance}");
+        EsperarTecla();
     }
 }

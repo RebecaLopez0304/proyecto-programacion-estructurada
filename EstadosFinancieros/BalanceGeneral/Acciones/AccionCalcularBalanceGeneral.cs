@@ -1,266 +1,184 @@
-using ProyectoProgramacion.Comunes;
-using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
-using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 using System.Text;
+using ProyectoProgramacion.Comunes;
+using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.BalanceGeneral;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
+
+/// <summary>
+/// Pide al usuario cuentas con sus valores, calcula el Balance General y comprueba la
+/// ecuación contable (Activos = Pasivos + Capital).
+/// </summary>
+public static class AccionCalcularBalanceGeneral
 {
-    // MARK: Calculo de Balance General
-    public static class AccionCalcularBalanceGeneral
+    /// <summary>Una cuenta elegida por el usuario con su valor y la sección a la que pertenece.</summary>
+    private record CuentaValor(Cuenta Cuenta, int Valor, char Seccion); // 'A' = Activo, 'P' = Pasivo, 'C' = Capital
+
+    #region Flujo principal
+
+    public static void Ejecutar()
     {
-        // Método principal que guía al usuario para ingresar valores y calcular el balance
-        public static void Ejecutar()
+        MostrarLineaDivisoraConTexto("Calculo de Balance General", true, true);
+
+        Console.Write("Ingrese el nombre de la empresa: ");
+        string nombreEmpresa = SolicitarString();
+
+        Console.Write("Ingrese el mes del período: ");
+        string mes = MesNumeroALetra();
+
+        Console.Write("Ingrese el año del período (ej. 2024): ");
+        int anio = SolicitarAnio();
+
+        List<CuentaValor> seleccionadas = SeleccionarCuentas();
+
+        if (seleccionadas.Count == 0)
         {
-            MostrarLineaDivisoraConTexto("Calculo de Balance General", true, true);
-
-            // Solicitar datos de la empresa y período
-            Console.Write("Ingrese el nombre de la empresa: ");
-            string nombreEmpresa = SolicitarString();
-
-            Console.Write("Ingrese el mes del período: ");
-            string mes = MesNumeroALetra();
-
-            Console.Write("Ingrese el año del período (ej. 2024): ");
-            int anio = SolicitarAnio();
-
-            Console.WriteLine();
-
-            // MARK: Cuentas seleccionadas para el cálculo
-            var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();// es la lista donde almacenamos las cuentas y sus valores para el cálculo
-
-            bool continuar = true;
-
-            // Bucle para permitir agregar varias cuentas al cálculo
-            while (continuar)
-            {
-                // El usuario elige una categoría; 0 indica terminar
-                int categoria = MostrarMenuCategoriasConSalida();
-
-                if (categoria == 0)
-                {
-                    continuar = false;
-                    continue;
-                }
-
-                // Selecciona la lista de cuentas según la categoría elegida
-                List<Cuenta> listaCuentas = categoria switch
-                {
-                    1 => CuentasBalanceGeneral.ActivoCirculante,
-                    2 => CuentasBalanceGeneral.ActivoFijo,
-                    3 => CuentasBalanceGeneral.ActivoIntangible,
-                    4 => CuentasBalanceGeneral.OtrosActivos,
-                    5 => CuentasBalanceGeneral.PasivoLargoPlazo,
-                    6 => CuentasBalanceGeneral.PasivoCortoPlazo,
-                    7 => CuentasBalanceGeneral.CapitalContribuido,
-                    8 => CuentasBalanceGeneral.CapitalGanado,
-                    _ => new List<Cuenta>()// lista vacía por defecto
-                };
-
-                // Nombre amigable de la categoría para mostrar al usuario
-                string nombreCategoria = categoria switch
-                {
-                    1 => "Activo Circulante",
-                    2 => "Activo Fijo",
-                    3 => "Activo Intangible",
-                    4 => "Otros Activos",
-                    5 => "Pasivo a Largo Plazo",
-                    6 => "Pasivo a Corto Plazo",
-                    7 => "Capital Contribuido",
-                    8 => "Capital Ganado",
-                    _ => ""
-                };
-
-
-                // MARK: Selección de cuenta y valor
-                // Mostramos las cuentas de la categoría y pedimos al usuario que elija una
-                MostrarTituloSubrayado($"Cuentas de {nombreCategoria}", true, true);
-                for (int i = 0; i < listaCuentas.Count; i++)
-                {
-                    string naturaleza = listaCuentas[i].EsDeudora ? "[Deudora  ]" : "[Acreedora]";
-                    Console.WriteLine($"{i + 1}. {naturaleza} {listaCuentas[i].Nombre}");
-                }
-                MostrarLineaDivisora(true, true);
-
-                Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");// count significa la cantidad de elementos en la lista
-                int indiceCuenta = SolicitarEnteroConLimites(1, listaCuentas.Count) - 1;// restamos 1 para obtener el índice correcto en la lista
-
-                Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];// índice correcto en la lista 
-
-                // Solicitamos el valor numérico para la cuenta seleccionada
-                Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': ");
-                int valor = SolicitarEntero();
-
-                // Agregamos la pareja (cuenta, valor) a la lista de cálculo
-                cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
-
-                MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
-
-                // Preguntamos si desea continuar agregando cuentas
-                int opcion = MostrarMenuContinuar();
-
-                if (opcion == 2)
-                {
-                    continuar = false;
-                }
-            }
-
-            // MARK: Validación de cuentas seleccionadas
-            // Si no hay cuentas, avisamos y salimos
-            if (cuentasSeleccionadas.Count == 0)
-            {
-                MostrarMensajeAdvertencia("No se agregaron cuentas al calculo.", true, false);
-                EsperarTecla();
-                return;
-            }
-
-            // Creamos el reporte en pantalla y en memoria
-            MostrarLineaDivisoraConTexto("Resultado del Balance General", true, true);
-
-            // MARK: Reporte en consola
-            var resultado = new StringBuilder();
-            resultado.AppendLine("==============================================================");
-            resultado.AppendLine($"                    {nombreEmpresa.ToUpper()}");
-            resultado.AppendLine("                    BALANCE GENERAL");
-            resultado.AppendLine($"                Al {mes} de {anio}");
-            resultado.AppendLine($"          (Expresado en Córdobas - NIO C$)");
-            resultado.AppendLine("==============================================================");
-            resultado.AppendLine();
-
-            int totalActivos = 0;
-            int totalPasivos = 0;
-            int totalCapital = 0;
-
-            // MARK: Activos
-            resultado.AppendLine("ACTIVOS");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("ACTIVOS", true, true);
-
-            // Where: Busca por coincidencia todas las cuentas que son de naturaleza deudora y pertenecen a alguna categoría de activos
-            foreach (var cuentaActivo in cuentasSeleccionadas.Where(cuentaSeleccionada => cuentaSeleccionada.cuenta.EsDeudora &&
-                (CuentasBalanceGeneral.ActivoCirculante.Contains(cuentaSeleccionada.cuenta) ||
-                 CuentasBalanceGeneral.ActivoFijo.Contains(cuentaSeleccionada.cuenta) ||
-                 CuentasBalanceGeneral.ActivoIntangible.Contains(cuentaSeleccionada.cuenta) ||
-                 CuentasBalanceGeneral.OtrosActivos.Contains(cuentaSeleccionada.cuenta))))
-            {
-                int valorConSigno = cuentaActivo.cuenta.EsDeudora ? cuentaActivo.valor : -cuentaActivo.valor;
-                totalActivos += valorConSigno;
-                string linea = $"  {cuentaActivo.cuenta.Nombre}: {FormatearMoneda(cuentaActivo.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-            string totalActivosLinea = $"TOTAL ACTIVOS: {FormatearMoneda(totalActivos)}";
-            Console.WriteLine(totalActivosLinea);
-            resultado.AppendLine(totalActivosLinea);
-            resultado.AppendLine();
-
-            // MARK: Pasivos
-            resultado.AppendLine("PASIVOS");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("PASIVOS", true, true);
-            foreach (var cuentaPasivo in cuentasSeleccionadas.Where(cuentaSeleccionada => !cuentaSeleccionada.cuenta.EsDeudora &&
-                (CuentasBalanceGeneral.PasivoLargoPlazo.Contains(cuentaSeleccionada.cuenta) ||
-                 CuentasBalanceGeneral.PasivoCortoPlazo.Contains(cuentaSeleccionada.cuenta))))
-            {
-                // Para pasivos (normalmente acreedores) aplicamos signo negativo cuando corresponda
-                int valorConSigno = cuentaPasivo.cuenta.EsDeudora ? cuentaPasivo.valor : -cuentaPasivo.valor;
-                totalPasivos += valorConSigno;
-                string linea = $"  {cuentaPasivo.cuenta.Nombre}: {FormatearMoneda(cuentaPasivo.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-            string totalPasivosLinea = $"TOTAL PASIVOS: {FormatearMoneda(totalPasivos)}";
-            Console.WriteLine(totalPasivosLinea);
-            resultado.AppendLine(totalPasivosLinea);
-            resultado.AppendLine();
-
-            // MARK: Capital
-            resultado.AppendLine("CAPITAL CONTABLE");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("CAPITAL CONTABLE", true, true);
-            foreach (var cuentaCapital in cuentasSeleccionadas.Where(cuentaSeleccionada =>
-                CuentasBalanceGeneral.CapitalContribuido.Contains(cuentaSeleccionada.cuenta) ||
-                CuentasBalanceGeneral.CapitalGanado.Contains(cuentaSeleccionada.cuenta)))
-            {
-                // Para capital aplicamos signo negativo cuando la cuenta es acreedora
-                int valorConSigno = cuentaCapital.cuenta.EsDeudora ? cuentaCapital.valor : -cuentaCapital.valor;
-                totalCapital += valorConSigno;
-                string linea = $"  {cuentaCapital.cuenta.Nombre}: {FormatearMoneda(cuentaCapital.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-            string totalCapitalLinea = $"TOTAL CAPITAL CONTABLE: {FormatearMoneda(totalCapital)}";
-            Console.WriteLine(totalCapitalLinea);
-            resultado.AppendLine(totalCapitalLinea);
-            resultado.AppendLine();
-
-            // MARK: Comprobación de la ecuación contable
-            // Comprobamos la ecuación contable
-            int totalPasivoMasCapital = totalPasivos + totalCapital;
-
-            resultado.AppendLine("==============================================================");
-            resultado.AppendLine("                    ECUACION CONTABLE");
-            resultado.AppendLine("==============================================================");
-            MostrarLineaDivisoraConTexto("Ecuacion Contable", true, true);
-
-            string activosLinea = $"Activos           : {FormatearMoneda(totalActivos)}";
-            string pasivoCapitalLinea = $"Pasivos + Capital : {FormatearMoneda(totalPasivoMasCapital)}";
-            Console.WriteLine(activosLinea);
-            Console.WriteLine(pasivoCapitalLinea);
-            resultado.AppendLine(activosLinea);
-            resultado.AppendLine(pasivoCapitalLinea);
-            MostrarLineaDivisora(true, false);
-            resultado.AppendLine(new string('-', 60));
-
-            // Convertimos a decimal para comparar con una tolerancia pequeña (por centavos)
-            bool balanceado = Math.Abs((decimal)totalActivos - (decimal)totalPasivoMasCapital) < 0.01m;
-
-            // MARK: Resultado de la comprobación
-            if (balanceado)
-            {
-                // Mensaje amigable cuando el balance cuadra
-                MostrarMensajeExito("BALANCE GENERAL CUADRADO", true, false);
-                Console.WriteLine("  La ecuacion contable esta balanceada:");
-                Console.WriteLine("  Activos = Pasivos + Capital");
-                resultado.AppendLine();
-                resultado.AppendLine("[RESULTADO] BALANCE GENERAL CUADRADO");
-                resultado.AppendLine("La ecuacion contable esta balanceada:");
-                resultado.AppendLine("Activos = Pasivos + Capital");
-            }
-            else
-            {
-                // Mensaje claro cuando hay diferencia
-                int diferencia = totalActivos - totalPasivoMasCapital;
-                MostrarMensajeError("BALANCE GENERAL DESCUADRADO", true, false);
-                Console.WriteLine($"  Diferencia: {FormatearMoneda(Math.Abs(diferencia))}");
-                Console.WriteLine(diferencia > 0
-                    ? "  Hay mas activos que pasivos + capital"
-                    : "  Hay mas pasivos + capital que activos");
-                resultado.AppendLine();
-                resultado.AppendLine("[ADVERTENCIA] BALANCE GENERAL DESCUADRADO");
-                resultado.AppendLine($"Diferencia: {FormatearMoneda(Math.Abs(diferencia))}");
-                resultado.AppendLine(diferencia > 0
-                    ? "Hay mas activos que pasivos + capital"
-                    : "Hay mas pasivos + capital que activos");
-            }
-
-            resultado.AppendLine();
-            resultado.AppendLine("==============================================================");
-
-            // Ofrecemos guardar el resultado en un archivo
-            if (PreguntarSiGuardarResultado())
-            {
-                string rutaArchivo = GuardarResultadoEnArchivo("balance-general", resultado.ToString());
-
-                if (!string.IsNullOrEmpty(rutaArchivo))
-                {
-                    MostrarMensajeExito($"Resultado guardado exitosamente en:", true, false);
-                    Console.WriteLine($"  {rutaArchivo}");
-                }
-            }
-
-            // Pausa final para que el usuario revise los datos
+            MostrarMensajeAdvertencia("No se agregaron cuentas al calculo.", true, false);
             EsperarTecla();
+            return;
+        }
+
+        GenerarReporte(nombreEmpresa, mes, anio, seleccionadas);
+        EsperarTecla();
+    }
+
+    #endregion
+
+    #region Selección de cuentas
+
+    /// <summary>Permite al usuario elegir varias cuentas (con su valor) hasta que decide finalizar.</summary>
+    private static List<CuentaValor> SeleccionarCuentas()
+    {
+        var seleccionadas = new List<CuentaValor>();
+        var catalogo = ObtenerCatalogo();
+        bool continuar = true;
+
+        while (continuar)
+        {
+            int categoria = MostrarMenuCategoriasConSalida(); // 0 = finalizar, 1-8 = categoría
+            if (categoria == 0) break;
+
+            var (nombreGrupo, listaCuentas) = catalogo[categoria - 1];
+
+            // Categorías 1-4 = Activo, 5-6 = Pasivo, 7-8 = Capital
+            char seccion = categoria <= 4 ? 'A' : categoria <= 6 ? 'P' : 'C';
+
+            MostrarTituloSubrayado($"Cuentas de {nombreGrupo}", true, true);
+            for (int i = 0; i < listaCuentas.Count; i++)
+            {
+                string naturaleza = listaCuentas[i].EsDeudora ? "[Deudora  ]" : "[Acreedora]";
+                Console.WriteLine($"{i + 1}. {naturaleza} {listaCuentas[i].Nombre}");
+            }
+            MostrarLineaDivisora(true, true);
+
+            Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");
+            Cuenta cuenta = listaCuentas[SolicitarEnteroConLimites(1, listaCuentas.Count) - 1];
+
+            Console.Write($"Ingrese el valor para '{cuenta.Nombre}': ");
+            int valor = SolicitarEntero();
+
+            seleccionadas.Add(new CuentaValor(cuenta, valor, seccion));
+            MostrarMensajeExito($"Cuenta '{cuenta.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
+
+            continuar = MostrarMenuContinuar() == 1;
+        }
+
+        return seleccionadas;
+    }
+
+    #endregion
+
+    #region Reporte y ecuación contable
+
+    /// <summary>Imprime el reporte en pantalla, lo guarda en texto y comprueba la ecuación contable.</summary>
+    private static void GenerarReporte(string nombreEmpresa, string mes, int anio, List<CuentaValor> seleccionadas)
+    {
+        MostrarLineaDivisoraConTexto("Resultado del Balance General", true, true);
+
+        var reporte = new StringBuilder();
+        reporte.AppendLine(new string('=', 62));
+        reporte.AppendLine($"                    {nombreEmpresa.ToUpper()}");
+        reporte.AppendLine("                    BALANCE GENERAL");
+        reporte.AppendLine($"                Al {mes} de {anio}");
+        reporte.AppendLine("          (Expresado en Córdobas - NIO C$)");
+        reporte.AppendLine(new string('=', 62));
+        reporte.AppendLine();
+
+        int totalActivos = ImprimirSeccion("ACTIVOS", seleccionadas, 'A', reporte);
+        int totalPasivos = ImprimirSeccion("PASIVOS", seleccionadas, 'P', reporte);
+        int totalCapital = ImprimirSeccion("CAPITAL CONTABLE", seleccionadas, 'C', reporte);
+
+        ComprobarEcuacion(totalActivos, totalPasivos + totalCapital, reporte);
+
+        if (PreguntarSiGuardarResultado())
+        {
+            string ruta = GuardarResultadoEnArchivo("balance-general", reporte.ToString());
+            MostrarMensajeExito($"Resultado guardado en: {ruta}", true, false);
         }
     }
+
+    /// <summary>
+    /// Imprime las cuentas de una sección (en pantalla y en el reporte) y devuelve su total.
+    /// El signo de cada cuenta lo decide ella misma con <see cref="Cuenta.ValorConSigno"/> (polimorfismo).
+    /// </summary>
+    private static int ImprimirSeccion(string titulo, List<CuentaValor> seleccionadas, char seccion, StringBuilder reporte)
+    {
+        reporte.AppendLine(titulo);
+        reporte.AppendLine(new string('-', 60));
+        MostrarTituloSubrayado(titulo, true, true);
+
+        int total = 0;
+        foreach (CuentaValor item in seleccionadas.Where(c => c.Seccion == seccion))
+        {
+            total += item.Cuenta.ValorConSigno(item.Valor);
+            string linea = $"  {item.Cuenta.Nombre}: {FormatearMoneda(item.Valor)}";
+            Console.WriteLine(linea);
+            reporte.AppendLine(linea);
+        }
+
+        string totalLinea = $"TOTAL {titulo}: {FormatearMoneda(total)}";
+        Console.WriteLine(totalLinea);
+        reporte.AppendLine(totalLinea);
+        reporte.AppendLine();
+        return total;
+    }
+
+    /// <summary>Compara Activos contra Pasivos + Capital e informa si el balance cuadra.</summary>
+    private static void ComprobarEcuacion(int totalActivos, int totalPasivoMasCapital, StringBuilder reporte)
+    {
+        reporte.AppendLine(new string('=', 62));
+        reporte.AppendLine("                    ECUACION CONTABLE");
+        reporte.AppendLine(new string('=', 62));
+        MostrarLineaDivisoraConTexto("Ecuacion Contable", true, true);
+
+        string activosLinea = $"Activos           : {FormatearMoneda(totalActivos)}";
+        string pasivoCapitalLinea = $"Pasivos + Capital : {FormatearMoneda(totalPasivoMasCapital)}";
+        Console.WriteLine(activosLinea);
+        Console.WriteLine(pasivoCapitalLinea);
+        reporte.AppendLine(activosLinea);
+        reporte.AppendLine(pasivoCapitalLinea);
+
+        if (totalActivos == totalPasivoMasCapital)
+        {
+            MostrarMensajeExito("BALANCE GENERAL CUADRADO", true, false);
+            Console.WriteLine("  La ecuacion contable esta balanceada: Activos = Pasivos + Capital");
+            reporte.AppendLine();
+            reporte.AppendLine("[RESULTADO] BALANCE GENERAL CUADRADO");
+        }
+        else
+        {
+            int diferencia = totalActivos - totalPasivoMasCapital;
+            MostrarMensajeError("BALANCE GENERAL DESCUADRADO", true, false);
+            Console.WriteLine($"  Diferencia: {FormatearMoneda(Math.Abs(diferencia))}");
+            reporte.AppendLine();
+            reporte.AppendLine("[ADVERTENCIA] BALANCE GENERAL DESCUADRADO");
+            reporte.AppendLine($"Diferencia: {FormatearMoneda(Math.Abs(diferencia))}");
+        }
+
+        reporte.AppendLine();
+        reporte.AppendLine(new string('=', 62));
+    }
+
+    #endregion
 }

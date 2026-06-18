@@ -1,77 +1,31 @@
 using ProyectoProgramacion.Comunes;
-using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
 using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.BalanceGeneral;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
+
+/// <summary>Acción para que el usuario agregue una cuenta nueva a una categoría del Balance General.</summary>
+public static class AccionAgregarCuenta
 {
-    public static class AccionAgregarCuenta
+    public static void Ejecutar()
     {
-        // Método que maneja la creación de una nueva cuenta por parte del usuario
-        public static void Ejecutar()
-        {
-            // Pedimos al usuario a qué categoría principal pertenece la nueva cuenta
-            int categoria = MostrarMenuCategorias("Agregar Cuenta - Balance General");
+        // La categoría (1-8) coincide en orden con ObtenerCatalogo(), por eso usamos [categoria - 1].
+        int categoria = MostrarMenuCategorias("Agregar Cuenta - Balance General");
 
-            // Pedimos el nombre de la cuenta
-            Console.WriteLine();
-            Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
-            string nombreCuenta = SolicitarString();
+        Console.WriteLine("\nIngrese el nombre de la nueva cuenta:");
+        string nombre = SolicitarString();
 
-            // Pedimos la naturaleza: si es deudora o acreedora
-            int naturalezaOpcion = MostrarMenuNaturalezaCuenta();
-            bool esDeudora = naturalezaOpcion == 1; // true = Deudora, false = Acreedora
+        bool esDeudora = MostrarMenuNaturalezaCuenta() == 1;
 
-            // Creamos la cuenta y marcamos que fue creada por el usuario
-            Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora)
-            {
-                EsCreadoPorUsuario = true
-            };
+        var (grupo, lista) = ObtenerCatalogo()[categoria - 1];
 
-            // Según la categoría elegida, agregamos la cuenta a la lista correspondiente
-            switch (categoria)
-            {
-                case 1:
-                    CuentasBalanceGeneral.ActivoCirculante.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Activo Circulante", true, false);
-                    break;
-                case 2:
-                    CuentasBalanceGeneral.ActivoFijo.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Activo Fijo", true, false);
-                    break;
-                case 3:
-                    CuentasBalanceGeneral.ActivoIntangible.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Activo Intangible", true, false);
-                    break;
-                case 4:
-                    CuentasBalanceGeneral.OtrosActivos.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Otros Activos", true, false);
-                    break;
-                case 5:
-                    CuentasBalanceGeneral.PasivoLargoPlazo.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Pasivo a Largo Plazo", true, false);
-                    break;
-                case 6:
-                    CuentasBalanceGeneral.PasivoCortoPlazo.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Pasivo a Corto Plazo", true, false);
-                    break;
-                case 7:
-                    CuentasBalanceGeneral.CapitalContribuido.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Capital Contribuido", true, false);
-                    break;
-                case 8:
-                    CuentasBalanceGeneral.CapitalGanado.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Capital Ganado", true, false);
-                    break;
-            }
+        Cuenta nueva = Cuenta.Crear(nombre, esDeudora);
+        nueva.EsCreadoPorUsuario = true;
+        lista.Add(nueva);
 
-            // Mostramos un resumen sencillo de la cuenta creada
-            string naturalezaTexto = esDeudora ? "Deudora (+)" : "Acreedora (-)";//
-            Console.WriteLine($"Cuenta: {nombreCuenta}");
-            Console.WriteLine($"Naturaleza: {naturalezaTexto}");
-
-            // Pausa para que el usuario lea el mensaje
-            EsperarTecla();
-        }
+        MostrarMensajeExito($"Cuenta '{nombre}' agregada exitosamente a {grupo}.", true, false);
+        Console.WriteLine($"Naturaleza: {(esDeudora ? "Deudora (+)" : "Acreedora (-)")}");
+        EsperarTecla();
     }
 }

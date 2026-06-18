@@ -1,299 +1,206 @@
+using System.Text;
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.EstadoResultados;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
-using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos;
-using System.Text;
 
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones;
+
+/// <summary>
+/// Pide al usuario cuentas con sus valores y calcula el Estado de Resultados hasta
+/// obtener la utilidad o pérdida neta del período.
+/// </summary>
+public static class AccionCalcularEstadoResultados
 {
-    /*
-    ===========================
-        Acción Calcular Estado de Resultados
-    ===========================
-    */
-    public static class AccionCalcularEstadoResultados
+    /// <summary>Una cuenta elegida por el usuario con su valor y su categoría (1-5).</summary>
+    private record CuentaValor(Cuenta Cuenta, int Valor, int Categoria);
+
+    /// <summary>Cómo afecta una categoría al resultado, según la naturaleza de cada cuenta.</summary>
+    private enum Modo { Ingreso, Costo, Gasto }
+
+    #region Flujo principal
+
+    public static void Ejecutar()
     {
-        public static void Ejecutar()
+        MostrarLineaDivisoraConTexto("Calcular Estado de Resultados", true, true);
+
+        Console.Write("Ingrese el nombre de la empresa: ");
+        string nombreEmpresa = SolicitarString();
+
+        Console.Write("Ingrese el mes del período (ej. Diciembre): ");
+        string mes = SolicitarString();
+
+        Console.Write("Ingrese el año del período (ej. 2024): ");
+        int anio = SolicitarAnio();
+
+        List<CuentaValor> seleccionadas = SeleccionarCuentas();
+
+        if (seleccionadas.Count == 0)
         {
-            MostrarLineaDivisoraConTexto("Calcular Estado de Resultados", true, true);
-
-            // Solicitar datos de la empresa y período
-            Console.Write("Ingrese el nombre de la empresa: ");
-            string nombreEmpresa = SolicitarString();
-
-            Console.Write("Ingrese el mes del período (ej. Diciembre): ");
-            string mes = SolicitarString();
-
-            Console.Write("Ingrese el año del período (ej. 2024): ");
-            int anio = SolicitarAnio();
-
-            Console.WriteLine();
-
-            // Guardar las cuentas seleccionadas con sus montos
-            var cuentasSeleccionadas = new List<(Cuenta cuenta, int valor)>();
-
-            bool continuar = true;
-
-            while (continuar)
-            {
-                // El usuario elige una categoría; 0 indica terminar
-                int categoria = MostrarMenuCategoriasConSalida();
-
-                if (categoria == 0)
-                {
-                    continuar = false;
-                    continue;
-                }
-
-                // Selecciona la lista de cuentas según la categoría elegida
-                List<Cuenta> listaCuentas = categoria switch
-                {
-                    1 => CuentasEstadoResultados.Ventas,
-                    2 => CuentasEstadoResultados.CostoDeVentas,
-                    3 => CuentasEstadoResultados.GastoDeOperacion,
-                    4 => CuentasEstadoResultados.GastosAdministracion,
-                    5 => CuentasEstadoResultados.OtrosResultadosFinancieros,
-                    _ => new List<Cuenta>()
-                };
-
-                // Nombre amigable de la categoría para mostrar al usuario
-                string nombreCategoria = categoria switch
-                {
-                    1 => "Ventas",
-                    2 => "Costo de Ventas",
-                    3 => "Gastos de Operación",
-                    4 => "Gastos de Administración",
-                    5 => "Otros Resultados Financieros",
-                    _ => "Categoría Desconocida"
-                };
-
-                // Mostramos las cuentas de la categoría y pedimos al usuario que elija una
-                MostrarTituloSubrayado($"Cuentas de {nombreCategoria}", true, true);
-                for (int i = 0; i < listaCuentas.Count; i++)
-                {
-                    string naturaleza = listaCuentas[i].EsDeudora ? "[Egreso  ]" : "[Ingreso ]";
-                    Console.WriteLine($"{i + 1}. {naturaleza} {listaCuentas[i].Nombre}");
-                }
-                MostrarLineaDivisora(true, true);
-
-                Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");
-                int indiceCuenta = SolicitarEnteroConLimites(1, listaCuentas.Count) - 1;
-
-                Cuenta cuentaSeleccionada = listaCuentas[indiceCuenta];
-
-                // Solicitamos el valor numérico para la cuenta seleccionada
-                Console.Write($"Ingrese el valor para '{cuentaSeleccionada.Nombre}': ");
-                int valor = SolicitarEntero();
-
-                // Agregamos la pareja (cuenta, valor) a la lista de cálculo
-                cuentasSeleccionadas.Add((cuentaSeleccionada, valor));
-
-                MostrarMensajeExito($"Cuenta '{cuentaSeleccionada.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
-
-                // Preguntamos si desea continuar agregando cuentas
-                int opcion = MostrarMenuContinuar();
-
-                if (opcion == 2)
-                {
-                    continuar = false;
-                }
-            }
-
-            // Si no hay cuentas, avisamos y salimos
-            if (cuentasSeleccionadas.Count == 0)
-            {
-                MostrarMensajeAdvertencia("No se agregaron cuentas al calculo.", true, false);
-                EsperarTecla();
-                return;
-            }
-
-            // Creamos el reporte en pantalla y en memoria
-            MostrarLineaDivisoraConTexto("Resultado del Estado de Resultados", true, true);
-
-            var resultado = new StringBuilder();
-            resultado.AppendLine("==============================================================");
-            resultado.AppendLine($"                    {nombreEmpresa.ToUpper()}");
-            resultado.AppendLine("                  ESTADO DE RESULTADOS");
-            resultado.AppendLine($"            Del 1 al 31 de {mes} de {anio}");
-            resultado.AppendLine($"          (Expresado en Córdobas - NIO C$)");
-            resultado.AppendLine("==============================================================");
-            resultado.AppendLine();
-
-            int totalVentas = 0;
-            int totalCostoVentas = 0;
-            int totalGastosOperacion = 0;
-            int totalGastosAdministracion = 0;
-            int totalOtrosResultados = 0;
-
-            // MARK: VENTAS
-            resultado.AppendLine("VENTAS");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("VENTAS", true, true);
-
-            // Filtrar SOLO las cuentas de Ventas
-            foreach (var cuentaConValor in cuentasSeleccionadas.Where(cuentaConValor => CuentasEstadoResultados.Ventas.Contains(cuentaConValor.cuenta)))
-            {
-                // Si es Ingreso (false) = ventas, suma
-                // Si es Egreso (true) = devolución/descuento, resta
-                int valorConSigno = cuentaConValor.cuenta.EsDeudora ? -cuentaConValor.valor : cuentaConValor.valor;
-                totalVentas += valorConSigno;
-
-                string signo = cuentaConValor.cuenta.EsDeudora ? "(-)" : "(+)";
-                string linea = $"  {signo} {cuentaConValor.cuenta.Nombre}: {FormatearMoneda(cuentaConValor.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-
-            string totalVentasLinea = $"VENTAS NETAS: {FormatearMoneda(totalVentas)}";
-            Console.WriteLine(totalVentasLinea);
-            resultado.AppendLine(totalVentasLinea);
-            resultado.AppendLine();
-
-            // MARK: COSTO DE VENTAS
-            resultado.AppendLine("COSTO DE VENTAS");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("COSTO DE VENTAS", true, true);
-
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.CostoDeVentas.Contains(cuentaSeleccionada.cuenta)))
-            {
-                // Si es Egreso (true) = costo, suma
-                // Si es Ingreso (false) = descuento/devolución, resta
-                int valorConSigno = cuentaSeleccionada.cuenta.EsDeudora ? cuentaSeleccionada.valor : -cuentaSeleccionada.valor;
-                totalCostoVentas += valorConSigno;
-
-                string signo = cuentaSeleccionada.cuenta.EsDeudora ? "(+)" : "(-)";
-                string linea = $"  {signo} {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-
-            string totalCostoLinea = $"TOTAL COSTO DE VENTAS: {FormatearMoneda(totalCostoVentas)}";
-            Console.WriteLine(totalCostoLinea);
-            resultado.AppendLine(totalCostoLinea);
-            resultado.AppendLine();
-
-            // MARK: Formula
-            // UTILIDAD BRUTA
-            int utilidadBruta = totalVentas - totalCostoVentas;
-            string utilidadBrutaLinea = $"UTILIDAD BRUTA: {FormatearMoneda(utilidadBruta)}";
-            Console.WriteLine(utilidadBrutaLinea);
-            resultado.AppendLine(utilidadBrutaLinea);
-            resultado.AppendLine();
-
-            // MARK: GASTOS DE OPERACIÓN
-            resultado.AppendLine("GASTOS DE OPERACIÓN");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("GASTOS DE OPERACIÓN", true, true);
-
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.GastoDeOperacion.Contains(cuentaSeleccionada.cuenta)))
-            {
-                // Gastos son Egresos, siempre suman
-                totalGastosOperacion += cuentaSeleccionada.valor;
-                string linea = $"  (+) {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-
-            string totalGastosOpLinea = $"TOTAL GASTOS DE OPERACIÓN: {FormatearMoneda(totalGastosOperacion)}";
-            Console.WriteLine(totalGastosOpLinea);
-            resultado.AppendLine(totalGastosOpLinea);
-            resultado.AppendLine();
-
-            // MARK: GASTOS DE ADMINISTRACIÓN
-            resultado.AppendLine("GASTOS DE ADMINISTRACIÓN");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("GASTOS DE ADMINISTRACIÓN", true, true);
-
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.GastosAdministracion.Contains(cuentaSeleccionada.cuenta)))
-            {
-                // Gastos son Egresos, siempre suman
-                totalGastosAdministracion += cuentaSeleccionada.valor;
-                string linea = $"  (+) {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-
-            string totalGastosAdminLinea = $"TOTAL GASTOS DE ADMINISTRACIÓN: {FormatearMoneda(totalGastosAdministracion)}";
-            Console.WriteLine(totalGastosAdminLinea);
-            resultado.AppendLine(totalGastosAdminLinea);
-            resultado.AppendLine();
-
-            // MARK: Formula
-            // UTILIDAD DE OPERACIÓN
-            int totalGastosOperacionCompletos = totalGastosOperacion + totalGastosAdministracion;
-            int utilidadOperacion = utilidadBruta - totalGastosOperacionCompletos;
-            string utilidadOpLinea = $"UTILIDAD DE OPERACIÓN: {FormatearMoneda(utilidadOperacion)}";
-            Console.WriteLine(utilidadOpLinea);
-            resultado.AppendLine(utilidadOpLinea);
-            resultado.AppendLine();
-
-            // MARK: OTROS RESULTADOS FINANCIEROS
-            resultado.AppendLine("OTROS RESULTADOS FINANCIEROS");
-            resultado.AppendLine(new string('-', 60));
-            MostrarTituloSubrayado("OTROS RESULTADOS FINANCIEROS", true, true);
-
-            foreach (var cuentaSeleccionada in cuentasSeleccionadas.Where(cuentaSeleccionada => CuentasEstadoResultados.OtrosResultadosFinancieros.Contains(cuentaSeleccionada.cuenta)))
-            {
-                // Si es Egreso = gasto financiero, resta
-                // Si es Ingreso = producto financiero, suma
-                int valorConSigno = cuentaSeleccionada.cuenta.EsDeudora ? -cuentaSeleccionada.valor : cuentaSeleccionada.valor;
-                totalOtrosResultados += valorConSigno;
-
-                string signo = cuentaSeleccionada.cuenta.EsDeudora ? "(-)" : "(+)";
-                string linea = $"  {signo} {cuentaSeleccionada.cuenta.Nombre}: {FormatearMoneda(cuentaSeleccionada.valor)}";
-                Console.WriteLine(linea);
-                resultado.AppendLine(linea);
-            }
-
-            string totalOtrosLinea = $"TOTAL OTROS RESULTADOS: {FormatearMoneda(totalOtrosResultados)}";
-            Console.WriteLine(totalOtrosLinea);
-            resultado.AppendLine(totalOtrosLinea);
-            resultado.AppendLine();
-
-            // MARK: Formula
-            // RESULTADO FINAL (UTILIDAD O PÉRDIDA)
-            int resultadoFinal = utilidadOperacion + totalOtrosResultados;
-
-            resultado.AppendLine("==============================================================");
-            resultado.AppendLine("                    RESULTADO FINAL");
-            resultado.AppendLine("==============================================================");
-            MostrarLineaDivisoraConTexto("Resultado Final", true, true);
-
-            string resultadoLinea = resultadoFinal >= 0
-                ? $"UTILIDAD NETA: {FormatearMoneda(resultadoFinal)}"
-                : $"PÉRDIDA NETA: {FormatearMoneda(Math.Abs(resultadoFinal))}";
-
-            Console.WriteLine(resultadoLinea);
-            resultado.AppendLine(resultadoLinea);
-            resultado.AppendLine();
-
-            if (resultadoFinal >= 0)
-            {
-                MostrarMensajeExito("La empresa obtuvo UTILIDAD en el período", true, false);
-                resultado.AppendLine("[RESULTADO] La empresa obtuvo UTILIDAD en el período");
-            }
-            else
-            {
-                MostrarMensajeError("La empresa tuvo PÉRDIDA en el período", true, false);
-                resultado.AppendLine("[RESULTADO] La empresa tuvo PÉRDIDA en el período");
-            }
-
-            resultado.AppendLine();
-            resultado.AppendLine("==============================================================");
-
-            // MARK: Preguntar si desea guardar el resultado
-            if (PreguntarSiGuardarResultado())
-            {
-                string rutaArchivo = GuardarResultadoEnArchivo("estado-resultados", resultado.ToString());
-
-                if (!string.IsNullOrEmpty(rutaArchivo))
-                {
-                    MostrarMensajeExito($"Resultado guardado exitosamente en:", true, false);
-                    Console.WriteLine($"  {rutaArchivo}");
-                }
-            }
-
+            MostrarMensajeAdvertencia("No se agregaron cuentas al calculo.", true, false);
             EsperarTecla();
+            return;
+        }
+
+        GenerarReporte(nombreEmpresa, mes, anio, seleccionadas);
+        EsperarTecla();
+    }
+
+    #endregion
+
+    #region Selección de cuentas
+
+    /// <summary>Permite al usuario elegir varias cuentas (con su valor) hasta que decide finalizar.</summary>
+    private static List<CuentaValor> SeleccionarCuentas()
+    {
+        var seleccionadas = new List<CuentaValor>();
+        var catalogo = ObtenerCatalogo();
+        bool continuar = true;
+
+        while (continuar)
+        {
+            int categoria = MostrarMenuCategoriasConSalida(); // 0 = finalizar, 1-5 = categoría
+            if (categoria == 0) break;
+
+            var (nombreGrupo, listaCuentas) = catalogo[categoria - 1];
+
+            MostrarTituloSubrayado($"Cuentas de {nombreGrupo}", true, true);
+            for (int i = 0; i < listaCuentas.Count; i++)
+            {
+                string naturaleza = listaCuentas[i].EsDeudora ? "[Egreso  ]" : "[Ingreso ]";
+                Console.WriteLine($"{i + 1}. {naturaleza} {listaCuentas[i].Nombre}");
+            }
+            MostrarLineaDivisora(true, true);
+
+            Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");
+            Cuenta cuenta = listaCuentas[SolicitarEnteroConLimites(1, listaCuentas.Count) - 1];
+
+            Console.Write($"Ingrese el valor para '{cuenta.Nombre}': ");
+            int valor = SolicitarEntero();
+
+            seleccionadas.Add(new CuentaValor(cuenta, valor, categoria));
+            MostrarMensajeExito($"Cuenta '{cuenta.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
+
+            continuar = MostrarMenuContinuar() == 1;
+        }
+
+        return seleccionadas;
+    }
+
+    #endregion
+
+    #region Reporte
+
+    /// <summary>Construye el reporte completo aplicando las fórmulas del Estado de Resultados.</summary>
+    private static void GenerarReporte(string nombreEmpresa, string mes, int anio, List<CuentaValor> seleccionadas)
+    {
+        MostrarLineaDivisoraConTexto("Resultado del Estado de Resultados", true, true);
+
+        var reporte = new StringBuilder();
+        reporte.AppendLine(new string('=', 62));
+        reporte.AppendLine($"                    {nombreEmpresa.ToUpper()}");
+        reporte.AppendLine("                  ESTADO DE RESULTADOS");
+        reporte.AppendLine($"            Del 1 al 31 de {mes} de {anio}");
+        reporte.AppendLine("          (Expresado en Córdobas - NIO C$)");
+        reporte.AppendLine(new string('=', 62));
+        reporte.AppendLine();
+
+        int ventas = ImprimirSeccion("VENTAS", seleccionadas, 1, Modo.Ingreso, reporte);
+        Linea($"VENTAS NETAS: {FormatearMoneda(ventas)}", reporte);
+        reporte.AppendLine();
+
+        int costo = ImprimirSeccion("COSTO DE VENTAS", seleccionadas, 2, Modo.Costo, reporte);
+        Linea($"TOTAL COSTO DE VENTAS: {FormatearMoneda(costo)}", reporte);
+        reporte.AppendLine();
+
+        int utilidadBruta = ventas - costo;
+        Linea($"UTILIDAD BRUTA: {FormatearMoneda(utilidadBruta)}", reporte);
+        reporte.AppendLine();
+
+        int gastosOperacion = ImprimirSeccion("GASTOS DE OPERACIÓN", seleccionadas, 3, Modo.Gasto, reporte);
+        Linea($"TOTAL GASTOS DE OPERACIÓN: {FormatearMoneda(gastosOperacion)}", reporte);
+        reporte.AppendLine();
+
+        int gastosAdministracion = ImprimirSeccion("GASTOS DE ADMINISTRACIÓN", seleccionadas, 4, Modo.Gasto, reporte);
+        Linea($"TOTAL GASTOS DE ADMINISTRACIÓN: {FormatearMoneda(gastosAdministracion)}", reporte);
+        reporte.AppendLine();
+
+        int utilidadOperacion = utilidadBruta - (gastosOperacion + gastosAdministracion);
+        Linea($"UTILIDAD DE OPERACIÓN: {FormatearMoneda(utilidadOperacion)}", reporte);
+        reporte.AppendLine();
+
+        int otros = ImprimirSeccion("OTROS RESULTADOS FINANCIEROS", seleccionadas, 5, Modo.Ingreso, reporte);
+        Linea($"TOTAL OTROS RESULTADOS: {FormatearMoneda(otros)}", reporte);
+        reporte.AppendLine();
+
+        MostrarResultadoFinal(utilidadOperacion + otros, reporte);
+
+        if (PreguntarSiGuardarResultado())
+        {
+            string ruta = GuardarResultadoEnArchivo("estado-resultados", reporte.ToString());
+            MostrarMensajeExito($"Resultado guardado en: {ruta}", true, false);
         }
     }
+
+    /// <summary>
+    /// Imprime una sección y devuelve su total. El signo de cada cuenta depende del modo:
+    /// Ingreso (ingresos suman), Costo (costos suman) o Gasto (siempre suman).
+    /// </summary>
+    private static int ImprimirSeccion(string titulo, List<CuentaValor> seleccionadas, int categoria, Modo modo, StringBuilder reporte)
+    {
+        reporte.AppendLine(titulo);
+        reporte.AppendLine(new string('-', 60));
+        MostrarTituloSubrayado(titulo, true, true);
+
+        int total = 0;
+        foreach (CuentaValor item in seleccionadas.Where(c => c.Categoria == categoria))
+        {
+            (int valorConSigno, string signo) = modo switch
+            {
+                // En ingresos, una cuenta acreedora (ingreso) suma y una deudora (devolución) resta.
+                Modo.Ingreso => (-item.Cuenta.ValorConSigno(item.Valor), item.Cuenta.EsDeudora ? "(-)" : "(+)"),
+                // En costos, una cuenta deudora (costo) suma y una acreedora (descuento) resta.
+                Modo.Costo => (item.Cuenta.ValorConSigno(item.Valor), item.Cuenta.EsDeudora ? "(+)" : "(-)"),
+                // Los gastos siempre suman.
+                _ => (item.Valor, "(+)"),
+            };
+
+            total += valorConSigno;
+            Linea($"  {signo} {item.Cuenta.Nombre}: {FormatearMoneda(item.Valor)}", reporte);
+        }
+
+        return total;
+    }
+
+    /// <summary>Muestra si el período cerró con utilidad o con pérdida.</summary>
+    private static void MostrarResultadoFinal(int resultado, StringBuilder reporte)
+    {
+        reporte.AppendLine(new string('=', 62));
+        reporte.AppendLine("                    RESULTADO FINAL");
+        reporte.AppendLine(new string('=', 62));
+        MostrarLineaDivisoraConTexto("Resultado Final", true, true);
+
+        if (resultado >= 0)
+        {
+            Linea($"UTILIDAD NETA: {FormatearMoneda(resultado)}", reporte);
+            MostrarMensajeExito("La empresa obtuvo UTILIDAD en el período", true, false);
+        }
+        else
+        {
+            Linea($"PÉRDIDA NETA: {FormatearMoneda(Math.Abs(resultado))}", reporte);
+            MostrarMensajeError("La empresa tuvo PÉRDIDA en el período", true, false);
+        }
+
+        reporte.AppendLine();
+        reporte.AppendLine(new string('=', 62));
+    }
+
+    /// <summary>Escribe una línea tanto en pantalla como en el reporte de texto.</summary>
+    private static void Linea(string texto, StringBuilder reporte)
+    {
+        Console.WriteLine(texto);
+        reporte.AppendLine(texto);
+    }
+
+    #endregion
 }

@@ -1,64 +1,31 @@
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
+using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.EstadoResultados;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
-using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos;
 
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones;
+
+/// <summary>Acción para que el usuario agregue una cuenta nueva a una categoría del Estado de Resultados.</summary>
+public static class AccionAgregarCuenta
 {
-    /*
-    ===========================
-        Acción Agregar Cuenta - Estado de Resultados
-    ===========================
-    */
-    public static class AccionAgregarCuenta
+    public static void Ejecutar()
     {
-        // MARK: Accion agregar cuenta
-        public static void Ejecutar()
-        {
+        // La categoría (1-5) coincide en orden con ObtenerCatalogo(), por eso usamos [categoria - 1].
+        int categoria = MostrarMenuCategorias("Agregar Cuenta - Estado de Resultados");
 
-            int categoria = MostrarMenuCategorias("Agregar Cuenta - Estado de Resultados");
-            Console.WriteLine();
-            Console.WriteLine("Ingrese el nombre de la nueva cuenta:");
-            string nombreCuenta = SolicitarString();
+        Console.WriteLine("\nIngrese el nombre de la nueva cuenta:");
+        string nombre = SolicitarString();
 
-            int naturalezaOpcion = MostrarMenuNaturalezaCuenta();
-            bool esDeudora = naturalezaOpcion == 1;
+        bool esDeudora = MostrarMenuNaturalezaCuenta() == 1; // 1 = Egreso (deudora), 2 = Ingreso (acreedora)
 
-            // Crear la nueva cuenta y marcarla como creada por el usuario
-            Cuenta nuevaCuenta = new Cuenta(nombreCuenta, esDeudora)
-            {
-                EsCreadoPorUsuario = true
-            };
+        var (grupo, lista) = ObtenerCatalogo()[categoria - 1];
 
-            // MARK: Agregar a la lista correspondiente
-            switch (categoria)
-            {
-                case 1:
-                    CuentasEstadoResultados.Ventas.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Ingresos", true, false);
-                    break;
-                case 2:
-                    CuentasEstadoResultados.CostoDeVentas.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Costo de Ventas", true, false);
-                    break;
-                case 3:
-                    CuentasEstadoResultados.GastoDeOperacion.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Gastos de Venta", true, true);
-                    break;
-                case 4:
-                    CuentasEstadoResultados.GastosAdministracion.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Gastos de Administración", true, false);
-                    break;
-                case 5:
-                    CuentasEstadoResultados.OtrosResultadosFinancieros.Add(nuevaCuenta);
-                    MostrarMensajeExito($"Cuenta agregada exitosamente a Otros Resultados Financieros", true, false);
-                    break;
+        Cuenta nueva = Cuenta.Crear(nombre, esDeudora);
+        nueva.EsCreadoPorUsuario = true;
+        lista.Add(nueva);
 
-
-            }
-            string naturalezaTexto = esDeudora ? "Egreso (-)" : "Ingreso (+)";
-            Console.WriteLine($"Cuenta: {nombreCuenta}");
-            Console.WriteLine($"Naturaleza: {naturalezaTexto}");
-        }
+        MostrarMensajeExito($"Cuenta '{nombre}' agregada exitosamente a {grupo}.", true, false);
+        Console.WriteLine($"Naturaleza: {(esDeudora ? "Egreso (-)" : "Ingreso (+)")}");
+        EsperarTecla();
     }
 }

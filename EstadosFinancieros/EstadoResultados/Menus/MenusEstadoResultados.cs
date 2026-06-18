@@ -1,130 +1,119 @@
 using static ProyectoProgramacion.Comunes.Utilidades;
 
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus;
+
+/// <summary>Menús (texto en pantalla + lectura de la opción) del módulo Estado de Resultados.</summary>
+public static class MenusEstadoResultados
 {
-    /*
-    ===========================
-        Menus del Estado de Resultados
-    ===========================
-    IMPORTANTE: Todas las funciones deben ser públicas y estáticas
-    */
-    public static class MenusEstadoResultados
+    #region Menús del módulo
+
+    /// <summary>Menú principal del Estado de Resultados. Devuelve la opción elegida (0-6).</summary>
+    public static int MostrarMenuPrincipal()
     {
-        // MARK: Menú Principal
-        public static int MostrarMenuPrincipal()
-        {
-            MostrarLineaDivisoraConTexto("Menu Estado de Resultados", true, true);
-            MostrarTituloSubrayado("Seleccione una opcion:", false, true);
-            Console.WriteLine("1. Ver Cuentas");
-            Console.WriteLine("2. Agregar Cuenta");
-            Console.WriteLine("3. Eliminar Cuenta");
-            MostrarLineaDivisora(false, true);
-            Console.WriteLine("4. Realizar calculo de Estado de Resultados");
-            MostrarLineaDivisora(false, true);
-            VolverAtras();
-            MostrarLineaDivisora(true, true);
+        MostrarLineaDivisoraConTexto("Menu Estado de Resultados", true, true);
+        MostrarTituloSubrayado("Seleccione una opcion:", false, true);
+        Console.WriteLine("1. Ver Cuentas");
+        Console.WriteLine("2. Agregar Cuenta");
+        Console.WriteLine("3. Eliminar Cuenta");
+        Console.WriteLine("4. Buscar Cuenta");
+        Console.WriteLine("5. Modificar Cuenta");
+        MostrarLineaDivisora(false, true);
+        Console.WriteLine("6. Realizar calculo de Estado de Resultados");
+        MostrarLineaDivisora(false, true);
+        VolverAtras();
+        MostrarLineaDivisora(true, true);
 
-            int opcion = SolicitarEnteroConLimites(0, 4);
-            return opcion;
-        }
-
-        // MARK: Menú Ver Cuentas
-        public static int MostrarMenuCuentas()
-        {
-            MostrarTituloSubrayado("Ver Cuentas - Estado de Resultados", true, true);
-            Console.WriteLine("1. Ver todas las cuentas");
-            Console.WriteLine("2. Ver por categoria");
-            MostrarLineaDivisora(false, true);
-            VolverAtras();
-            MostrarLineaDivisora(true, true);
-
-            int opcion = SolicitarEnteroConLimites(0, 2);
-            return opcion;
-        }
-
-        // MARK: Menú Por Categoría
-        public static int MenuPorCategoriaER()
-        {
-            MostrarTituloSubrayado("Ver Cuentas - Estado de Resultados - Por Categoria", true, true);
-            Console.WriteLine("1. Ventas");
-            Console.WriteLine("2. Costo de Ventas");
-            Console.WriteLine("3. Gastos de Operación");
-            Console.WriteLine("4. Gastos de Administración");
-            Console.WriteLine("5. Otros Resultados Financieros");
-            MostrarLineaDivisora(false, true);
-            VolverAtras();
-            MostrarLineaDivisora(true, true);
-
-            int opcion = SolicitarEnteroConLimites(0, 5);
-            return opcion;
-        }
-
-        // MARK: Menú Categorías
-        public static int MostrarMenuCategorias(string titulo)
-        {
-            MostrarTituloSubrayado(titulo, true, true);
-            Console.WriteLine("Seleccione la categoria de cuenta:");
-            MostrarLineaDivisora(true, false);
-            Console.WriteLine("1. Ventas");
-            Console.WriteLine("2. Costo de Ventas");
-            Console.WriteLine("3. Gastos de Operación");
-            Console.WriteLine("4. Gastos de Administración");
-            Console.WriteLine("5. Otros Resultados Financieros");
-            MostrarLineaDivisora(true, true);
-
-            int categoria = SolicitarEnteroConLimites(1, 5);
-            return categoria;
-        }
-
-        // MARK: Menú Categorías con Salida
-        public static int MostrarMenuCategoriasConSalida()
-        {
-            MostrarTituloSubrayado("Seleccione la categoria de cuenta", true, true);
-            Console.WriteLine("Seleccione el tipo de cuenta que desea agregar al calculo:");
-            MostrarLineaDivisora(true, false);
-            Console.WriteLine("1. Ventas");
-            Console.WriteLine("2. Costo de Ventas");
-            Console.WriteLine("3. Gastos de Operación");
-            Console.WriteLine("4. Gastos de Administración");
-            Console.WriteLine("5. Otros Resultados Financieros");
-            MostrarLineaDivisora(true, false);
-            Console.WriteLine("0. Finalizar y calcular Estado de Resultados");
-            MostrarLineaDivisora(false, true);
-
-            int categoria = SolicitarEnteroConLimites(0, 5);
-            return categoria;
-        }
-
-        // MARK: Menú Naturaleza de Cuenta
-        public static int MostrarMenuNaturalezaCuenta()
-        {
-            Console.WriteLine();
-            Console.WriteLine("¿Qué tipo de cuenta es?");
-            Console.WriteLine("1. Egreso (disminuye la utilidad - costos/gastos)");
-            Console.WriteLine("2. Ingreso (aumenta la utilidad - ventas/productos)");
-            int naturalezaOpcion = SolicitarEnteroConLimites(1, 2);
-            return naturalezaOpcion;
-        }
-
-        // MARK: Menú Confirmación
-        public static int MostrarMenuConfirmacion(string mensaje)
-        {
-            Console.WriteLine($"{mensaje}");
-            Console.WriteLine("1. Si, eliminar");
-            Console.WriteLine("2. No, cancelar");
-            int confirmacion = SolicitarEnteroConLimites(1, 2);
-            return confirmacion;
-        }
-
-        // MARK: Menú Continuar
-        public static int MostrarMenuContinuar()
-        {
-            Console.WriteLine();
-            Console.WriteLine("¿Desea agregar otra cuenta?");
-            Console.WriteLine("1. Si, agregar otra cuenta");
-            Console.WriteLine("2. No, finalizar y calcular Estado de Resultados");
-            int opcion = SolicitarEnteroConLimites(1, 2);
-            return opcion;
-        }
+        return SolicitarEnteroConLimites(0, 6);
     }
+
+    /// <summary>Submenú para elegir cómo ver las cuentas. Devuelve la opción elegida (0-2).</summary>
+    public static int MostrarMenuCuentas()
+    {
+        MostrarTituloSubrayado("Ver Cuentas - Estado de Resultados", true, true);
+        Console.WriteLine("1. Ver todas las cuentas");
+        Console.WriteLine("2. Ver por categoria");
+        MostrarLineaDivisora(false, true);
+        VolverAtras();
+        MostrarLineaDivisora(true, true);
+
+        return SolicitarEnteroConLimites(0, 2);
+    }
+
+    /// <summary>Submenú para ver una categoría concreta. Devuelve la opción elegida (0-5).</summary>
+    public static int MenuPorCategoriaER()
+    {
+        MostrarTituloSubrayado("Ver Cuentas por Categoria - Estado de Resultados", true, true);
+        MostrarCategorias();
+        MostrarLineaDivisora(false, true);
+        VolverAtras();
+        MostrarLineaDivisora(true, true);
+
+        return SolicitarEnteroConLimites(0, 5);
+    }
+
+    #endregion
+
+    #region Menús de selección de categoría
+
+    /// <summary>Lista las 5 categorías del Estado de Resultados y devuelve la elegida (1-5).</summary>
+    public static int MostrarMenuCategorias(string titulo)
+    {
+        MostrarTituloSubrayado(titulo, true, true);
+        Console.WriteLine("Seleccione la categoria de cuenta:");
+        MostrarCategorias();
+        MostrarLineaDivisora(true, true);
+
+        return SolicitarEnteroConLimites(1, 5);
+    }
+
+    /// <summary>Igual que <see cref="MostrarMenuCategorias"/> pero con opción 0 para finalizar (0-5).</summary>
+    public static int MostrarMenuCategoriasConSalida()
+    {
+        MostrarTituloSubrayado("Seleccione la categoria de cuenta", true, true);
+        Console.WriteLine("Seleccione el tipo de cuenta que desea agregar al calculo:");
+        MostrarCategorias();
+        MostrarLineaDivisora(true, false);
+        Console.WriteLine("0. Finalizar y calcular Estado de Resultados");
+        MostrarLineaDivisora(false, true);
+
+        return SolicitarEnteroConLimites(0, 5);
+    }
+
+    /// <summary>Imprime las 5 categorías. Reutilizado por los menús de arriba.</summary>
+    private static void MostrarCategorias()
+    {
+        Console.WriteLine("1. Ventas");
+        Console.WriteLine("2. Costo de Ventas");
+        Console.WriteLine("3. Gastos de Operación");
+        Console.WriteLine("4. Gastos de Administración");
+        Console.WriteLine("5. Otros Resultados Financieros");
+    }
+
+    #endregion
+
+    #region Menús de la acción Agregar
+
+    /// <summary>Pregunta el tipo de cuenta nueva. Devuelve 1 (egreso) o 2 (ingreso).</summary>
+    public static int MostrarMenuNaturalezaCuenta()
+    {
+        Console.WriteLine();
+        Console.WriteLine("¿Qué tipo de cuenta es?");
+        Console.WriteLine("1. Egreso (disminuye la utilidad - costos/gastos)");
+        Console.WriteLine("2. Ingreso (aumenta la utilidad - ventas/productos)");
+
+        return SolicitarEnteroConLimites(1, 2);
+    }
+
+    /// <summary>Pregunta si se desea agregar otra cuenta al cálculo. Devuelve 1 (sí) o 2 (no).</summary>
+    public static int MostrarMenuContinuar()
+    {
+        Console.WriteLine();
+        Console.WriteLine("¿Desea agregar otra cuenta?");
+        Console.WriteLine("1. Si, agregar otra cuenta");
+        Console.WriteLine("2. No, finalizar y calcular Estado de Resultados");
+
+        return SolicitarEnteroConLimites(1, 2);
+    }
+
+    #endregion
 }

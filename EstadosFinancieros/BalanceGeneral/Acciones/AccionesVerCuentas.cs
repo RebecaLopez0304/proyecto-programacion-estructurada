@@ -3,141 +3,98 @@ using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos.Cu
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.BalanceGeneral;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
+
+/// <summary>Acciones para mostrar las cuentas del Balance General de distintas formas.</summary>
+public static class AccionesVerCuentas
 {
-    public static class AccionesVerCuentas
+    #region Todas las cuentas
+
+    /// <summary>Muestra todas las cuentas agrupadas en Activos, Pasivos y Capital.</summary>
+    public static void MostrarTodasCuentasBalanceGeneral()
     {
-        // MARK: Mostrar todas las cuentas
-        public static void MostrarTodasCuentasBalanceGeneral()
-        {
-            // Título general
-            Console.WriteLine("\n--- Todas las Cuentas del Balance General ---\n");
+        MostrarLineaDivisoraConTexto("ACTIVOS", true);
+        MostrarSeccion("Activo circulante", ActivoCirculante);
+        MostrarSeccion("Activo fijo", ActivoFijo);
+        MostrarSeccion("Activo intangible", ActivoIntangible);
+        MostrarSeccion("Otros activos", OtrosActivos);
 
-            // ACTIVOS: mostramos cada sublista con su título
-            MostrarLineaDivisoraConTexto("ACTIVOS", true);
-            MostrarSeccion("Activo circulante", ActivoCirculante);
-            MostrarSeccion("Activo fijo", ActivoFijo);
-            MostrarSeccion("Activo intangible", ActivoIntangible);
-            MostrarSeccion("Otros activos", OtrosActivos);
+        MostrarLineaDivisoraConTexto("PASIVOS", true);
+        MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo);
+        MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo);
 
-            // PASIVOS
-            MostrarLineaDivisoraConTexto("PASIVOS", true);
-            MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo);
-            MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo);
+        MostrarLineaDivisoraConTexto("CAPITAL", true);
+        MostrarSeccion("Capital contribuido", CapitalContribuido);
+        MostrarSeccion("Capital ganado", CapitalGanado);
 
-            // CAPITAL
-            MostrarLineaDivisoraConTexto("CAPITAL", true);
-            MostrarSeccion("Capital ganado", CapitalGanado);
-            MostrarSeccion("Capital contribuido", CapitalContribuido);
-
-            // Pausa para que el usuario pueda leer todo
-            Console.WriteLine("\nPresione una tecla para continuar...");
-            Console.ReadKey();
-        }
-
-        // MARK: Mostrar cuentas Activos - Pasivos - Capital
-        public static void MostrarCuentasGeneralesBalanceGeneral()
-        {
-            bool salir = false;
-
-            while (!salir)
-            {
-                int opcion = MostrarMenuCuentasGenerales();
-
-                switch (opcion)
-                {
-                    case 1:
-                        MostrarTituloSubrayado("ACTIVOS", true, true);
-                        MostrarSeccion("Activo circulante", ActivoCirculante);
-                        MostrarSeccion("Activo fijo", ActivoFijo);
-                        MostrarSeccion("Activo intangible", ActivoIntangible);
-                        MostrarSeccion("Otros activos", OtrosActivos);
-                        EsperarTecla();
-                        break;
-
-                    case 2:
-                        MostrarTituloSubrayado("PASIVOS", true, true);
-                        MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo);
-                        MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo);
-                        MostrarLineaDivisora(true, true);
-                        EsperarTecla();
-                        break;
-
-                    case 3:
-                        // Mostrar las cuentas de capital (aportaciones y utilidades)
-                        MostrarTituloSubrayado("CAPITAL", true, true);
-                        MostrarSeccion("Capital ganado", CapitalGanado);
-                        MostrarSeccion("Capital contribuido", CapitalContribuido);
-                        MostrarLineaDivisora(true, true);
-                        EsperarTecla();
-                        break;
-
-                    case 0:
-                        salir = true;
-                        break;
-                }
-            }
-        }
-
-    
-        // MARK: Mostrar cuentas subclasificadas
-        public static void MostrarCuentasSubclasificadasBalanceGeneral()
-        {
-            bool volver = false;
-
-            while (!volver)
-            {
-                int opcion = MostrarMenuCuentasSubclasificadas();
-
-                switch (opcion)
-                {
-                    case 1:
-                        MostrarSeccion("Activo circulante", ActivoCirculante);
-                        Console.ReadKey();
-                        break;
-                    case 2:
-                        MostrarSeccion("Activo fijo", ActivoFijo);
-                        Console.ReadKey();
-                        break;
-                    case 3:
-                        // Mostrar activos intangibles
-                        MostrarSeccion("Activo intangible", ActivoIntangible);
-                        Console.ReadKey();
-                        break;
-                    case 4:
-                        // Mostrar otros activos
-                        MostrarSeccion("Otros activos", OtrosActivos);
-                        Console.ReadKey();
-                        break;
-                    case 5:
-                        // Pasivos a largo plazo
-                        MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo);
-                        Console.ReadKey();
-                        break;
-                    case 6:
-                        // Pasivos a corto plazo
-                        MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo);
-                        Console.ReadKey();
-                        break;
-                    case 7:
-                        // Capital ganado
-                        MostrarSeccion("Capital ganado", CapitalGanado);
-                        Console.ReadKey();
-                        break;
-                    case 8:
-                        // Capital contribuido
-                        MostrarSeccion("Capital contribuido", CapitalContribuido);
-                        Console.ReadKey();
-                        break;
-                    case 0:
-                        volver = true;
-                        break;
-                    default:
-                        // no debería ocurrir por validación previa
-                        break;
-                }
-            }
-        }
-
+        EsperarTecla();
     }
+
+    #endregion
+
+    #region Cuentas generales
+
+    /// <summary>Submenú para ver Activos, Pasivos o Capital por separado.</summary>
+    public static void MostrarCuentasGeneralesBalanceGeneral()
+    {
+        bool salir = false;
+
+        while (!salir)
+        {
+            switch (MostrarMenuCuentasGenerales())
+            {
+                case 1:
+                    MostrarTituloSubrayado("ACTIVOS", true, true);
+                    MostrarSeccion("Activo circulante", ActivoCirculante);
+                    MostrarSeccion("Activo fijo", ActivoFijo);
+                    MostrarSeccion("Activo intangible", ActivoIntangible);
+                    MostrarSeccion("Otros activos", OtrosActivos);
+                    EsperarTecla();
+                    break;
+                case 2:
+                    MostrarTituloSubrayado("PASIVOS", true, true);
+                    MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo);
+                    MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo);
+                    EsperarTecla();
+                    break;
+                case 3:
+                    MostrarTituloSubrayado("CAPITAL", true, true);
+                    MostrarSeccion("Capital contribuido", CapitalContribuido);
+                    MostrarSeccion("Capital ganado", CapitalGanado);
+                    EsperarTecla();
+                    break;
+                case 0:
+                    salir = true;
+                    break;
+            }
+        }
+    }
+
+    #endregion
+
+    #region Cuentas subclasificadas
+
+    /// <summary>Submenú para ver una subclasificación concreta (las 8 categorías).</summary>
+    public static void MostrarCuentasSubclasificadasBalanceGeneral()
+    {
+        bool volver = false;
+
+        while (!volver)
+        {
+            switch (MostrarMenuCuentasSubclasificadas())
+            {
+                case 1: MostrarSeccion("Activo circulante", ActivoCirculante); EsperarTecla(); break;
+                case 2: MostrarSeccion("Activo fijo", ActivoFijo); EsperarTecla(); break;
+                case 3: MostrarSeccion("Activo intangible", ActivoIntangible); EsperarTecla(); break;
+                case 4: MostrarSeccion("Otros activos", OtrosActivos); EsperarTecla(); break;
+                case 5: MostrarSeccion("Pasivo a largo plazo", PasivoLargoPlazo); EsperarTecla(); break;
+                case 6: MostrarSeccion("Pasivo a corto plazo", PasivoCortoPlazo); EsperarTecla(); break;
+                case 7: MostrarSeccion("Capital contribuido", CapitalContribuido); EsperarTecla(); break;
+                case 8: MostrarSeccion("Capital ganado", CapitalGanado); EsperarTecla(); break;
+                case 0: volver = true; break;
+            }
+        }
+    }
+
+    #endregion
 }

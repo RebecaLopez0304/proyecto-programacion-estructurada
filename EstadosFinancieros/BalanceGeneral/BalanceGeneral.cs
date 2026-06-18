@@ -1,108 +1,89 @@
 using ProyectoProgramacion.Comunes;
 using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
+using ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones.AccionesVerCuentas;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
-namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral
+namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral;
+
+/// <summary>
+/// Módulo del Balance General. Coordina el menú y reparte el trabajo entre las acciones:
+/// ver, agregar, eliminar, buscar, modificar y calcular cuentas.
+/// </summary>
+public static class BalanceGeneral
 {
-    /*
-    ===========================
-        Clase Balance General
-    ===========================
-    */
-    public static class BalanceGeneral
+    #region Menú principal
+
+    /// <summary>Muestra el menú del módulo hasta que el usuario elige volver (0).</summary>
+    public static void Ejecutar()
     {
-        // MARK: Inicio Balance general
-        public static void Ejecutar()
+        bool volver = false;
+
+        while (!volver)
         {
-            // Bandera para mantener el menú hasta que el usuario pida salir
-            bool volver = false;
-
-            // Bucle principal del módulo: muestra el menú repetidamente
-            while (!volver)
+            switch (MostrarMenuPrincipal())
             {
-                // Pide la opción al usuario
-                int opcion = MostrarMenuPrincipal();
-
-                // Ejecuta la acción según la opción elegida
-                switch (opcion)
-                {
-                    case 1:
-                        // Ver listas de cuentas
-                        VerCuentas();
-                        break;
-                    case 2:
-                        // Agregar una cuenta nueva
-                        AccionAgregarCuenta.Ejecutar();
-                        break;
-                    case 3:
-                        // Eliminar una cuenta creada por el usuario
-                        AccionEliminarCuenta.Ejecutar();
-                        break;
-                    case 4:
-                        // Calcular el balance general con valores ingresados
-                        AccionCalcularBalanceGeneral.Ejecutar();
-                        break;
-                    case 0:
-                        // Salir del módulo
-                        volver = true;
-                        Console.WriteLine("\n\n");
-                        break;
-                    default:
-                        // Opción inválida: aviso simple
-                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
-                        break;
-                }
-            }
-        }
-
-        // MARK: Ver cuentas
-        private static void VerCuentas()
-        {
-            // Bandera para permanecer en el sub-menú hasta volver
-            bool regresar = false;
-
-            while (!regresar)
-            {
-                // Mostrar opciones y obtener elección
-                int opcion = MostrarMenuVerCuentas();
-
-                // Ejecutar la vista de cuentas correspondiente
-                switch (opcion)
-                {
-                    case 1:
-                        // Mostrar todas las cuentas agrupadas
-                        MostrarTodasCuentasBalanceGeneral();
-                        break;
-                    case 2:
-                        // Mostrar por secciones generales (Activos/Pasivos/Capital)
-                        MostrarCuentasGeneralesBalanceGeneral();
-                        break;
-                    case 3:
-                        // Mostrar por subclasificación más detallada
-                        MostrarCuentasSubclasificadasBalanceGeneral();
-                        break;
-                    case 0:
-                        // Volver al menú anterior
-                        regresar = true;
-                        break;
-                }
-            }
-        }
-
-        // MARK: Mostrar seccion por cuenta
-        public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
-        {
-            // Título con subrayado para separar secciones
-            MostrarTituloSubrayado(titulo, true);
-
-            // Para cada cuenta, mostramos si es Deudora (+) o Acreedora (-) y su nombre
-            foreach (var cuenta in listaDeCuentas)
-            {
-                string naturaleza = cuenta.EsDeudora ? "[ Deudora   ]" : "[ Acreedora ]";
-                Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
+                case 1: VerCuentas(); break;
+                case 2: AccionAgregarCuenta.Ejecutar(); break;
+                case 3: AccionesCuentas.EliminarCuenta(ObtenerCatalogo()); break;
+                case 4: AccionesCuentas.BuscarCuenta(ObtenerCatalogo()); break;
+                case 5: AccionesCuentas.ModificarCuenta(ObtenerCatalogo()); break;
+                case 6: AccionCalcularBalanceGeneral.Ejecutar(); break;
+                case 0: volver = true; break;
             }
         }
     }
+
+    #endregion
+
+    #region Catálogo de cuentas
+
+    /// <summary>Devuelve todas las listas del Balance General junto al nombre de su grupo.</summary>
+    public static List<(string grupo, List<Cuenta> lista)> ObtenerCatalogo() => new()
+    {
+        ("Activo Circulante", CuentasBalanceGeneral.ActivoCirculante),
+        ("Activo Fijo", CuentasBalanceGeneral.ActivoFijo),
+        ("Activo Intangible", CuentasBalanceGeneral.ActivoIntangible),
+        ("Otros Activos", CuentasBalanceGeneral.OtrosActivos),
+        ("Pasivo a Largo Plazo", CuentasBalanceGeneral.PasivoLargoPlazo),
+        ("Pasivo a Corto Plazo", CuentasBalanceGeneral.PasivoCortoPlazo),
+        ("Capital Contribuido", CuentasBalanceGeneral.CapitalContribuido),
+        ("Capital Ganado", CuentasBalanceGeneral.CapitalGanado),
+    };
+
+    #endregion
+
+    #region Ver cuentas
+
+    /// <summary>Submenú para ver las cuentas de distintas formas (todas, generales o subclasificadas).</summary>
+    private static void VerCuentas()
+    {
+        bool regresar = false;
+
+        while (!regresar)
+        {
+            switch (MostrarMenuVerCuentas())
+            {
+                case 1: MostrarTodasCuentasBalanceGeneral(); break;
+                case 2: MostrarCuentasGeneralesBalanceGeneral(); break;
+                case 3: MostrarCuentasSubclasificadasBalanceGeneral(); break;
+                case 0: regresar = true; break;
+            }
+        }
+    }
+
+    /// <summary>Imprime una sección con su título y las cuentas indicadas (naturaleza + nombre).</summary>
+    public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
+    {
+        MostrarTituloSubrayado(titulo, true);
+
+        foreach (Cuenta cuenta in listaDeCuentas)
+        {
+            string naturaleza = cuenta.EsDeudora ? "[ Deudora   ]" : "[ Acreedora ]";
+            Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
+        }
+    }
+
+    #endregion
 }

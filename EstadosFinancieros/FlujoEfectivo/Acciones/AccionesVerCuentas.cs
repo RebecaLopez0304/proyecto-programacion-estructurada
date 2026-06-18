@@ -3,62 +3,43 @@ using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos.Cue
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.FlujoEfectivo;
 using static ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Menus.MenusFlujoEfectivo;
 
-namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones
+namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Acciones;
+
+/// <summary>Acciones para mostrar las cuentas del Flujo de Efectivo.</summary>
+public static class AccionesVerCuentas
 {
-    /*
-    ===========================
-        Acciones para Ver Cuentas - Flujo de Efectivo
-    ===========================
-    */
-    public static class AccionesVerCuentas
+    #region Todas las cuentas
+
+    /// <summary>Muestra todas las cuentas de las tres actividades.</summary>
+    public static void MostrarTodasCuentasFlujoEfectivo()
     {
-        // MARK: - Visualización de Todas las Cuentas
+        MostrarLineaDivisoraConTexto("Todas las Cuentas - Flujo de Efectivo", true, true);
+        MostrarSeccion("Actividades de Operación", ActividadesOperacion);
+        MostrarSeccion("Actividades de Inversión", ActividadesInversion);
+        MostrarSeccion("Actividades de Financiamiento", ActividadesFinanciamiento);
+        EsperarTecla();
+    }
 
-        public static void MostrarTodasCuentasFlujoEfectivo()
+    #endregion
+
+    #region Por actividad
+
+    /// <summary>Submenú para ver una actividad concreta.</summary>
+    public static void MostrarCuentasPorActividad()
+    {
+        bool salir = false;
+
+        while (!salir)
         {
-            MostrarLineaDivisoraConTexto("Todas las Cuentas - Flujo de Efectivo", true, true);
-            MostrarSeccion("Actividades Operación", ActividadesOperacion);
-            MostrarSeccion("Actividades Inversión", ActividadesInversion);
-            MostrarSeccion("Actividades Financiamiento", ActividadesFinanciamiento);
-            EsperarTecla();
-        }
-
-        // MARK: - Visualización de Cuentas por Actividad
-
-        public static void MostrarCuentasPorActividad()
-        {
-            bool salir = false;
-
-            while (!salir)
+            switch (MenuPorCategoriaFE())
             {
-                int opcion = MostrarMenuActividades();
-
-                switch (opcion)
-                {
-                    case 1:
-                        MostrarSeccion("Actividades de Operación", ActividadesOperacion);
-                        EsperarTecla();
-                        break;
-
-                    case 2:
-                        MostrarSeccion("Actividades de Inversión", ActividadesInversion);
-                        EsperarTecla();
-                        break;
-
-                    case 3:
-                        MostrarSeccion("Actividades de Financiamiento", ActividadesFinanciamiento);
-                        EsperarTecla();
-                        break;
-
-                    case 0:
-                        salir = true;
-                        break;
-
-                    default:
-                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
-                        break;
-                }
+                case 1: MostrarSeccion("Actividades de Operación", ActividadesOperacion); EsperarTecla(); break;
+                case 2: MostrarSeccion("Actividades de Inversión", ActividadesInversion); EsperarTecla(); break;
+                case 3: MostrarSeccion("Actividades de Financiamiento", ActividadesFinanciamiento); EsperarTecla(); break;
+                case 0: salir = true; break;
             }
         }
     }
+
+    #endregion
 }

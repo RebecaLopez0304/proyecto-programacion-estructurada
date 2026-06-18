@@ -1,482 +1,198 @@
+namespace ProyectoProgramacion.Comunes;
 
-namespace ProyectoProgramacion.Comunes
+/// <summary>
+/// Funciones de apoyo usadas en todo el programa: lectura validada de datos por consola,
+/// mensajes con formato, elementos visuales, formato de moneda y guardado en archivo.
+/// </summary>
+public static class Utilidades
 {
-    /*
-    ===========================
-        Utilidades
-    ===========================
-    */
-    public static class Utilidades
+    #region Entrada de datos
+
+    /// <summary>Pide un entero positivo (mayor que 0), repitiendo hasta que la entrada sea válida.</summary>
+    public static int SolicitarEntero()
     {
-        public static double SolicitarDouble(double entradaUsuario)
+        while (true)
         {
-            while (true)
-            {
-                try
-                {
-                    entradaUsuario = double.Parse(Console.ReadLine() ?? string.Empty);
-                    if (entradaUsuario > 0)
-                    {
-                        return entradaUsuario;
-                    }
-                    else
-                    {
-                        MostrarMensajeError("Debe ingresar un número positivo mayor que 0.", false, true);
-                    }
-                }
-                catch (Exception)
-                {
-                    MostrarMensajeError("Entrada no válida. Debe ingresar un número válido.", false, true);
-                }
-            }
-        }
+            if (int.TryParse(Console.ReadLine(), out int valor) && valor > 0)
+                return valor;
 
-        // MARK: Solicitar una cadena con validaciones
-        public static string SolicitarString()
-        {
-            while (true)
-            {
-                try
-                {
-                    string entrada = Console.ReadLine() ?? string.Empty;
-                    string entradaUsuario = entrada.Trim();
-
-                    // Verifica que tenga al menos 3 caracteres
-                    if (entradaUsuario.Length >= 3)
-                    {
-                        // Si la entrada es solo números, lanza excepción para que lo capture el catch
-                        if (entradaUsuario.All(char.IsDigit))
-                        {
-                            throw new Exception("La entrada no puede ser solo números.");
-                        }
-                        return entradaUsuario;
-                    }
-                    else
-                    {
-                        MostrarMensajeError("Debe ingresar al menos 3 caracteres.", false, true);
-                    }
-                }
-                catch (Exception)
-                {
-                    MostrarMensajeError("Entrada no válida. Debe ingresar un texto válido que no sea solo números.", false, true);
-                }
-            }
-        }
-
-        public static string MesNumeroALetra()
-        {
-            int mesUsuario = SolicitarEnteroConLimites(1, 12);
-            string mesSeleccionado = "";
-
-            switch (mesUsuario)
-            {
-                case 1:
-                    mesSeleccionado = "Enero";
-                    break;
-                case 2:
-                    mesSeleccionado = "Febrero";
-                    break;
-
-                case 3:
-                    mesSeleccionado = "Marzo";
-                    break;
-
-                case 4:
-                    mesSeleccionado = "Abril";
-                    break;
-
-                case 5:
-                    mesSeleccionado = "Mayo";
-                    break;
-
-                case 6:
-                    mesSeleccionado = "Junio";
-                    break;
-
-                case 7:
-                    mesSeleccionado = "Julio";
-                    break;
-
-                case 8:
-                    mesSeleccionado = "Agosto";
-                    break;
-
-                case 9:
-                    mesSeleccionado = "Septiembre";
-                    break;
-
-                case 10:
-                    mesSeleccionado = "Octubre";
-                    break;
-
-                case 11:
-                    mesSeleccionado = "Noviembre";
-                    break;
-
-                case 12:
-                    mesSeleccionado = "Diciembre";
-                    break;
-
-                default:
-                    break;
-            }
-
-            return mesSeleccionado;
-        }
-
-        // MARK: Solicitar un número entero positivo
-        public static int SolicitarEntero()
-        {
-            while (true)
-            {
-                try
-                {
-                    int entradaUsuario = int.Parse(Console.ReadLine() ?? string.Empty);
-                    if (entradaUsuario > 0)
-                    {
-                        return entradaUsuario;
-                    }
-                    else
-                    {
-                        MostrarMensajeError("Debe ingresar un número entero positivo (mayor que 0).", false, true);
-                    }
-                }
-                catch (Exception)
-                {
-                    MostrarMensajeError("Entrada no válida. Debe ingresar un número entero válido.", false, true);
-                }
-            }
-        }
-
-        // MARK: Solicitar un número entero no negativo
-        public static int SolicitarEnteroNoNegativo()
-        {
-            while (true)
-            {
-                try
-                {
-                    int entradaUsuario = int.Parse(Console.ReadLine() ?? string.Empty);
-                    if (entradaUsuario >= 0)
-                    {
-                        return entradaUsuario;
-                    }
-                    else
-                    {
-                        MostrarMensajeError("Debe ingresar un número entero no negativo (0 o mayor).", false, true);
-                    }
-                }
-                catch (Exception)
-                {
-                    MostrarMensajeError("Entrada no válida. Debe ingresar un número entero válido.", false, true);
-                }
-            }
-        }
-
-        // MARK: Solicitar un número entero dentro de unos límites específicos
-        // limiteInferior: valor mínimo aceptable (inclusive)
-        // limiteSuperior: valor máximo aceptable (inclusive)
-        public static int SolicitarEnteroConLimites(int limiteInferior, int limiteSuperior)
-        {
-            while (true)
-            {
-                try
-                {
-                    Console.WriteLine($"Ingrese un numero entero entre {limiteInferior} y {limiteSuperior}: ");
-                    int entradaUsuario = int.Parse(Console.ReadLine() ?? string.Empty);
-                    if (entradaUsuario >= limiteInferior && entradaUsuario <= limiteSuperior)
-                    {
-                        return entradaUsuario;
-                    }
-                    else
-                    {
-                        MostrarMensajeError($"Debe ingresar un número entero entre {limiteInferior} y {limiteSuperior}.", false, true);
-                    }
-                }
-                catch (Exception)
-                {
-                    MostrarMensajeError("Entrada no válida. Debe ingresar un número entero válido.", false, true);
-                }
-            }
-        }
-
-
-
-
-        // MARK: UTILIDADES VISUALES - inicio
-        public static void MostrarLineaDivisora(bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
-        {
-            if (SaltoDeLineaInicio)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("--------------------------------------------------------------");
-
-            if (SaltoDeLineaFinal)
-            {
-                Console.WriteLine();
-            }
-        }
-
-        public static void MostrarLineaDivisoraConTexto(string texto, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
-        {
-            if (SaltoDeLineaInicio)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine($"==============================================================");
-            Console.WriteLine($"                       {texto}");
-            Console.WriteLine($"==============================================================");
-
-            if (SaltoDeLineaFinal)
-            {
-                Console.WriteLine();
-            }
-        }
-
-        public static void MostrarTituloSubrayado(string titulo, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
-        {
-            if (SaltoDeLineaInicio)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine($"{titulo}");
-            Console.WriteLine(new string('-', titulo.Length + 1));
-
-            if (SaltoDeLineaFinal)
-            {
-                Console.WriteLine();
-            }
-        }
-
-        public static void EsperarTecla()
-        {
-            MostrarLineaDivisora(true, true);
-            Console.WriteLine("Presione cualquier tecla para continuar...");
-            Console.ReadKey();
-        }
-
-        public static void VolverAtras()
-        {
-            MostrarLineaDivisora(true, false);
-            Console.WriteLine("0. Volver al menu anterior");
-            // EsperarTecla();
-        }
-
-        public static void MostrarMensajeError(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
-        {
-            if (SaltoDeLineaInicio)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine($"[ERROR] - {mensaje}");
-
-            if (SaltoDeLineaFinal)
-            {
-                Console.WriteLine();
-            }
-        }
-
-        public static void MostrarMensajeExito(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
-        {
-            if (SaltoDeLineaInicio)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine($"[OPERACION EXITOSA] - {mensaje}");
-
-            if (SaltoDeLineaFinal)
-            {
-                Console.WriteLine();
-            }
-        }
-
-        public static void MostrarMensajeAdvertencia(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
-        {
-            if (SaltoDeLineaInicio)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine($"[ADVERTENCIA] - {mensaje}");
-
-            if (SaltoDeLineaFinal)
-            {
-                Console.WriteLine();
-            }
-        }
-
-        public static void MostrarMensajeCancelacion(string mensaje, bool SaltoDeLineaInicio = false, bool SaltoDeLineaFinal = false)
-        {
-            if (SaltoDeLineaInicio)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine($"[OPERACION CANCELADA] - {mensaje}");
-
-            if (SaltoDeLineaFinal)
-            {
-                Console.WriteLine();
-            }
-        }
-
-        // MARK: UTILIDADES VISUALES - fin
-
-        /*
-        ===========================
-            Funciones de Guardado de Resultados
-        ===========================
-        */
-
-        // Guarda el contenido en un archivo de texto con nombre autoincremental (estado-financiero-<numero autoincremental>.txt)
-        // nombreEstadoFinanciero: "balance-general", "estado-resultados", "flujo-efectivo"
-        // contenido: todo el texto que se guardará en el archivo
-        // retorna: ruta completa del archivo guardado
-        // MARK: Guardar en archivo
-        public static string GuardarResultadoEnArchivo(string nombreEstadoFinanciero, string contenido)
-        {
-            try
-            {
-                // Obtiene la ruta de la carpeta "Resultados" en el directorio actual - <ruta_actual>/Resultados
-                // Path.Combine combina el resultado que nos devuelve GetCurrentDirectory + el nombre de la carpeta que queremos crear/verificar, en este caso es resultados
-
-                // GetCurrentDirectory devuelve esto -> F:\REBECA\proyecto-programacion
-                // y Path.Combine combina el resultado y nos devuelve esto -> F:\REBECA\proyecto-programacion\Resultados
-                string carpetaResultados = Path.Combine(Directory.GetCurrentDirectory(), "Resultados");
-
-                // Si la carpeta "Resultados" no existe, la crea
-                // si existe no hace nada
-                if (!Directory.Exists(carpetaResultados))
-                {
-                    Directory.CreateDirectory(carpetaResultados);
-                }
-
-                // Obtiene el siguiente número disponible para el archivo (autoincremental)
-                int numero = ObtenerSiguienteNumeroArchivo(carpetaResultados, nombreEstadoFinanciero);
-
-                // Construye el nombre del archivo con el formato: <nombreEstadoFinanciero>-<numero>.txt
-                string nombreArchivo = $"{nombreEstadoFinanciero}-{numero}.txt";
-
-                // Une la carpeta y el nombre del archivo para obtener la ruta completa
-                string rutaCompleta = Path.Combine(carpetaResultados, nombreArchivo);
-
-                // Escribe el contenido en el archivo especificado
-                File.WriteAllText(rutaCompleta, contenido);
-
-                // Retorna la ruta completa del archivo guardado
-                return rutaCompleta;
-            }
-            catch (Exception ex)
-            {
-                // Si ocurre un error, muestra un mensaje y retorna string.Empty
-                MostrarMensajeError($"Error al guardar el archivo: {ex.Message}", true, true);
-                return string.Empty;
-            }
-        }
-
-        // Obtiene el siguiente número disponible para el archivo
-        // Busca archivos existentes y retorna el número más alto + 1
-        // MARK: Guardar archivo - obtener siguiente número
-        private static int ObtenerSiguienteNumeroArchivo(string carpeta, string nombreBase)
-        {
-            string patron = $"{nombreBase}-*.txt";
-            string[] archivosExistentes = Directory.GetFiles(carpeta, patron);
-
-            if (archivosExistentes.Length == 0)
-            {
-                return 1;
-            }
-
-            int maxNumero = 0;
-            // Recorre todos los archivos que coinciden con el patrón (por ejemplo: "balance-general-*.txt")
-            foreach (string archivo in archivosExistentes)
-            {
-                // Obtiene el nombre del archivo sin la extensión (por ejemplo: "balance-general-3")
-                string nombreArchivo = Path.GetFileNameWithoutExtension(archivo);
-
-                // Divide el nombre del archivo usando el guion como separador
-                // Esto genera un arreglo, por ejemplo: ["balance", "general", "3"]
-                string[] partes = nombreArchivo.Split('-');
-
-                // Verifica que haya al menos dos partes y que la última parte sea un número entero
-                // partes[^1] accede al último elemento del arreglo (el número autoincremental)
-                if (partes.Length >= 2 && int.TryParse(partes[^1], out int numero))
-                {
-                    // Si el número encontrado es mayor que el máximo actual, lo actualiza
-                    if (numero > maxNumero)
-                    {
-                        maxNumero = numero;
-                    }
-                }
-            }
-
-            return maxNumero + 1;
-        }
-
-        // Pregunta al usuario si desea guardar el resultado
-        // retorna: true si quiere guardar, false si no
-
-        // MARK: Guardar archivo - preguntar si guardar
-        public static bool PreguntarSiGuardarResultado()
-        {
-            MostrarLineaDivisora(true, true);
-            Console.WriteLine("¿Desea guardar este resultado en un archivo de texto?");
-            Console.WriteLine("1. Si, guardar resultado");
-            Console.WriteLine("2. No, solo visualizar");
-            MostrarLineaDivisora(true, true);
-
-            int opcion = SolicitarEnteroConLimites(1, 2);
-            return opcion == 1;
-        }
-
-        /*
-        ===========================
-            Función de Formateo de Moneda
-        ===========================
-        */
-        // MARK: Utilidad Moneda
-        // Formatea un número como moneda en córdobas nicaragüenses (NIO)
-        // Formato: NIO C$ 1,234.56
-        public static string FormatearMoneda(int valor)
-        {
-            return $"NIO C$ {valor:N2}";
-        }
-
-        // Sobrecarga para valores decimales
-        public static string FormatearMonedaDecimal(decimal valor)
-        {
-            return $"NIO C$ {valor:N2}";
-        }
-
-        // Solicita un año válido (entre 1900 y 2100)
-        public static int SolicitarAnio()
-        {
-            while (true)
-            {
-                try
-                {
-                    int anio = int.Parse(Console.ReadLine() ?? string.Empty);
-                    if (anio >= 1900 && anio <= 2100)
-                    {
-                        return anio;
-                    }
-                    else
-                    {
-                        MostrarMensajeError("El año debe estar entre 1900 y 2100.", false, false);
-                        Console.Write("Intente de nuevo: ");
-                    }
-                }
-                catch (Exception)
-                {
-                    MostrarMensajeError("Entrada no válida. Debe ingresar un año válido.", false, false);
-                    Console.Write("Intente de nuevo: ");
-                }
-            }
+            MostrarMensajeError("Debe ingresar un número entero positivo (mayor que 0).", false, true);
         }
     }
+
+    /// <summary>Pide un entero no negativo (0 o mayor), repitiendo hasta que la entrada sea válida.</summary>
+    public static int SolicitarEnteroNoNegativo()
+    {
+        while (true)
+        {
+            if (int.TryParse(Console.ReadLine(), out int valor) && valor >= 0)
+                return valor;
+
+            MostrarMensajeError("Debe ingresar un número entero no negativo (0 o mayor).", false, true);
+        }
+    }
+
+    /// <summary>Pide un entero dentro del rango [límiteInferior, límiteSuperior], ambos inclusive.</summary>
+    public static int SolicitarEnteroConLimites(int limiteInferior, int limiteSuperior)
+    {
+        while (true)
+        {
+            Console.WriteLine($"Ingrese un numero entero entre {limiteInferior} y {limiteSuperior}: ");
+
+            if (int.TryParse(Console.ReadLine(), out int valor) && valor >= limiteInferior && valor <= limiteSuperior)
+                return valor;
+
+            MostrarMensajeError($"Debe ingresar un número entero entre {limiteInferior} y {limiteSuperior}.", false, true);
+        }
+    }
+
+    /// <summary>Pide un año válido (entre 1900 y 2100).</summary>
+    public static int SolicitarAnio()
+    {
+        while (true)
+        {
+            if (int.TryParse(Console.ReadLine(), out int anio) && anio >= 1900 && anio <= 2100)
+                return anio;
+
+            MostrarMensajeError("El año debe estar entre 1900 y 2100.", false, false);
+            Console.Write("Intente de nuevo: ");
+        }
+    }
+
+    /// <summary>Pide un texto de al menos 3 caracteres que no sea solo números.</summary>
+    public static string SolicitarString()
+    {
+        while (true)
+        {
+            string entrada = (Console.ReadLine() ?? string.Empty).Trim();
+
+            if (entrada.Length >= 3 && !entrada.All(char.IsDigit))
+                return entrada;
+
+            MostrarMensajeError("Debe ingresar un texto válido de al menos 3 caracteres que no sea solo números.", false, true);
+        }
+    }
+
+    /// <summary>Pide el número de un mes (1-12) y devuelve su nombre (ej. 3 -> "Marzo").</summary>
+    public static string MesNumeroALetra()
+    {
+        string[] meses =
+        {
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        };
+
+        int mes = SolicitarEnteroConLimites(1, 12);
+        return meses[mes - 1];
+    }
+
+    #endregion
+
+    #region Mensajes
+
+    /// <summary>Imprime un mensaje con una etiqueta entre corchetes y saltos de línea opcionales.</summary>
+    private static void Mensaje(string etiqueta, string texto, bool saltoInicio, bool saltoFinal)
+    {
+        if (saltoInicio) Console.WriteLine();
+        Console.WriteLine($"[{etiqueta}] - {texto}");
+        if (saltoFinal) Console.WriteLine();
+    }
+
+    public static void MostrarMensajeError(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
+        => Mensaje("ERROR", mensaje, saltoInicio, saltoFinal);
+
+    public static void MostrarMensajeExito(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
+        => Mensaje("OPERACION EXITOSA", mensaje, saltoInicio, saltoFinal);
+
+    public static void MostrarMensajeAdvertencia(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
+        => Mensaje("ADVERTENCIA", mensaje, saltoInicio, saltoFinal);
+
+    public static void MostrarMensajeCancelacion(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
+        => Mensaje("OPERACION CANCELADA", mensaje, saltoInicio, saltoFinal);
+
+    #endregion
+
+    #region Elementos visuales
+
+    /// <summary>Imprime una línea divisora simple, con saltos de línea opcionales.</summary>
+    public static void MostrarLineaDivisora(bool saltoInicio = false, bool saltoFinal = false)
+    {
+        if (saltoInicio) Console.WriteLine();
+        Console.WriteLine(new string('-', 62));
+        if (saltoFinal) Console.WriteLine();
+    }
+
+    /// <summary>Imprime un texto centrado entre dos líneas de "=", a modo de encabezado.</summary>
+    public static void MostrarLineaDivisoraConTexto(string texto, bool saltoInicio = false, bool saltoFinal = false)
+    {
+        if (saltoInicio) Console.WriteLine();
+        Console.WriteLine(new string('=', 62));
+        Console.WriteLine($"                       {texto}");
+        Console.WriteLine(new string('=', 62));
+        if (saltoFinal) Console.WriteLine();
+    }
+
+    /// <summary>Imprime un título con una línea de guiones debajo.</summary>
+    public static void MostrarTituloSubrayado(string titulo, bool saltoInicio = false, bool saltoFinal = false)
+    {
+        if (saltoInicio) Console.WriteLine();
+        Console.WriteLine(titulo);
+        Console.WriteLine(new string('-', titulo.Length + 1));
+        if (saltoFinal) Console.WriteLine();
+    }
+
+    /// <summary>Muestra la opción "Volver al menu anterior" precedida de una línea divisora.</summary>
+    public static void VolverAtras()
+    {
+        MostrarLineaDivisora(true, false);
+        Console.WriteLine("0. Volver al menu anterior");
+    }
+
+    /// <summary>Pausa la ejecución hasta que el usuario presione una tecla.</summary>
+    public static void EsperarTecla()
+    {
+        MostrarLineaDivisora(true, true);
+        Console.WriteLine("Presione cualquier tecla para continuar...");
+        Console.ReadKey();
+    }
+
+    #endregion
+
+    #region Formato de moneda
+
+    /// <summary>Formatea un número como moneda nicaragüense. Ej. 1234 -> "NIO C$ 1,234.00".</summary>
+    public static string FormatearMoneda(int valor) => $"NIO C$ {valor:N2}";
+
+    /// <summary>Igual que <see cref="FormatearMoneda"/> pero sin el prefijo "NIO" (útil para tablas).</summary>
+    public static string FormatearMonedaSinPrefijo(int valor) => $"C$ {valor:N2}";
+
+    #endregion
+
+    #region Persistencia en archivo
+
+    /// <summary>Pregunta al usuario si desea guardar el resultado. Devuelve true si responde que sí.</summary>
+    public static bool PreguntarSiGuardarResultado()
+    {
+        MostrarLineaDivisora(true, true);
+        Console.WriteLine("¿Desea guardar este resultado en un archivo de texto?");
+        Console.WriteLine("1. Si, guardar resultado");
+        Console.WriteLine("2. No, solo visualizar");
+        MostrarLineaDivisora(true, true);
+
+        return SolicitarEnteroConLimites(1, 2) == 1;
+    }
+
+    /// <summary>
+    /// Guarda el texto en "Resultados/&lt;nombre&gt;.txt" (sobrescribe el resultado anterior)
+    /// y devuelve la ruta del archivo.
+    /// </summary>
+    public static string GuardarResultadoEnArchivo(string nombreEstadoFinanciero, string contenido)
+    {
+        Directory.CreateDirectory("Resultados");
+        string ruta = Path.Combine("Resultados", $"{nombreEstadoFinanciero}.txt");
+        File.WriteAllText(ruta, contenido);
+        return ruta;
+    }
+
+    #endregion
 }

@@ -1,89 +1,85 @@
 using ProyectoProgramacion.Comunes;
+using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones;
+using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones.AccionesVerCuentas;
-using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
 
-namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados
+namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados;
+
+/// <summary>
+/// Módulo del Estado de Resultados. Coordina el menú y reparte el trabajo entre las
+/// acciones: ver, agregar, eliminar, buscar, modificar y calcular cuentas.
+/// </summary>
+public static class EstadoResultados
 {
-    /*
-    ===========================
-        Clase Estado de Resultados
-    ===========================
-    */
-    public static class EstadoResultados
+    #region Menú principal
+
+    /// <summary>Muestra el menú del módulo hasta que el usuario elige volver (0).</summary>
+    public static void Ejecutar()
     {
-        public static void Ejecutar()
+        bool volver = false;
+
+        while (!volver)
         {
-            bool volver = false;
-
-            while (!volver)
+            switch (MostrarMenuPrincipal())
             {
-                int opcion = MostrarMenuPrincipal();
-
-                switch (opcion)
-                {
-                    case 1:
-                        VerCuentas();
-                        break;
-                    case 2:
-                        AccionAgregarCuenta.Ejecutar();
-                        break;
-                    case 3:
-                        AccionEliminarCuenta.Ejecutar();
-                        break;
-                    case 4:
-                        AccionCalcularEstadoResultados.Ejecutar();
-                        break;
-                    case 0:
-                        volver = true;
-                        Console.WriteLine("\n\n");
-                        break;
-                    default:
-                        MostrarMensajeError("Opción no válida. Intente de nuevo.", true, false);
-                        break;
-                }
-            }
-            MostrarMensajeAdvertencia("El modulo de Estado de Resultados aun no esta implementado.", true, true);
-            MostrarMensajeAdvertencia("Debe seguir la misma estructura que Balance General.", true, false);
-            EsperarTecla();
-        }
-
-        // MARK: Ver Cuentas
-        private static void VerCuentas()
-        {
-            bool regresar = false;
-
-            while (!regresar)
-            {
-                int opcion = MostrarMenuCuentas();
-
-                switch (opcion)
-                {
-                    case 1:
-                        MostrarTodoER();
-                        break;
-                    case 2:
-                        MostrarPorCategoriaER();
-                        break;
-                    case 0:
-                        regresar = true;
-                        break;
-                }
+                case 1: VerCuentas(); break;
+                case 2: AccionAgregarCuenta.Ejecutar(); break;
+                case 3: AccionesCuentas.EliminarCuenta(ObtenerCatalogo()); break;
+                case 4: AccionesCuentas.BuscarCuenta(ObtenerCatalogo()); break;
+                case 5: AccionesCuentas.ModificarCuenta(ObtenerCatalogo()); break;
+                case 6: AccionCalcularEstadoResultados.Ejecutar(); break;
+                case 0: volver = true; break;
             }
         }
-
-        // MARK: Mostrar Sección
-        public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas, bool v)//
-        {
-            MostrarTituloSubrayado(titulo, true);
-
-            foreach (var cuenta in listaDeCuentas)
-            {
-                string naturaleza = cuenta.EsDeudora ? "[ Egreso    ]" : "[ Ingreso   ]";
-                Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
-            }
-        }
-
     }
+
+    #endregion
+
+    #region Catálogo de cuentas
+
+    /// <summary>Devuelve todas las listas del Estado de Resultados junto al nombre de su grupo.</summary>
+    public static List<(string grupo, List<Cuenta> lista)> ObtenerCatalogo() => new()
+    {
+        ("Ventas", CuentasEstadoResultados.Ventas),
+        ("Costo de Ventas", CuentasEstadoResultados.CostoDeVentas),
+        ("Gastos de Operación", CuentasEstadoResultados.GastoDeOperacion),
+        ("Gastos de Administración", CuentasEstadoResultados.GastosAdministracion),
+        ("Otros Resultados Financieros", CuentasEstadoResultados.OtrosResultadosFinancieros),
+    };
+
+    #endregion
+
+    #region Ver cuentas
+
+    /// <summary>Submenú para ver las cuentas (todas o por categoría).</summary>
+    private static void VerCuentas()
+    {
+        bool regresar = false;
+
+        while (!regresar)
+        {
+            switch (MostrarMenuCuentas())
+            {
+                case 1: MostrarTodoER(); break;
+                case 2: MostrarPorCategoriaER(); break;
+                case 0: regresar = true; break;
+            }
+        }
+    }
+
+    /// <summary>Imprime una sección con su título y las cuentas indicadas (ingreso/egreso + nombre).</summary>
+    public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
+    {
+        MostrarTituloSubrayado(titulo, true);
+
+        foreach (Cuenta cuenta in listaDeCuentas)
+        {
+            string naturaleza = cuenta.EsDeudora ? "[ Egreso    ]" : "[ Ingreso   ]";
+            Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
+        }
+    }
+
+    #endregion
 }
