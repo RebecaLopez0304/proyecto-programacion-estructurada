@@ -8,7 +8,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos
     /// </summary>
     public static class CuentasEstadoResultados
     {
-        public static readonly List<Cuenta> Ventas = new()
+        public static readonly List<Cuenta> Ventas = new List<Cuenta>()
         {
             new CuentaAcreedora("Ventas totales"),
             new CuentaDeudora("Devoluciones sobre ventas"),
@@ -18,7 +18,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos
             new CuentaAcreedora("Ingresos financieros"),
             new CuentaAcreedora("Otros ingresos")
         };
-        public static readonly List<Cuenta> CostoDeVentas = new()
+        public static readonly List<Cuenta> CostoDeVentas = new List<Cuenta>()
         {
             new CuentaDeudora("Inventario inicial"),
             new CuentaDeudora("Compras"),
@@ -31,7 +31,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos
             new CuentaDeudora("Mano de obra directa"),
             new CuentaDeudora("Materia prima")
         };
-        public static readonly List<Cuenta> GastoDeOperacion = new()
+        public static readonly List<Cuenta> GastoDeOperacion = new List<Cuenta>()
         {
             new CuentaDeudora("Sueldos de vendedores"),
             new CuentaDeudora("Comisiones de vendedores"),
@@ -44,7 +44,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos
             new CuentaDeudora("Viáticos"),
             new CuentaDeudora("Promociones y muestras")
         };
-        public static readonly List<Cuenta> GastosAdministracion = new()
+        public static readonly List<Cuenta> GastosAdministracion = new List<Cuenta>()
         {
             new CuentaDeudora("Sueldos de personal administrativo"),
             new CuentaDeudora("Prestaciones administrativas"),
@@ -60,7 +60,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos
             new CuentaDeudora("Gastos legales"),
             new CuentaDeudora("Capacitación de personal")
         };
-        public static readonly List<Cuenta> OtrosResultadosFinancieros = new()
+        public static readonly List<Cuenta> OtrosResultadosFinancieros = new List<Cuenta>()
         {
             new CuentaDeudora("Intereses pagados"),
             new CuentaDeudora("Comisiones bancarias"),

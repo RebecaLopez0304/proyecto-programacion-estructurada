@@ -9,7 +9,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos
     /// </summary>
     public static class CuentasFlujoEfectivo
     {
-        public static readonly List<Cuenta> ActividadesOperacion = new()
+        public static readonly List<Cuenta> ActividadesOperacion = new List<Cuenta>()
         {
             new CuentaDeudora("Utilidad o pérdida neta del ejercicio", "Capital"),
             new CuentaDeudora("Depreciación de activo fijo", "Activo"),
@@ -30,7 +30,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos
             new CuentaDeudora("Aumento en impuestos por pagar", "Pasivo"),
             new CuentaAcreedora("Disminución en impuestos por pagar", "Pasivo")
         };
-        public static readonly List<Cuenta> ActividadesInversion = new()
+        public static readonly List<Cuenta> ActividadesInversion = new List<Cuenta>()
         {
             new CuentaAcreedora("Compra de terrenos", "Activo"),
             new CuentaDeudora("Venta de terrenos", "Activo"),
@@ -49,7 +49,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.FlujoEfectivo.Catalogos
             new CuentaAcreedora("Préstamos otorgados", "Activo"),
             new CuentaDeudora("Cobro de préstamos otorgados", "Activo")
         };
-        public static readonly List<Cuenta> ActividadesFinanciamiento = new()
+        public static readonly List<Cuenta> ActividadesFinanciamiento = new List<Cuenta>()
         {
             new CuentaDeudora("Aportaciones de capital", "Capital"),
             new CuentaAcreedora("Reembolso de capital", "Capital"),

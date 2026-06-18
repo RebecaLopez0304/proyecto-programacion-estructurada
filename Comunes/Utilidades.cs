@@ -13,8 +13,16 @@ public static class Utilidades
     {
         while (true)
         {
-            if (int.TryParse(Console.ReadLine(), out int valor) && valor > 0)
-                return valor;
+            string? entrada = Console.ReadLine();
+            bool esNumero = int.TryParse(entrada, out int valor);
+
+            if (esNumero)
+            {
+                if (valor > 0)
+                {
+                    return valor;
+                }
+            }
 
             MostrarMensajeError("Debe ingresar un número entero positivo (mayor que 0).", false, true);
         }
@@ -25,8 +33,16 @@ public static class Utilidades
     {
         while (true)
         {
-            if (int.TryParse(Console.ReadLine(), out int valor) && valor >= 0)
-                return valor;
+            string? entrada = Console.ReadLine();
+            bool esNumero = int.TryParse(entrada, out int valor);
+
+            if (esNumero)
+            {
+                if (valor >= 0)
+                {
+                    return valor;
+                }
+            }
 
             MostrarMensajeError("Debe ingresar un número entero no negativo (0 o mayor).", false, true);
         }
@@ -39,8 +55,16 @@ public static class Utilidades
         {
             Console.WriteLine($"Ingrese un numero entero entre {limiteInferior} y {limiteSuperior}: ");
 
-            if (int.TryParse(Console.ReadLine(), out int valor) && valor >= limiteInferior && valor <= limiteSuperior)
-                return valor;
+            string? entrada = Console.ReadLine();
+            bool esNumero = int.TryParse(entrada, out int valor);
+
+            if (esNumero)
+            {
+                if (valor >= limiteInferior && valor <= limiteSuperior)
+                {
+                    return valor;
+                }
+            }
 
             MostrarMensajeError($"Debe ingresar un número entero entre {limiteInferior} y {limiteSuperior}.", false, true);
         }
@@ -51,8 +75,16 @@ public static class Utilidades
     {
         while (true)
         {
-            if (int.TryParse(Console.ReadLine(), out int anio) && anio >= 1900 && anio <= 2100)
-                return anio;
+            string? entrada = Console.ReadLine();
+            bool esNumero = int.TryParse(entrada, out int anio);
+
+            if (esNumero)
+            {
+                if (anio >= 1900 && anio <= 2100)
+                {
+                    return anio;
+                }
+            }
 
             MostrarMensajeError("El año debe estar entre 1900 y 2100.", false, false);
             Console.Write("Intente de nuevo: ");
@@ -64,10 +96,27 @@ public static class Utilidades
     {
         while (true)
         {
-            string entrada = (Console.ReadLine() ?? string.Empty).Trim();
+            string? lineaLeida = Console.ReadLine();
+            string entrada;
+            if (lineaLeida == null)
+            {
+                entrada = "";
+            }
+            else
+            {
+                entrada = lineaLeida.Trim();
+            }
 
-            if (entrada.Length >= 3 && !entrada.All(char.IsDigit))
-                return entrada;
+            // La entrada es válida si tiene al menos 3 caracteres y no son todos dígitos.
+            bool sonTodosNumeros = entrada.All(char.IsDigit);
+
+            if (entrada.Length >= 3)
+            {
+                if (!sonTodosNumeros)
+                {
+                    return entrada;
+                }
+            }
 
             MostrarMensajeError("Debe ingresar un texto válido de al menos 3 caracteres que no sea solo números.", false, true);
         }
@@ -93,22 +142,38 @@ public static class Utilidades
     /// <summary>Imprime un mensaje con una etiqueta entre corchetes y saltos de línea opcionales.</summary>
     private static void Mensaje(string etiqueta, string texto, bool saltoInicio, bool saltoFinal)
     {
-        if (saltoInicio) Console.WriteLine();
+        if (saltoInicio)
+        {
+            Console.WriteLine();
+        }
+
         Console.WriteLine($"[{etiqueta}] - {texto}");
-        if (saltoFinal) Console.WriteLine();
+
+        if (saltoFinal)
+        {
+            Console.WriteLine();
+        }
     }
 
     public static void MostrarMensajeError(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
-        => Mensaje("ERROR", mensaje, saltoInicio, saltoFinal);
+    {
+        Mensaje("ERROR", mensaje, saltoInicio, saltoFinal);
+    }
 
     public static void MostrarMensajeExito(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
-        => Mensaje("OPERACION EXITOSA", mensaje, saltoInicio, saltoFinal);
+    {
+        Mensaje("OPERACION EXITOSA", mensaje, saltoInicio, saltoFinal);
+    }
 
     public static void MostrarMensajeAdvertencia(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
-        => Mensaje("ADVERTENCIA", mensaje, saltoInicio, saltoFinal);
+    {
+        Mensaje("ADVERTENCIA", mensaje, saltoInicio, saltoFinal);
+    }
 
     public static void MostrarMensajeCancelacion(string mensaje, bool saltoInicio = false, bool saltoFinal = false)
-        => Mensaje("OPERACION CANCELADA", mensaje, saltoInicio, saltoFinal);
+    {
+        Mensaje("OPERACION CANCELADA", mensaje, saltoInicio, saltoFinal);
+    }
 
     #endregion
 
@@ -117,28 +182,52 @@ public static class Utilidades
     /// <summary>Imprime una línea divisora simple, con saltos de línea opcionales.</summary>
     public static void MostrarLineaDivisora(bool saltoInicio = false, bool saltoFinal = false)
     {
-        if (saltoInicio) Console.WriteLine();
+        if (saltoInicio)
+        {
+            Console.WriteLine();
+        }
+
         Console.WriteLine(new string('-', 62));
-        if (saltoFinal) Console.WriteLine();
+
+        if (saltoFinal)
+        {
+            Console.WriteLine();
+        }
     }
 
     /// <summary>Imprime un texto centrado entre dos líneas de "=", a modo de encabezado.</summary>
     public static void MostrarLineaDivisoraConTexto(string texto, bool saltoInicio = false, bool saltoFinal = false)
     {
-        if (saltoInicio) Console.WriteLine();
+        if (saltoInicio)
+        {
+            Console.WriteLine();
+        }
+
         Console.WriteLine(new string('=', 62));
         Console.WriteLine($"                       {texto}");
         Console.WriteLine(new string('=', 62));
-        if (saltoFinal) Console.WriteLine();
+
+        if (saltoFinal)
+        {
+            Console.WriteLine();
+        }
     }
 
     /// <summary>Imprime un título con una línea de guiones debajo.</summary>
     public static void MostrarTituloSubrayado(string titulo, bool saltoInicio = false, bool saltoFinal = false)
     {
-        if (saltoInicio) Console.WriteLine();
+        if (saltoInicio)
+        {
+            Console.WriteLine();
+        }
+
         Console.WriteLine(titulo);
         Console.WriteLine(new string('-', titulo.Length + 1));
-        if (saltoFinal) Console.WriteLine();
+
+        if (saltoFinal)
+        {
+            Console.WriteLine();
+        }
     }
 
     /// <summary>Muestra la opción "Volver al menu anterior" precedida de una línea divisora.</summary>
@@ -161,10 +250,16 @@ public static class Utilidades
     #region Formato de moneda
 
     /// <summary>Formatea un número como moneda nicaragüense. Ej. 1234 -> "NIO C$ 1,234.00".</summary>
-    public static string FormatearMoneda(int valor) => $"NIO C$ {valor:N2}";
+    public static string FormatearMoneda(int valor)
+    {
+        return $"NIO C$ {valor:N2}";
+    }
 
     /// <summary>Igual que <see cref="FormatearMoneda"/> pero sin el prefijo "NIO" (útil para tablas).</summary>
-    public static string FormatearMonedaSinPrefijo(int valor) => $"C$ {valor:N2}";
+    public static string FormatearMonedaSinPrefijo(int valor)
+    {
+        return $"C$ {valor:N2}";
+    }
 
     #endregion
 
@@ -179,7 +274,15 @@ public static class Utilidades
         Console.WriteLine("2. No, solo visualizar");
         MostrarLineaDivisora(true, true);
 
-        return SolicitarEnteroConLimites(1, 2) == 1;
+        int opcion = SolicitarEnteroConLimites(1, 2);
+        if (opcion == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /// <summary>

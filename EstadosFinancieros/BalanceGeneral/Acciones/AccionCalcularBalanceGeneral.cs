@@ -2,7 +2,6 @@ using System.Text;
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.BalanceGeneral;
-using static ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Menus.MenusBalanceGeneral;
 
 namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
 
@@ -12,8 +11,24 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Acciones;
 /// </summary>
 public static class AccionCalcularBalanceGeneral
 {
+    #region Tipo de apoyo
+
     /// <summary>Una cuenta elegida por el usuario con su valor y la sección a la que pertenece.</summary>
-    private record CuentaValor(Cuenta Cuenta, int Valor, char Seccion); // 'A' = Activo, 'P' = Pasivo, 'C' = Capital
+    private class CuentaValor
+    {
+        public Cuenta Cuenta { get; }
+        public int Valor { get; }
+        public char Seccion { get; } // 'A' = Activo, 'P' = Pasivo, 'C' = Capital
+
+        public CuentaValor(Cuenta cuenta, int valor, char seccion)
+        {
+            Cuenta = cuenta;
+            Valor = valor;
+            Seccion = seccion;
+        }
+    }
+
+    #endregion
 
     #region Flujo principal
 
@@ -50,30 +65,36 @@ public static class AccionCalcularBalanceGeneral
     /// <summary>Permite al usuario elegir varias cuentas (con su valor) hasta que decide finalizar.</summary>
     private static List<CuentaValor> SeleccionarCuentas()
     {
-        var seleccionadas = new List<CuentaValor>();
-        var catalogo = ObtenerCatalogo();
+        List<CuentaValor> seleccionadas = new List<CuentaValor>();
+        ConfigCuentas config = Config;
         bool continuar = true;
 
         while (continuar)
         {
-            int categoria = MostrarMenuCategoriasConSalida(); // 0 = finalizar, 1-8 = categoría
-            if (categoria == 0) break;
+            int categoria = AccionesCuentas.ElegirGrupoConSalida(config); // 0 = finalizar, 1-8 = categoría
+            if (categoria == 0)
+            {
+                break;
+            }
 
-            var (nombreGrupo, listaCuentas) = catalogo[categoria - 1];
+            var (nombreGrupo, listaCuentas) = config.Catalogo[categoria - 1];
 
             // Categorías 1-4 = Activo, 5-6 = Pasivo, 7-8 = Capital
-            char seccion = categoria <= 4 ? 'A' : categoria <= 6 ? 'P' : 'C';
-
-            MostrarTituloSubrayado($"Cuentas de {nombreGrupo}", true, true);
-            for (int i = 0; i < listaCuentas.Count; i++)
+            char seccion;
+            if (categoria <= 4)
             {
-                string naturaleza = listaCuentas[i].EsDeudora ? "[Deudora  ]" : "[Acreedora]";
-                Console.WriteLine($"{i + 1}. {naturaleza} {listaCuentas[i].Nombre}");
+                seccion = 'A';
             }
-            MostrarLineaDivisora(true, true);
+            else if (categoria <= 6)
+            {
+                seccion = 'P';
+            }
+            else
+            {
+                seccion = 'C';
+            }
 
-            Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");
-            Cuenta cuenta = listaCuentas[SolicitarEnteroConLimites(1, listaCuentas.Count) - 1];
+            Cuenta cuenta = AccionesCuentas.ElegirCuenta(nombreGrupo, listaCuentas, config);
 
             Console.Write($"Ingrese el valor para '{cuenta.Nombre}': ");
             int valor = SolicitarEntero();
@@ -81,7 +102,7 @@ public static class AccionCalcularBalanceGeneral
             seleccionadas.Add(new CuentaValor(cuenta, valor, seccion));
             MostrarMensajeExito($"Cuenta '{cuenta.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
 
-            continuar = MostrarMenuContinuar() == 1;
+            continuar = AccionesCuentas.Continuar(config.Nombre);
         }
 
         return seleccionadas;
@@ -96,7 +117,7 @@ public static class AccionCalcularBalanceGeneral
     {
         MostrarLineaDivisoraConTexto("Resultado del Balance General", true, true);
 
-        var reporte = new StringBuilder();
+        StringBuilder reporte = new StringBuilder();
         reporte.AppendLine(new string('=', 62));
         reporte.AppendLine($"                    {nombreEmpresa.ToUpper()}");
         reporte.AppendLine("                    BALANCE GENERAL");
@@ -129,9 +150,11 @@ public static class AccionCalcularBalanceGeneral
         MostrarTituloSubrayado(titulo, true, true);
 
         int total = 0;
+        // Tomamos solo las cuentas que pertenecen a esta sección.
         foreach (CuentaValor item in seleccionadas.Where(c => c.Seccion == seccion))
         {
-            total += item.Cuenta.ValorConSigno(item.Valor);
+            total = total + item.Cuenta.ValorConSigno(item.Valor);
+
             string linea = $"  {item.Cuenta.Nombre}: {FormatearMoneda(item.Valor)}";
             Console.WriteLine(linea);
             reporte.AppendLine(linea);
@@ -141,6 +164,7 @@ public static class AccionCalcularBalanceGeneral
         Console.WriteLine(totalLinea);
         reporte.AppendLine(totalLinea);
         reporte.AppendLine();
+
         return total;
     }
 

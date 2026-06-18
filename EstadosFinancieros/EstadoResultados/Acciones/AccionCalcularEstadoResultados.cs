@@ -2,7 +2,6 @@ using System.Text;
 using ProyectoProgramacion.Comunes;
 using static ProyectoProgramacion.Comunes.Utilidades;
 using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.EstadoResultados;
-using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
 
 namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones;
 
@@ -12,11 +11,32 @@ namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones;
 /// </summary>
 public static class AccionCalcularEstadoResultados
 {
+    #region Tipos de apoyo
+
     /// <summary>Una cuenta elegida por el usuario con su valor y su categoría (1-5).</summary>
-    private record CuentaValor(Cuenta Cuenta, int Valor, int Categoria);
+    private class CuentaValor
+    {
+        public Cuenta Cuenta { get; }
+        public int Valor { get; }
+        public int Categoria { get; }
+
+        public CuentaValor(Cuenta cuenta, int valor, int categoria)
+        {
+            Cuenta = cuenta;
+            Valor = valor;
+            Categoria = categoria;
+        }
+    }
 
     /// <summary>Cómo afecta una categoría al resultado, según la naturaleza de cada cuenta.</summary>
-    private enum Modo { Ingreso, Costo, Gasto }
+    private enum Modo
+    {
+        Ingreso,
+        Costo,
+        Gasto
+    }
+
+    #endregion
 
     #region Flujo principal
 
@@ -53,27 +73,21 @@ public static class AccionCalcularEstadoResultados
     /// <summary>Permite al usuario elegir varias cuentas (con su valor) hasta que decide finalizar.</summary>
     private static List<CuentaValor> SeleccionarCuentas()
     {
-        var seleccionadas = new List<CuentaValor>();
-        var catalogo = ObtenerCatalogo();
+        List<CuentaValor> seleccionadas = new List<CuentaValor>();
+        ConfigCuentas config = Config;
         bool continuar = true;
 
         while (continuar)
         {
-            int categoria = MostrarMenuCategoriasConSalida(); // 0 = finalizar, 1-5 = categoría
-            if (categoria == 0) break;
-
-            var (nombreGrupo, listaCuentas) = catalogo[categoria - 1];
-
-            MostrarTituloSubrayado($"Cuentas de {nombreGrupo}", true, true);
-            for (int i = 0; i < listaCuentas.Count; i++)
+            int categoria = AccionesCuentas.ElegirGrupoConSalida(config); // 0 = finalizar, 1-5 = categoría
+            if (categoria == 0)
             {
-                string naturaleza = listaCuentas[i].EsDeudora ? "[Egreso  ]" : "[Ingreso ]";
-                Console.WriteLine($"{i + 1}. {naturaleza} {listaCuentas[i].Nombre}");
+                break;
             }
-            MostrarLineaDivisora(true, true);
 
-            Console.WriteLine($"Seleccione la cuenta (1-{listaCuentas.Count}):");
-            Cuenta cuenta = listaCuentas[SolicitarEnteroConLimites(1, listaCuentas.Count) - 1];
+            var (nombreGrupo, listaCuentas) = config.Catalogo[categoria - 1];
+
+            Cuenta cuenta = AccionesCuentas.ElegirCuenta(nombreGrupo, listaCuentas, config);
 
             Console.Write($"Ingrese el valor para '{cuenta.Nombre}': ");
             int valor = SolicitarEntero();
@@ -81,7 +95,7 @@ public static class AccionCalcularEstadoResultados
             seleccionadas.Add(new CuentaValor(cuenta, valor, categoria));
             MostrarMensajeExito($"Cuenta '{cuenta.Nombre}' agregada con valor {FormatearMoneda(valor)}", true, false);
 
-            continuar = MostrarMenuContinuar() == 1;
+            continuar = AccionesCuentas.Continuar(config.Nombre);
         }
 
         return seleccionadas;
@@ -96,7 +110,7 @@ public static class AccionCalcularEstadoResultados
     {
         MostrarLineaDivisoraConTexto("Resultado del Estado de Resultados", true, true);
 
-        var reporte = new StringBuilder();
+        StringBuilder reporte = new StringBuilder();
         reporte.AppendLine(new string('=', 62));
         reporte.AppendLine($"                    {nombreEmpresa.ToUpper()}");
         reporte.AppendLine("                  ESTADO DE RESULTADOS");
@@ -153,19 +167,50 @@ public static class AccionCalcularEstadoResultados
         MostrarTituloSubrayado(titulo, true, true);
 
         int total = 0;
+        // Tomamos solo las cuentas de esta categoría.
         foreach (CuentaValor item in seleccionadas.Where(c => c.Categoria == categoria))
         {
-            (int valorConSigno, string signo) = modo switch
-            {
-                // En ingresos, una cuenta acreedora (ingreso) suma y una deudora (devolución) resta.
-                Modo.Ingreso => (-item.Cuenta.ValorConSigno(item.Valor), item.Cuenta.EsDeudora ? "(-)" : "(+)"),
-                // En costos, una cuenta deudora (costo) suma y una acreedora (descuento) resta.
-                Modo.Costo => (item.Cuenta.ValorConSigno(item.Valor), item.Cuenta.EsDeudora ? "(+)" : "(-)"),
-                // Los gastos siempre suman.
-                _ => (item.Valor, "(+)"),
-            };
+            int valorConSigno;
+            string signo;
 
-            total += valorConSigno;
+            if (modo == Modo.Ingreso)
+            {
+                if (item.Cuenta.EsDeudora)
+                {
+                    // Egreso o devolución: resta.
+                    valorConSigno = -item.Valor;
+                    signo = "(-)";
+                }
+                else
+                {
+                    // Ingreso: suma.
+                    valorConSigno = item.Valor;
+                    signo = "(+)";
+                }
+            }
+            else if (modo == Modo.Costo)
+            {
+                if (item.Cuenta.EsDeudora)
+                {
+                    // Costo: suma.
+                    valorConSigno = item.Valor;
+                    signo = "(+)";
+                }
+                else
+                {
+                    // Descuento o devolución de compra: resta.
+                    valorConSigno = -item.Valor;
+                    signo = "(-)";
+                }
+            }
+            else
+            {
+                // Gasto: siempre suma.
+                valorConSigno = item.Valor;
+                signo = "(+)";
+            }
+
+            total = total + valorConSigno;
             Linea($"  {signo} {item.Cuenta.Nombre}: {FormatearMoneda(item.Valor)}", reporte);
         }
 

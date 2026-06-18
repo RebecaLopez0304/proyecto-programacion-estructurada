@@ -9,7 +9,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
     /// </summary>
     public static class CuentasBalanceGeneral
     {
-        public static List<Cuenta> ActivoCirculante = new()
+        public static List<Cuenta> ActivoCirculante = new List<Cuenta>()
         {
             new CuentaDeudora("Caja General"),
             new CuentaDeudora("Fondo fijo de caja chica"),
@@ -35,7 +35,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             new CuentaDeudora("Intereses pagados por anticipado"),
             new CuentaDeudora("Otros"),
         };
-        public static List<Cuenta> ActivoFijo = new()
+        public static List<Cuenta> ActivoFijo = new List<Cuenta>()
         {
             new CuentaDeudora("Terrenos"),
             new CuentaDeudora("Edificios"),
@@ -44,7 +44,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             new CuentaDeudora("Maquinaria y equipo"),
             new CuentaAcreedora("depreciacion acumulada de maquinaria y equipo obras en proceso"),
             new CuentaDeudora("Mobiliario y equipos de oficina"),
-             new CuentaAcreedora("depreciacion acumulada de mobiliario y equipo de oficina,"),
+            new CuentaAcreedora("depreciacion acumulada de mobiliario y equipo de oficina,"),
             new CuentaDeudora("Muebles y enseres"),
             new CuentaDeudora("Equipo de transporte"),
             new CuentaAcreedora("depreciacion acumulada de equipo de transporte"),
@@ -52,7 +52,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             new CuentaDeudora("Equipo de computo"),
             new CuentaAcreedora("depreciacion acumulada de equipo de computo"),
         };
-        public static List<Cuenta> ActivoIntangible = new()
+        public static List<Cuenta> ActivoIntangible = new List<Cuenta>()
         {
             new CuentaDeudora("Derechos de autor"),
             new CuentaDeudora("Patentes"),
@@ -72,7 +72,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             new CuentaDeudora("franquicias"),
             new CuentaDeudora("Intereses pagados por anticipado"),
         };
-        public static List<Cuenta> OtrosActivos = new()
+        public static List<Cuenta> OtrosActivos = new List<Cuenta>()
         {
             new CuentaDeudora("Fondo de amortizaciones de obligaciones"),
             new CuentaDeudora("Depósito en garantía"),
@@ -81,7 +81,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             new CuentaDeudora("Maquinaria no utilizada"),
             new CuentaDeudora("Rentas pagadas por anticipado")
         };
-        public static List<Cuenta> PasivoLargoPlazo = new()
+        public static List<Cuenta> PasivoLargoPlazo = new List<Cuenta>()
         {
             new CuentaAcreedora("Acreedores hipotecarios"),
             new CuentaAcreedora("Acreedores bancarios"),
@@ -92,7 +92,7 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             new CuentaAcreedora("Hipotecas por pagar"),
             new CuentaAcreedora("Obligaciones por pagar"),
         };
-        public static List<Cuenta> PasivoCortoPlazo = new()
+        public static List<Cuenta> PasivoCortoPlazo = new List<Cuenta>()
         {
             new CuentaAcreedora("Proveedores"),
             new CuentaAcreedora("cuentas por pagar"),
@@ -110,14 +110,14 @@ namespace ProyectoProgramacion.EstadosFinancieros.BalanceGeneral.Catalogos
             new CuentaAcreedora("Rentas cobradas por anticipado"),
             new CuentaAcreedora("Intereses cobrados por anticipado"),
         };
-        public static List<Cuenta> CapitalContribuido = new()
+        public static List<Cuenta> CapitalContribuido = new List<Cuenta>()
         {
             new CuentaAcreedora("Capital social"),
             new CuentaAcreedora("Aportaciones para futuros aumentos de capital"),
             new CuentaAcreedora("Prima en ventas de acciones"),
             new CuentaAcreedora("Donacione"),
         };
-        public static List<Cuenta> CapitalGanado = new()
+        public static List<Cuenta> CapitalGanado = new List<Cuenta>()
         {
             new CuentaAcreedora("Utilidades retenidas"),
             new CuentaAcreedora("Reserva legal"),

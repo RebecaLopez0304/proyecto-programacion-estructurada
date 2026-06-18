@@ -48,9 +48,14 @@ public abstract class Cuenta
     /// <summary>Crea la cuenta del tipo correcto (deudora o acreedora) según la naturaleza indicada.</summary>
     public static Cuenta Crear(string nombre, bool esDeudora, string tipoGrupoBalance = "")
     {
-        return esDeudora
-            ? new CuentaDeudora(nombre, tipoGrupoBalance)
-            : new CuentaAcreedora(nombre, tipoGrupoBalance);
+        if (esDeudora)
+        {
+            return new CuentaDeudora(nombre, tipoGrupoBalance);
+        }
+        else
+        {
+            return new CuentaAcreedora(nombre, tipoGrupoBalance);
+        }
     }
 
     #endregion
@@ -59,17 +64,37 @@ public abstract class Cuenta
 /// <summary>Cuenta de naturaleza deudora (activos, gastos, costos): suma en positivo.</summary>
 public class CuentaDeudora : Cuenta
 {
-    public CuentaDeudora(string nombre, string tipoGrupoBalance = "") : base(nombre, tipoGrupoBalance) { }
+    public CuentaDeudora(string nombre, string tipoGrupoBalance = "") : base(nombre, tipoGrupoBalance)
+    {
+    }
 
-    public override bool EsDeudora => true;
-    public override int ValorConSigno(int valor) => valor;
+    public override bool EsDeudora
+    {
+        get { return true; }
+    }
+
+    public override int ValorConSigno(int valor)
+    {
+        // Una cuenta deudora aporta su valor en positivo.
+        return valor;
+    }
 }
 
 /// <summary>Cuenta de naturaleza acreedora (pasivos, capital, ingresos): resta en negativo.</summary>
 public class CuentaAcreedora : Cuenta
 {
-    public CuentaAcreedora(string nombre, string tipoGrupoBalance = "") : base(nombre, tipoGrupoBalance) { }
+    public CuentaAcreedora(string nombre, string tipoGrupoBalance = "") : base(nombre, tipoGrupoBalance)
+    {
+    }
 
-    public override bool EsDeudora => false;
-    public override int ValorConSigno(int valor) => -valor;
+    public override bool EsDeudora
+    {
+        get { return false; }
+    }
+
+    public override int ValorConSigno(int valor)
+    {
+        // Una cuenta acreedora aporta su valor en negativo.
+        return -valor;
+    }
 }

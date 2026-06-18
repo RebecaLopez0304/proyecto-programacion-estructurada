@@ -17,11 +17,22 @@ internal class Program
 
         while (!salir)
         {
-            switch (MostrarMenuPrincipal())
+            int opcion = MostrarMenuPrincipal();
+
+            switch (opcion)
             {
-                case 1: BalanceGeneral.Ejecutar(); break;
-                case 2: EstadoResultados.Ejecutar(); break;
-                case 3: FlujoEfectivo.Ejecutar(); break;
+                case 1:
+                    BalanceGeneral.Ejecutar();
+                    break;
+
+                case 2:
+                    EstadoResultados.Ejecutar();
+                    break;
+
+                case 3:
+                    FlujoEfectivo.Ejecutar();
+                    break;
+
                 case 0:
                     salir = true;
                     Console.WriteLine("Saliendo del programa...");

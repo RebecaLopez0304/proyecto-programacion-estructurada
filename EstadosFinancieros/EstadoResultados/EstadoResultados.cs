@@ -1,18 +1,45 @@
 using ProyectoProgramacion.Comunes;
 using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones;
 using ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Catalogos;
-using static ProyectoProgramacion.Comunes.Utilidades;
-using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Acciones.AccionesVerCuentas;
-using static ProyectoProgramacion.EstadosFinancieros.EstadoResultados.Menus.MenusEstadoResultados;
 
 namespace ProyectoProgramacion.EstadosFinancieros.EstadoResultados;
 
 /// <summary>
-/// Módulo del Estado de Resultados. Coordina el menú y reparte el trabajo entre las
-/// acciones: ver, agregar, eliminar, buscar, modificar y calcular cuentas.
+/// Módulo del Estado de Resultados. Aporta su configuración y su cálculo; el resto del
+/// menú (ver, agregar, eliminar, buscar, modificar) lo resuelven las acciones compartidas.
 /// </summary>
 public static class EstadoResultados
 {
+    #region Configuración
+
+    /// <summary>Datos que distinguen a este estado financiero de los demás.</summary>
+    public static ConfigCuentas Config
+    {
+        get
+        {
+            return new ConfigCuentas(
+                nombre: "Estado de Resultados",
+                catalogo: ObtenerCatalogo(),
+                etiquetaPositiva: "Egreso",
+                etiquetaNegativa: "Ingreso");
+        }
+    }
+
+    /// <summary>Devuelve todas las listas del Estado de Resultados junto al nombre de su grupo.</summary>
+    private static List<(string grupo, List<Cuenta> lista)> ObtenerCatalogo()
+    {
+        return new List<(string grupo, List<Cuenta> lista)>
+        {
+            ("Ventas", CuentasEstadoResultados.Ventas),
+            ("Costo de Ventas", CuentasEstadoResultados.CostoDeVentas),
+            ("Gastos de Operación", CuentasEstadoResultados.GastoDeOperacion),
+            ("Gastos de Administración", CuentasEstadoResultados.GastosAdministracion),
+            ("Otros Resultados Financieros", CuentasEstadoResultados.OtrosResultadosFinancieros),
+        };
+    }
+
+    #endregion
+
     #region Menú principal
 
     /// <summary>Muestra el menú del módulo hasta que el usuario elige volver (0).</summary>
@@ -22,62 +49,38 @@ public static class EstadoResultados
 
         while (!volver)
         {
-            switch (MostrarMenuPrincipal())
+            int opcion = AccionesCuentas.MenuPrincipal(Config.Nombre);
+
+            switch (opcion)
             {
-                case 1: VerCuentas(); break;
-                case 2: AccionAgregarCuenta.Ejecutar(); break;
-                case 3: AccionesCuentas.EliminarCuenta(ObtenerCatalogo()); break;
-                case 4: AccionesCuentas.BuscarCuenta(ObtenerCatalogo()); break;
-                case 5: AccionesCuentas.ModificarCuenta(ObtenerCatalogo()); break;
-                case 6: AccionCalcularEstadoResultados.Ejecutar(); break;
-                case 0: volver = true; break;
+                case 1:
+                    AccionesCuentas.VerCuentas(Config);
+                    break;
+
+                case 2:
+                    AccionesCuentas.AgregarCuenta(Config);
+                    break;
+
+                case 3:
+                    AccionesCuentas.EliminarCuenta(Config);
+                    break;
+
+                case 4:
+                    AccionesCuentas.BuscarCuenta(Config);
+                    break;
+
+                case 5:
+                    AccionesCuentas.ModificarCuenta(Config);
+                    break;
+
+                case 6:
+                    AccionCalcularEstadoResultados.Ejecutar();
+                    break;
+
+                case 0:
+                    volver = true;
+                    break;
             }
-        }
-    }
-
-    #endregion
-
-    #region Catálogo de cuentas
-
-    /// <summary>Devuelve todas las listas del Estado de Resultados junto al nombre de su grupo.</summary>
-    public static List<(string grupo, List<Cuenta> lista)> ObtenerCatalogo() => new()
-    {
-        ("Ventas", CuentasEstadoResultados.Ventas),
-        ("Costo de Ventas", CuentasEstadoResultados.CostoDeVentas),
-        ("Gastos de Operación", CuentasEstadoResultados.GastoDeOperacion),
-        ("Gastos de Administración", CuentasEstadoResultados.GastosAdministracion),
-        ("Otros Resultados Financieros", CuentasEstadoResultados.OtrosResultadosFinancieros),
-    };
-
-    #endregion
-
-    #region Ver cuentas
-
-    /// <summary>Submenú para ver las cuentas (todas o por categoría).</summary>
-    private static void VerCuentas()
-    {
-        bool regresar = false;
-
-        while (!regresar)
-        {
-            switch (MostrarMenuCuentas())
-            {
-                case 1: MostrarTodoER(); break;
-                case 2: MostrarPorCategoriaER(); break;
-                case 0: regresar = true; break;
-            }
-        }
-    }
-
-    /// <summary>Imprime una sección con su título y las cuentas indicadas (ingreso/egreso + nombre).</summary>
-    public static void MostrarSeccion(string titulo, List<Cuenta> listaDeCuentas)
-    {
-        MostrarTituloSubrayado(titulo, true);
-
-        foreach (Cuenta cuenta in listaDeCuentas)
-        {
-            string naturaleza = cuenta.EsDeudora ? "[ Egreso    ]" : "[ Ingreso   ]";
-            Console.WriteLine($"\t{naturaleza} \t{cuenta.Nombre} ");
         }
     }
 
